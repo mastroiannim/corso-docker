@@ -8,8 +8,8 @@
 3. Analizzare le differenze tra virtualizzazione tradizionale e containerizzazione, valutandone vantaggi e casi d'uso
 4. Applicare le tecniche apprese in scenari reali, come il deployment di applicazioni web o servizi distribuiti
 
-### Destinatari
-Studenti di quarta superiore di un istituto tecnico industriale a indirizzo informatico con conoscenze pregresse di:
+### Prerequisiti 
+Conoscenze pregresse di:
 - JavaScript e Node.js
 - Virtual Machine e Alpine Linux
 - [Esercitazione di Laboratorio del modulo introduttivo](https://github.com/mastroiannim/corso-docker/blob/main/Esercitazione%20di%20Laboratorio%3A%20Modalit%C3%A0%20di%20Rete%20in%20VirtualBox%20con%20Alpine%20Linux.md)
