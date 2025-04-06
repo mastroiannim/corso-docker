@@ -11,8 +11,8 @@
 ### Destinatari
 Studenti di quarta superiore di un istituto tecnico industriale a indirizzo informatico con conoscenze pregresse di:
 - JavaScript e Node.js
-- Virtual Machine [Esercitazione modulo introduttivo](https://github.com/mastroiannim/corso-docker/blob/main/Esercitazione%20di%20Laboratorio%3A%20Modalit%C3%A0%20di%20Rete%20in%20VirtualBox%20con%20Alpine%20Linux.md)
-- Linux Alpine
+- Virtual Machine e Alpine Linux
+- [Esercitazione di Laboratorio del modulo introduttivo](https://github.com/mastroiannim/corso-docker/blob/main/Esercitazione%20di%20Laboratorio%3A%20Modalit%C3%A0%20di%20Rete%20in%20VirtualBox%20con%20Alpine%20Linux.md)
 
 ### Struttura del Corso
 - Tre esercitazioni di 3 ore ciascuna
