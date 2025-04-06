@@ -11,7 +11,7 @@
 ### Destinatari
 Studenti di quarta superiore di un istituto tecnico industriale a indirizzo informatico con conoscenze pregresse di:
 - JavaScript e Node.js
-- Virtual Machine [modulo introduttivo](https://github.com/mastroiannim/corso-docker/blob/main/Esercitazione%20di%20Laboratorio%3A%20Modalit%C3%A0%20di%20Rete%20in%20VirtualBox%20con%20Alpine%20Linux.md)
+- Virtual Machine [Esercitazione modulo introduttivo](https://github.com/mastroiannim/corso-docker/blob/main/Esercitazione%20di%20Laboratorio%3A%20Modalit%C3%A0%20di%20Rete%20in%20VirtualBox%20con%20Alpine%20Linux.md)
 - Linux Alpine
 
 ### Struttura del Corso
@@ -111,7 +111,7 @@ Studenti di quarta superiore di un istituto tecnico industriale a indirizzo info
 11. Pubblicazione di un'immagine su Docker Hub
 12. Applicazione multi-container
 
-## Esercitazione 3: Docker Avanzato e Applicazioni Distribuite
+## Esercitazione 3: [Docker Avanzato e Applicazioni Distribuite](https://github.com/mastroiannim/corso-docker/blob/main/Esercitazione%203%3A%20Docker%20Avanzato%20e%20Applicazioni%20Distribuite.md)
 
 ### Obiettivi Specifici
 - Configurare reti Docker avanzate
