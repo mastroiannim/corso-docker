@@ -19,7 +19,7 @@ Studenti di quarta superiore di un istituto tecnico industriale a indirizzo info
 - Progetto finale: implementazione di un'infrastruttura ibrida (VM + container)
 - Ambiente di lavoro: VM Linux Alpine con accesso root e connessione Internet via SSH
 
-## Esercitazione 1: Introduzione a Docker e Concetti Base
+## Esercitazione 1: [Introduzione a Docker e Concetti Base](https://github.com/mastroiannim/corso-docker/blob/main/Esercitazione%201%3A%20Introduzione%20a%20Docker%20e%20Concetti%20Base.md)
 
 ### Obiettivi Specifici
 - Comprendere i concetti fondamentali della containerizzazione
