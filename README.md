@@ -62,7 +62,7 @@ Studenti di quarta superiore di un istituto tecnico industriale a indirizzo info
 5. Esplorazione di Docker Hub
 6. Esecuzione di un'applicazione Node.js in container
 
-## Esercitazione 2: Creazione e Gestione di Container Docker
+## Esercitazione 2: [Creazione e Gestione di Container Docker](https://github.com/mastroiannim/corso-docker/blob/main/Esercitazione%202%3A%20Creazione%20e%20Gestione%20di%20Container%20Docker.md)
 
 ### Obiettivi Specifici
 - Creare immagini Docker personalizzate con Dockerfile
