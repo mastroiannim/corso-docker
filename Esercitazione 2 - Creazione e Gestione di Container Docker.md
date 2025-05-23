@@ -1,1399 +1,511 @@
 # Esercitazione 2: Creazione e Gestione di Container Docker
 
-## Parte 1: Creazione di immagini Docker
+## Panoramica dell'Esercitazione
+Questa seconda esercitazione di 3 ore è progettata per approfondire la creazione di immagini Docker personalizzate, la gestione della persistenza dei dati e il networking di base. Questa esercitazione si basa sulle conoscenze acquisite nelle sessioni introduttive e nella prima esercitazione su Docker.
+
+## Parte 1: Creazione di Immagini Docker
 
 ### Introduzione ai Dockerfile
+Un Dockerfile è un file di testo che contiene una serie di istruzioni per costruire un'immagine Docker in modo automatizzato e ripetibile.
 
-Un Dockerfile è un file di testo che contiene una serie di istruzioni per costruire un'immagine Docker in modo automatizzato. Rappresenta la "ricetta" per creare un'immagine e garantisce che questa possa essere ricreata in modo identico in qualsiasi ambiente.
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 1:** Ricordate i file di configurazione che abbiamo visto nella Sessione Introduttiva 1? Il Dockerfile è un file di configurazione che definisce come costruire un'immagine Docker.
 
-#### Sintassi e istruzioni principali
-
-**FROM**:
-Definisce l'immagine base da cui partire. È sempre la prima istruzione non commentata in un Dockerfile.
+#### Struttura di Base:
 ```dockerfile
-FROM node:18-alpine
+# Commento
+ISTRUZIONE argomenti
 ```
 
-**RUN**:
-Esegue comandi all'interno del container durante la fase di build. Ogni istruzione RUN crea un nuovo layer nell'immagine.
-```dockerfile
-RUN apk add --no-cache python3 make g++
-RUN npm install
-```
+#### Istruzioni Principali:
+- `FROM`: Immagine base da cui partire
+- `RUN`: Esegue comandi durante la build
+- `COPY`/`ADD`: Copia file nell'immagine
+- `WORKDIR`: Imposta la directory di lavoro
+- `ENV`: Definisce variabili d'ambiente
+- `EXPOSE`: Dichiara le porte su cui il container ascolta
+- `CMD`/`ENTRYPOINT`: Definisce il comando da eseguire all'avvio del container
 
-**COPY e ADD**:
-Copiano file e directory dal contesto di build all'immagine.
-- COPY: Copia file locali nell'immagine
-- ADD: Simile a COPY, ma può anche estrarre archivi e scaricare file da URL
-```dockerfile
-COPY package.json .
-COPY src/ /app/src/
-ADD https://example.com/file.tar.gz /tmp/
-```
+### Sintassi e Istruzioni Principali
 
-**WORKDIR**:
-Imposta la directory di lavoro per le istruzioni successive (RUN, CMD, ENTRYPOINT, COPY, ADD).
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 1:** Ricordate la sintassi dei comandi bash che abbiamo visto nella Sessione Introduttiva 1? Le istruzioni del Dockerfile seguono una sintassi simile ma più strutturata.
+
+#### FROM:
 ```dockerfile
+FROM <immagine>:<tag>
+```
+- Definisce l'immagine base
+- Deve essere la prima istruzione (eccetto ARG)
+- Esempi: `FROM ubuntu:20.04`, `FROM node:14-alpine`
+
+#### RUN:
+```dockerfile
+RUN <comando>
+# oppure
+RUN ["eseguibile", "param1", "param2"]
+```
+- Esegue comandi durante la build
+- Crea un nuovo layer nell'immagine
+- Esempi: `RUN apt-get update && apt-get install -y nginx`, `RUN ["pip", "install", "flask"]`
+
+#### COPY e ADD:
+```dockerfile
+COPY <src> <dest>
+ADD <src> <dest>
+```
+- Copia file dal contesto di build all'immagine
+- ADD supporta anche URL e decompressione automatica di archivi
+- Esempi: `COPY app.js /app/`, `ADD https://example.com/file.tar.gz /tmp/`
+
+#### WORKDIR:
+```dockerfile
+WORKDIR /path/to/directory
+```
+- Imposta la directory di lavoro per le istruzioni successive
+- Crea la directory se non esiste
+- Esempio: `WORKDIR /app`
+
+#### ENV:
+```dockerfile
+ENV <chiave>=<valore>
+```
+- Definisce variabili d'ambiente
+- Disponibili durante la build e nel container in esecuzione
+- Esempio: `ENV NODE_ENV=production`
+
+#### EXPOSE:
+```dockerfile
+EXPOSE <porta> [<porta>...]
+```
+- Dichiara le porte su cui il container ascolta
+- Solo documentativo, non pubblica effettivamente le porte
+- Esempio: `EXPOSE 80 443`
+
+#### CMD e ENTRYPOINT:
+```dockerfile
+CMD ["eseguibile", "param1", "param2"]
+ENTRYPOINT ["eseguibile", "param1", "param2"]
+```
+- Definiscono il comando da eseguire all'avvio del container
+- CMD può essere sovrascritto dalla riga di comando
+- ENTRYPOINT è più difficile da sovrascrivere
+- Esempio: `CMD ["node", "app.js"]`, `ENTRYPOINT ["nginx", "-g", "daemon off;"]`
+
+### Best Practices nella Scrittura di Dockerfile
+
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Ricordate i concetti di ottimizzazione delle applicazioni che abbiamo visto nella Sessione Introduttiva 2? Applicheremo principi simili per ottimizzare i Dockerfile.
+
+#### Immagini Base:
+- Usare immagini ufficiali quando possibile
+- Preferire immagini Alpine per dimensioni ridotte
+- Specificare sempre un tag preciso, non `latest`
+
+#### Ottimizzazione dei Layer:
+- Combinare comandi RUN correlati con `&&` e `\`
+- Rimuovere file temporanei nello stesso layer in cui sono stati creati
+- Ordinare le istruzioni dalla meno alla più frequentemente modificata
+
+#### Sicurezza:
+- Evitare di esporre informazioni sensibili
+- Non eseguire container come root quando possibile
+- Usare `--no-install-recommends` con apt-get
+- Scansionare le immagini per vulnerabilità
+
+#### Esempio di Dockerfile Ottimizzato:
+```dockerfile
+FROM node:14-alpine
+
+# Impostare la directory di lavoro
 WORKDIR /app
-```
 
-**ENV**:
-Imposta variabili d'ambiente che saranno disponibili durante la build e nel container in esecuzione.
-```dockerfile
-ENV NODE_ENV=production
-ENV PORT=3000
-```
+# Copiare solo i file necessari per npm install
+COPY package*.json ./
 
-**EXPOSE**:
-Informa Docker che il container ascolterà su porte specifiche a runtime. Non pubblica effettivamente le porte.
-```dockerfile
+# Installare le dipendenze in un unico layer
+RUN npm ci --only=production && \
+    npm cache clean --force
+
+# Copiare il resto del codice
+COPY . .
+
+# Utente non-root per la sicurezza
+USER node
+
+# Esporre la porta
 EXPOSE 3000
-```
 
-**CMD**:
-Specifica il comando predefinito da eseguire quando il container viene avviato. Può essere sovrascritto dalla riga di comando.
-```dockerfile
+# Comando di avvio
 CMD ["node", "app.js"]
 ```
 
-**ENTRYPOINT**:
-Simile a CMD, ma più difficile da sovrascrivere. Spesso usato con CMD per creare container eseguibili.
+### Ottimizzazione delle Immagini
+
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Nella Sessione Introduttiva 2 abbiamo parlato dell'efficienza delle risorse. Qui vedremo come ottimizzare le immagini Docker per ridurre dimensioni e migliorare le prestazioni.
+
+#### Riduzione della Dimensione:
+- Usare immagini base leggere (Alpine, slim)
+- Rimuovere file temporanei e cache
+- Utilizzare `.dockerignore` per escludere file non necessari
+- Implementare multi-stage builds
+
+#### Multi-stage Builds:
 ```dockerfile
-ENTRYPOINT ["node"]
-CMD ["app.js"]
+# Stage di build
+FROM node:14 AS build
+WORKDIR /app
+COPY . .
+RUN npm ci && npm run build
+
+# Stage finale
+FROM nginx:alpine
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
 ```
 
-**VOLUME**:
-Crea un punto di montaggio per volumi esterni.
-```dockerfile
-VOLUME /data
-```
+#### Vantaggi:
+- Immagini finali più piccole
+- Separazione tra ambiente di build e runtime
+- Riduzione della superficie di attacco
+- Migliore organizzazione del Dockerfile
 
-**USER**:
-Imposta l'utente (o UID) per eseguire i comandi successivi e il container.
-```dockerfile
-USER node
-```
+### Creazione di Immagini Personalizzate
 
-#### Best practices nella scrittura di Dockerfile
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 1:** Ricordate i concetti di file e directory che abbiamo visto nella Sessione Introduttiva 1? Ora vedremo come organizzare i file per creare un'immagine Docker.
 
-1. **Utilizzare immagini base ufficiali e specifiche**:
-   ```dockerfile
-   # Meglio
-   FROM node:18-alpine
-   # Evitare
-   FROM node:latest
+#### Preparazione del Contesto di Build:
+1. Creare una directory per il progetto:
+   ```bash
+   mkdir -p docker-project
+   cd docker-project
    ```
 
-2. **Combinare comandi RUN per ridurre i layer**:
-   ```dockerfile
-   # Meglio
-   RUN apk add --no-cache python3 make g++ \
-       && npm install \
-       && npm cache clean --force
-   # Evitare
-   RUN apk add --no-cache python3
-   RUN apk add --no-cache make g++
-   RUN npm install
-   RUN npm cache clean --force
-   ```
-
-3. **Utilizzare .dockerignore**:
-   Creare un file `.dockerignore` per escludere file non necessari dal contesto di build:
+2. Creare un file `.dockerignore`:
    ```
    node_modules
    npm-debug.log
    .git
-   .env
+   .gitignore
    ```
 
-4. **Ordinare le istruzioni per ottimizzare la cache**:
-   Posizionare le istruzioni che cambiano meno frequentemente all'inizio del Dockerfile.
+3. Creare un Dockerfile:
    ```dockerfile
-   FROM node:18-alpine
-   WORKDIR /app
-   
-   # Prima copiare solo package.json per sfruttare la cache
-   COPY package*.json ./
-   RUN npm install
-   
-   # Poi copiare il resto del codice
-   COPY . .
-   ```
-
-5. **Utilizzare utenti non root**:
-   ```dockerfile
-   RUN addgroup -g 1000 appuser && \
-       adduser -u 1000 -G appuser -s /bin/sh -D appuser
-   USER appuser
-   ```
-
-6. **Impostare WORKDIR invece di usare comandi RUN cd**:
-   ```dockerfile
-   # Meglio
-   WORKDIR /app
-   # Evitare
-   RUN cd /app
-   ```
-
-7. **Utilizzare ENTRYPOINT con CMD per container eseguibili**:
-   ```dockerfile
-   ENTRYPOINT ["node"]
-   CMD ["app.js"]
-   ```
-
-8. **Specificare tag espliciti per le immagini base**:
-   ```dockerfile
-   FROM node:18.15.0-alpine3.16
-   ```
-
-#### Ottimizzazione delle immagini
-
-1. **Multi-stage build**:
-   Utilizzare build multi-stage per ridurre la dimensione finale dell'immagine:
-   ```dockerfile
-   # Stage di build
-   FROM node:18-alpine AS build
+   FROM node:14-alpine
    WORKDIR /app
    COPY package*.json ./
    RUN npm install
    COPY . .
-   RUN npm run build
-   
-   # Stage di produzione
-   FROM node:18-alpine
-   WORKDIR /app
-   COPY --from=build /app/dist ./dist
-   COPY --from=build /app/package*.json ./
-   RUN npm install --only=production
-   CMD ["node", "dist/index.js"]
+   EXPOSE 3000
+   CMD ["node", "index.js"]
    ```
 
-2. **Minimizzare il numero di layer**:
-   Ogni istruzione nel Dockerfile crea un nuovo layer. Combinare comandi correlati.
+4. Creare i file dell'applicazione (es. `index.js`):
+   ```javascript
+   const express = require('express');
+   const app = express();
+   const port = 3000;
 
-3. **Rimuovere file temporanei e cache**:
-   ```dockerfile
-   RUN apt-get update && apt-get install -y \
-       package1 \
-       package2 \
-       && rm -rf /var/lib/apt/lists/*
+   app.get('/', (req, res) => {
+     res.send('Hello from custom Docker image!');
+   });
+
+   app.listen(port, () => {
+     console.log(`App listening at http://localhost:${port}`);
+   });
    ```
 
-4. **Utilizzare immagini base leggere**:
-   Preferire Alpine o Debian slim rispetto a immagini complete:
-   ```dockerfile
-   FROM node:18-alpine  # ~50MB
-   # invece di
-   FROM node:18  # ~900MB
-   ```
-
-### Creazione di immagini personalizzate
-
-#### Scrittura di un Dockerfile per un'applicazione Node.js
-
-Ecco un esempio di Dockerfile per un'applicazione Node.js:
-
-```dockerfile
-# Utilizziamo Node.js 18 su Alpine Linux come base
-FROM node:18-alpine
-
-# Creiamo e impostiamo la directory di lavoro
-WORKDIR /app
-
-# Copiamo package.json e package-lock.json (se presente)
-COPY package*.json ./
-
-# Installiamo le dipendenze
-RUN npm install
-
-# Copiamo il resto del codice sorgente
-COPY . .
-
-# Esponiamo la porta su cui l'applicazione ascolterà
-EXPOSE 3000
-
-# Comando per avviare l'applicazione
-CMD ["node", "app.js"]
-```
-
-#### Comando docker build
-
-Il comando `docker build` costruisce un'immagine Docker a partire da un Dockerfile e da un contesto di build:
-
+#### Costruzione dell'Immagine:
 ```bash
-# Sintassi base
-docker build [opzioni] percorso_contesto
-
-# Esempio: costruire un'immagine dalla directory corrente
-docker build -t nome-immagine:tag .
-
-# Esempio con opzioni comuni
-docker build --no-cache -t mia-app:1.0 .
+docker build -t my-custom-app:1.0 .
 ```
 
-Opzioni principali:
-- `-t, --tag`: Assegna un nome e un tag all'immagine
-- `--no-cache`: Non utilizza la cache durante la build
-- `-f, --file`: Specifica il percorso del Dockerfile (se diverso da ./Dockerfile)
-- `--build-arg`: Passa variabili di build al Dockerfile
+#### Opzioni Comuni di Build:
+- `-t <nome>:<tag>`: Assegna nome e tag all'immagine
+- `--no-cache`: Ignora la cache durante la build
+- `--build-arg <var>=<valore>`: Passa variabili di build
+- `--file <file>`: Specifica un Dockerfile alternativo
 
-#### Gestione dei tag
-
-I tag sono etichette assegnate alle immagini Docker per identificarne versioni o varianti:
-
-```bash
-# Taggare un'immagine durante la build
-docker build -t mia-app:1.0 .
-
-# Taggare un'immagine esistente
-docker tag mia-app:1.0 mia-app:latest
-
-# Taggare per un registry specifico
-docker tag mia-app:1.0 username/mia-app:1.0
-```
-
-Best practices per i tag:
-- Utilizzare `latest` per la versione più recente
-- Utilizzare numeri di versione semantica (1.0.0)
-- Includere informazioni sull'ambiente (prod, dev, staging)
-- Utilizzare hash di commit per build di sviluppo
-
-#### Strategie di versionamento delle immagini
-
-1. **Versionamento semantico**:
-   ```bash
-   docker build -t mia-app:1.0.0 .
-   docker tag mia-app:1.0.0 mia-app:1.0
-   docker tag mia-app:1.0.0 mia-app:latest
-   ```
-
-2. **Tag basati su data**:
-   ```bash
-   docker build -t mia-app:$(date +%Y%m%d) .
-   ```
-
-3. **Tag basati su commit Git**:
-   ```bash
-   docker build -t mia-app:$(git rev-parse --short HEAD) .
-   ```
-
-4. **Tag per ambiente**:
-   ```bash
-   docker build -t mia-app:1.0.0-prod .
-   docker build -t mia-app:1.0.0-dev .
-   ```
-
-### Esercizi pratici guidati
-
-#### Esercizio 1: Creazione di un'immagine per un'applicazione Node.js semplice
-
-**Passo 1**: Creare una directory per l'applicazione
-```bash
-mkdir -p /home/studente/node-docker-app
-cd /home/studente/node-docker-app
-```
-
-**Passo 2**: Creare un file `package.json`
-```bash
-cat > package.json << 'EOF'
-{
-  "name": "node-docker-app",
-  "version": "1.0.0",
-  "description": "Semplice applicazione Node.js per Docker",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2"
-  }
-}
-EOF
-```
-
-**Passo 3**: Creare un file `app.js`
-```bash
-cat > app.js << 'EOF'
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-  res.send('Ciao dal container Docker! Questa è la mia prima immagine personalizzata.');
-});
-
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server in esecuzione su http://0.0.0.0:${port}`);
-});
-EOF
-```
-
-**Passo 4**: Creare un file `.dockerignore`
-```bash
-cat > .dockerignore << 'EOF'
-node_modules
-npm-debug.log
-.git
-.gitignore
-EOF
-```
-
-**Passo 5**: Creare un Dockerfile
-```bash
-cat > Dockerfile << 'EOF'
-FROM node:18-alpine
-
-WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
-
-EXPOSE 3000
-
-CMD ["node", "app.js"]
-EOF
-```
-
-**Passo 6**: Costruire l'immagine Docker
-```bash
-docker build -t node-app:1.0 .
-```
-
-**Passo 7**: Verificare che l'immagine sia stata creata
+#### Verifica dell'Immagine:
 ```bash
 docker images
+docker history my-custom-app:1.0
+docker inspect my-custom-app:1.0
 ```
 
-**Passo 8**: Eseguire un container dall'immagine
-```bash
-docker run -d -p 3000:3000 --name my-node-app node-app:1.0
-```
+## Parte 2: Persistenza dei Dati e Volumi
 
-**Passo 9**: Verificare che l'applicazione funzioni
-```bash
-curl http://localhost:3000
-```
+### Problema della Persistenza nei Container
 
-**Passo 10**: Visualizzare i log del container
-```bash
-docker logs my-node-app
-```
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 1:** Ricordate il concetto di persistenza dei dati che abbiamo visto nella Sessione Introduttiva 1? I container hanno un filesystem effimero, che scompare quando il container viene eliminato.
 
-#### Esercizio 2: Ottimizzazione del Dockerfile
+#### Caratteristiche del Filesystem dei Container:
+- **Effimero:** I dati scompaiono quando il container viene eliminato
+- **Layer scrivibile:** Ogni container ha un proprio layer scrivibile
+- **Union filesystem:** Combina il layer scrivibile con i layer di sola lettura dell'immagine
+- **Isolamento:** Modifiche al filesystem non influenzano altri container o l'host
 
-**Passo 1**: Modificare il Dockerfile per utilizzare multi-stage build
-```bash
-cat > Dockerfile.optimized << 'EOF'
-# Stage di build
-FROM node:18-alpine AS build
-
-WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
-
-# Stage di produzione
-FROM node:18-alpine
-
-WORKDIR /app
-
-COPY --from=build /app/package*.json ./
-COPY --from=build /app/app.js ./
-
-RUN npm install --only=production
-
-EXPOSE 3000
-
-USER node
-
-CMD ["node", "app.js"]
-EOF
-```
-
-**Passo 2**: Costruire l'immagine ottimizzata
-```bash
-docker build -t node-app:1.0-optimized -f Dockerfile.optimized .
-```
-
-**Passo 3**: Confrontare le dimensioni delle immagini
-```bash
-docker images
-```
-
-**Passo 4**: Eseguire un container dall'immagine ottimizzata
-```bash
-docker run -d -p 3001:3000 --name my-node-app-optimized node-app:1.0-optimized
-```
-
-**Passo 5**: Verificare che l'applicazione funzioni
-```bash
-curl http://localhost:3001
-```
-
-#### Esercizio 3: Gestione delle dipendenze
-
-**Passo 1**: Aggiungere una nuova dipendenza al `package.json`
-```bash
-cat > package.json << 'EOF'
-{
-  "name": "node-docker-app",
-  "version": "1.0.0",
-  "description": "Semplice applicazione Node.js per Docker",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "moment": "^2.29.4"
-  }
-}
-EOF
-```
-
-**Passo 2**: Aggiornare il file `app.js` per utilizzare la nuova dipendenza
-```bash
-cat > app.js << 'EOF'
-const express = require('express');
-const moment = require('moment');
-const app = express();
-const port = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-  const now = moment().format('YYYY-MM-DD HH:mm:ss');
-  res.send(`Ciao dal container Docker! Ora sono le ${now}`);
-});
-
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server in esecuzione su http://0.0.0.0:${port}`);
-});
-EOF
-```
-
-**Passo 3**: Ricostruire l'immagine
-```bash
-docker build -t node-app:1.1 .
-```
-
-**Passo 4**: Eseguire un container dalla nuova immagine
-```bash
-docker run -d -p 3002:3000 --name my-node-app-v1.1 node-app:1.1
-```
-
-**Passo 5**: Verificare che l'applicazione utilizzi la nuova dipendenza
-```bash
-curl http://localhost:3002
-```
-
-#### Esercizio 4: Multi-stage build per ridurre la dimensione dell'immagine
-
-**Passo 1**: Creare un'applicazione più complessa con fase di build
-```bash
-mkdir -p /home/studente/node-typescript-app
-cd /home/studente/node-typescript-app
-```
-
-**Passo 2**: Creare un file `package.json` per TypeScript
-```bash
-cat > package.json << 'EOF'
-{
-  "name": "node-typescript-app",
-  "version": "1.0.0",
-  "description": "Applicazione TypeScript per Docker",
-  "main": "dist/index.js",
-  "scripts": {
-    "build": "tsc",
-    "start": "node dist/index.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2"
-  },
-  "devDependencies": {
-    "@types/express": "^4.17.17",
-    "@types/node": "^18.15.11",
-    "typescript": "^5.0.4"
-  }
-}
-EOF
-```
-
-**Passo 3**: Creare un file `tsconfig.json`
-```bash
-cat > tsconfig.json << 'EOF'
-{
-  "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "strict": true,
-    "esModuleInterop": true
-  },
-  "include": ["src/**/*"]
-}
-EOF
-```
-
-**Passo 4**: Creare la directory `src` e il file `index.ts`
-```bash
-mkdir -p src
-cat > src/index.ts << 'EOF'
-import express from 'express';
-
-const app = express();
-const port: number = parseInt(process.env.PORT || '3000', 10);
-
-app.get('/', (req, res) => {
-  res.send('Ciao dal container Docker con TypeScript!');
-});
-
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server in esecuzione su http://0.0.0.0:${port}`);
-});
-EOF
-```
-
-**Passo 5**: Creare un Dockerfile con multi-stage build
-```bash
-cat > Dockerfile << 'EOF'
-# Stage di build
-FROM node:18-alpine AS build
-
-WORKDIR /app
-
-COPY package*.json ./
-COPY tsconfig.json ./
-
-RUN npm install
-
-COPY src/ ./src/
-
-RUN npm run build
-
-# Stage di produzione
-FROM node:18-alpine
-
-WORKDIR /app
-
-COPY --from=build /app/package*.json ./
-COPY --from=build /app/dist/ ./dist/
-
-RUN npm install --only=production
-
-EXPOSE 3000
-
-USER node
-
-CMD ["node", "dist/index.js"]
-EOF
-```
-
-**Passo 6**: Costruire l'immagine
-```bash
-docker build -t typescript-app:1.0 .
-```
-
-**Passo 7**: Eseguire un container dall'immagine
-```bash
-docker run -d -p 3003:3000 --name my-typescript-app typescript-app:1.0
-```
-
-**Passo 8**: Verificare che l'applicazione funzioni
-```bash
-curl http://localhost:3003
-```
-
-**Passo 9**: Confrontare le dimensioni dell'immagine
-```bash
-docker images
-```
-
-## Parte 2: Persistenza dei dati e volumi
-
-### Gestione dello stato nei container
-
-#### Problema della persistenza nei container
-
-I container Docker sono progettati per essere effimeri: quando un container viene eliminato, tutti i dati al suo interno vengono persi. Questo comportamento è intenzionale e segue il principio dell'immutabilità, ma presenta sfide quando si tratta di gestire dati che devono persistere oltre il ciclo di vita del container.
-
-Scenari comuni che richiedono persistenza:
+#### Casi d'Uso per la Persistenza:
 - Database
 - File di configurazione
-- File caricati dagli utenti
 - Log
-- Cache e dati temporanei
+- Contenuti generati dagli utenti
+- Certificati SSL
+- Codice sorgente in sviluppo
 
-#### Tipi di storage in Docker
+### Tipi di Storage in Docker
 
-Docker offre diverse soluzioni per la persistenza dei dati:
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 1:** Nella Sessione Introduttiva 1 abbiamo visto diversi tipi di storage. Docker offre diverse soluzioni per la persistenza dei dati, ciascuna con caratteristiche specifiche.
 
-1. **Volumi Docker**:
-   - Gestiti direttamente da Docker
-   - Indipendenti dal ciclo di vita del container
-   - Isolati dal filesystem dell'host
-   - Più facili da migrare e fare backup
-   - Supportano driver di storage
+#### Volumi:
+- Gestiti completamente da Docker
+- Memorizzati in un'area dedicata del filesystem dell'host
+- Indipendenti dal ciclo di vita dei container
+- Migliore opzione per la persistenza dei dati
 
-2. **Bind Mount**:
-   - Mappano direttamente una directory dell'host nel container
-   - Utili per lo sviluppo e quando è necessario accedere ai file dall'host
-   - Dipendono dalla struttura delle directory dell'host
+#### Bind Mount:
+- Mappano una directory dell'host nel container
+- Percorso specificato dall'utente
+- Utili per lo sviluppo e quando è necessario accedere ai file dall'host
+- Dipendono dalla struttura delle directory dell'host
 
-3. **tmpfs Mount**:
-   - Memorizzano dati solo in memoria
-   - Utili per dati temporanei e sensibili
-   - I dati vengono persi al riavvio del container o dell'host
+#### tmpfs Mount:
+- Memorizzati solo nella memoria dell'host
+- Non persistenti
+- Utili per dati temporanei o sensibili
+- Più veloci ma limitati dalla RAM disponibile
 
-#### Volumi Docker
+### Volumi Docker
 
-I volumi Docker sono il meccanismo preferito per la persistenza dei dati:
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 1:** Ricordate i concetti di gestione dei file che abbiamo visto nella Sessione Introduttiva 1? I volumi Docker sono un modo per gestire i dati persistenti in modo indipendente dai container.
 
+#### Creazione e Gestione:
 ```bash
-# Creare un volume
-docker volume create mio-volume
+# Creazione di un volume
+docker volume create my-volume
 
-# Elencare i volumi
+# Elenco dei volumi
 docker volume ls
 
-# Ispezionare un volume
-docker volume inspect mio-volume
+# Dettagli di un volume
+docker volume inspect my-volume
 
-# Utilizzare un volume in un container
-docker run -d --name db -v mio-volume:/data/db mongo
+# Eliminazione di un volume
+docker volume rm my-volume
 
-# Rimuovere un volume
-docker volume rm mio-volume
-
-# Rimuovere volumi non utilizzati
+# Pulizia dei volumi inutilizzati
 docker volume prune
 ```
 
-Vantaggi dei volumi:
-- Backup e ripristino semplificati
+#### Utilizzo con Container:
+```bash
+# Montare un volume in un container
+docker run -d --name db -v my-volume:/var/lib/mysql mysql:5.7
+
+# Creare e montare un volume in un unico comando
+docker run -d --name web -v web-data:/app/data nginx
+```
+
+#### Vantaggi:
+- Gestione semplificata
+- Backup e ripristino facilitati
 - Condivisione tra container
-- Gestione del ciclo di vita indipendente
-- Prestazioni migliori (specialmente con driver ottimizzati)
-- Funzionano su tutti i sistemi operativi
+- Indipendenza dal filesystem dell'host
+- Supporto per driver di storage
 
-#### Bind mount
+### Bind Mount
 
-I bind mount collegano una directory dell'host a una directory nel container:
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 1:** Ricordate i percorsi assoluti e relativi che abbiamo visto nella Sessione Introduttiva 1? I bind mount utilizzano percorsi del filesystem host per montare directory nei container.
 
+#### Sintassi:
 ```bash
-# Utilizzare un bind mount
-docker run -d --name web -v /home/user/html:/usr/share/nginx/html nginx
+# Sintassi completa
+docker run -v /path/on/host:/path/in/container[:options] ...
 
-# Utilizzare la sintassi più recente
-docker run -d --name web --mount type=bind,source=/home/user/html,target=/usr/share/nginx/html nginx
-
-# Bind mount in sola lettura
-docker run -d --name web -v /home/user/html:/usr/share/nginx/html:ro nginx
+# Sintassi più recente
+docker run --mount type=bind,source=/path/on/host,target=/path/in/container ...
 ```
 
-Vantaggi dei bind mount:
-- Accesso diretto ai file dall'host
-- Modifiche immediate visibili nel container
-- Utili per lo sviluppo
-- Nessuna gestione aggiuntiva di volumi
-
-Svantaggi:
-- Dipendenza dalla struttura delle directory dell'host
-- Potenziali problemi di permessi
-- Meno portabili tra ambienti diversi
-
-### Esercizi pratici guidati
-
-#### Esercizio 1: Creazione e gestione di volumi Docker
-
-**Passo 1**: Creare un volume Docker
+#### Esempi:
 ```bash
-docker volume create data-volume
+# Montare una directory in sola lettura
+docker run -v $(pwd)/config:/etc/app/config:ro my-app
+
+# Montare per lo sviluppo
+docker run -v $(pwd):/app node:14 npm start
+
+# Con la sintassi --mount
+docker run --mount type=bind,source="$(pwd)",target=/app node:14 npm start
 ```
 
-**Passo 2**: Ispezionare il volume
+#### Casi d'Uso:
+- Sviluppo di applicazioni
+- Configurazione da file esterni
+- Condivisione di dati con l'host
+- Log accessibili dall'host
+
+### Condivisione di Dati tra Container
+
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Ricordate il concetto di condivisione delle risorse che abbiamo visto nella Sessione Introduttiva 2? Docker permette di condividere dati tra container in diversi modi.
+
+#### Utilizzo di Volumi Condivisi:
 ```bash
-docker volume inspect data-volume
-```
-
-**Passo 3**: Utilizzare il volume con un container
-```bash
-docker run -d --name nginx-with-volume -v data-volume:/usr/share/nginx/html nginx
-```
-
-**Passo 4**: Accedere al container e modificare i dati nel volume
-```bash
-docker exec -it nginx-with-volume sh
-echo "<h1>Pagina servita da un volume Docker</h1>" > /usr/share/nginx/html/index.html
-exit
-```
-
-**Passo 5**: Fermare e rimuovere il container
-```bash
-docker stop nginx-with-volume
-docker rm nginx-with-volume
-```
-
-**Passo 6**: Creare un nuovo container che utilizza lo stesso volume
-```bash
-docker run -d --name nginx-new -p 8080:80 -v data-volume:/usr/share/nginx/html nginx
-```
-
-**Passo 7**: Verificare che i dati persistano
-```bash
-curl http://localhost:8080
-```
-
-#### Esercizio 2: Utilizzo di bind mount
-
-**Passo 1**: Creare una directory sull'host
-```bash
-mkdir -p /home/studente/nginx-data
-echo "<h1>Pagina servita da un bind mount</h1>" > /home/studente/nginx-data/index.html
-```
-
-**Passo 2**: Eseguire un container con bind mount
-```bash
-docker run -d --name nginx-bind -p 8081:80 -v /home/studente/nginx-data:/usr/share/nginx/html nginx
-```
-
-**Passo 3**: Verificare che la pagina sia accessibile
-```bash
-curl http://localhost:8081
-```
-
-**Passo 4**: Modificare il file sull'host
-```bash
-echo "<h1>Pagina modificata sull'host</h1>" > /home/studente/nginx-data/index.html
-```
-
-**Passo 5**: Verificare che le modifiche siano visibili nel container
-```bash
-curl http://localhost:8081
-```
-
-#### Esercizio 3: Condivisione di dati tra container
-
-**Passo 1**: Creare un volume per la condivisione
-```bash
+# Creare un volume condiviso
 docker volume create shared-data
+
+# Primo container che utilizza il volume
+docker run -d --name writer -v shared-data:/data alpine sh -c "while true; do date >> /data/dates.txt; sleep 10; done"
+
+# Secondo container che legge dal volume
+docker run -it --name reader -v shared-data:/data alpine sh -c "tail -f /data/dates.txt"
 ```
 
-**Passo 2**: Eseguire un container che scrive nel volume
+#### Volume da un Container:
 ```bash
-docker run --name writer -v shared-data:/data alpine sh -c "echo 'Dati condivisi tra container' > /data/shared.txt"
+# Creare un container con un volume
+docker run -d --name source -v /data alpine touch /data/file.txt
+
+# Montare i volumi da un altro container
+docker run --volumes-from source alpine ls -la /data
 ```
 
-**Passo 3**: Eseguire un container che legge dal volume
+#### Considerazioni:
+- Permessi dei file
+- Concorrenza e lock
+- Coerenza dei dati
+- Backup e ripristino
+
+### Backup e Ripristino dei Dati
+
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 1:** Nella Sessione Introduttiva 1 abbiamo parlato dell'importanza del backup dei dati. Vediamo come applicare questo concetto ai volumi Docker.
+
+#### Backup di un Volume:
 ```bash
-docker run --name reader -v shared-data:/data alpine cat /data/shared.txt
+# Creare un container temporaneo che monta il volume e lo archivia
+docker run --rm -v my-volume:/source -v $(pwd):/backup alpine tar -czf /backup/my-volume-backup.tar.gz -C /source .
 ```
 
-**Passo 4**: Verificare che i dati siano stati condivisi
+#### Ripristino di un Volume:
 ```bash
-docker logs reader
+# Creare un nuovo volume
+docker volume create my-new-volume
+
+# Ripristinare i dati dal backup
+docker run --rm -v my-new-volume:/target -v $(pwd):/backup alpine sh -c "tar -xzf /backup/my-volume-backup.tar.gz -C /target"
 ```
 
-#### Esercizio 4: Backup e ripristino dei dati
+#### Strategie di Backup:
+- Backup incrementali
+- Automazione con script o cron
+- Utilizzo di strumenti specializzati
+- Backup remoti
 
-**Passo 1**: Creare un volume con dati
-```bash
-docker volume create backup-demo
-docker run --name data-creator -v backup-demo:/data alpine sh -c "echo 'Dati importanti' > /data/important.txt"
-```
-
-**Passo 2**: Creare un backup del volume
-```bash
-docker run --rm -v backup-demo:/source -v /home/studente:/backup alpine tar -czf /backup/volume-backup.tar.gz -C /source .
-```
-
-**Passo 3**: Verificare che il backup sia stato creato
-```bash
-ls -la /home/studente/volume-backup.tar.gz
-```
-
-**Passo 4**: Eliminare il volume originale
-```bash
-docker rm data-creator
-docker volume rm backup-demo
-```
-
-**Passo 5**: Ripristinare il backup in un nuovo volume
-```bash
-docker volume create restored-volume
-docker run --rm -v restored-volume:/target -v /home/studente:/backup alpine sh -c "tar -xzf /backup/volume-backup.tar.gz -C /target"
-```
-
-**Passo 6**: Verificare che i dati siano stati ripristinati
-```bash
-docker run --rm -v restored-volume:/data alpine cat /data/important.txt
-```
-
-## Parte 3: Networking e distribuzione
+## Parte 3: Networking e Distribuzione
 
 ### Networking in Docker
 
-#### Reti Docker predefinite
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Ricordate i concetti di rete che abbiamo visto nella Sessione Introduttiva 2? Docker implementa un sistema di networking che permette ai container di comunicare tra loro e con l'esterno.
 
-Docker crea automaticamente tre reti predefinite:
+#### Concetti Fondamentali:
+- **Container Network Model (CNM):** Architettura di networking di Docker
+- **Network Drivers:** Implementazioni specifiche del CNM
+- **Endpoint:** Connessione di un container a una rete
+- **Sandbox:** Isolamento della configurazione di rete di un container
+- **Network:** Gruppo di endpoint che possono comunicare direttamente
 
-1. **bridge**: La rete predefinita per i container. I container su questa rete possono comunicare tra loro tramite IP.
-2. **host**: I container condividono lo stack di rete dell'host. Non c'è isolamento di rete.
-3. **none**: I container non hanno connettività di rete.
-
+#### Comandi Base:
 ```bash
-# Elencare le reti disponibili
+# Elenco delle reti
 docker network ls
 
-# Ispezionare una rete
-docker network inspect bridge
-```
-
-#### Creazione di reti personalizzate
-
-Le reti personalizzate offrono migliore isolamento e funzionalità di risoluzione DNS:
-
-```bash
-# Creare una rete bridge personalizzata
+# Creare una rete
 docker network create my-network
 
-# Creare una rete con opzioni specifiche
-docker network create --driver bridge --subnet=172.18.0.0/16 --gateway=172.18.0.1 custom-network
+# Ispezionare una rete
+docker network inspect my-network
 
-# Collegare un container esistente a una rete
-docker network connect my-network container-name
-
-# Scollegare un container da una rete
-docker network disconnect my-network container-name
+# Eliminare una rete
+docker network rm my-network
 ```
 
-#### Comunicazione tra container
+### Reti Docker Predefinite
 
-I container nella stessa rete possono comunicare tra loro:
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Nella Sessione Introduttiva 2 abbiamo parlato di diversi tipi di reti. Docker fornisce alcune reti predefinite con caratteristiche specifiche.
 
-1. **Tramite IP**: Ogni container riceve un indirizzo IP all'interno della rete
-2. **Tramite nome**: In reti personalizzate, i container possono risolvere i nomi degli altri container
+#### Bridge:
+- Rete predefinita per i container
+- Isolata dall'host ma con accesso tramite port mapping
+- I container sulla stessa rete bridge possono comunicare tra loro
+- Esempio: `docker run --network bridge nginx`
 
+#### Host:
+- Condivide lo stack di rete dell'host
+- Nessun isolamento di rete
+- Prestazioni migliori ma meno sicurezza
+- Esempio: `docker run --network host nginx`
+
+#### None:
+- Nessuna connettività di rete
+- Container completamente isolato
+- Utile per elaborazioni batch o dove la rete non è necessaria
+- Esempio: `docker run --network none alpine`
+
+#### Overlay:
+- Per comunicazione tra container su host diversi
+- Utilizzata principalmente con Docker Swarm
+- Esempio: `docker network create --driver overlay my-overlay-network`
+
+### Creazione di Reti Personalizzate
+
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Ricordate i concetti di subnet e indirizzi IP che abbiamo visto nella Sessione Introduttiva 2? Possiamo applicarli per creare reti Docker personalizzate.
+
+#### Creazione di una Rete Bridge Personalizzata:
 ```bash
-# Eseguire container nella stessa rete
-docker run -d --name web --network my-network nginx
-docker run -d --name db --network my-network postgres
-
-# Eseguire ping da un container all'altro
-docker exec web ping db
+docker network create --driver bridge \
+  --subnet=172.18.0.0/16 \
+  --gateway=172.18.0.1 \
+  my-custom-network
 ```
 
-#### Esposizione di porte e port mapping
+#### Opzioni Comuni:
+- `--driver`: Tipo di rete (bridge, overlay, macvlan, ...)
+- `--subnet`: Range di indirizzi IP
+- `--gateway`: Indirizzo IP del gateway
+- `--ip-range`: Sottoinsieme di indirizzi per l'allocazione
+- `--internal`: Rete senza accesso esterno
 
-Per accedere ai servizi in esecuzione nei container dall'esterno:
-
+#### Collegare Container a una Rete:
 ```bash
-# Mappare una porta (host:container)
-docker run -d -p 8080:80 nginx
+# All'avvio
+docker run --network my-custom-network --name container1 nginx
 
-# Mappare tutte le porte esposte su porte casuali dell'host
-docker run -d -P nginx
-
-# Mappare su un'interfaccia specifica
-docker run -d -p 127.0.0.1:8080:80 nginx
+# Container esistente
+docker network connect my-custom-network container2
 ```
 
-### Distribuzione di immagini Docker
+### Comunicazione tra Container
 
-#### Introduzione a Docker Hub
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Ricordate il modello client-server che abbiamo visto nella Sessione Introduttiva 2? I container possono comunicare tra loro seguendo questo modello.
 
-Docker Hub è il registry pubblico ufficiale per le immagini Docker:
-- Repository pubblici e privati
-- Immagini ufficiali e verificate
-- Integrazione con GitHub e Bitbucket
-- Webhook e automazioni
+#### Risoluzione dei Nomi:
+- Container sulla stessa rete possono comunicare usando i nomi
+- Docker fornisce un DNS interno per la risoluzione dei nomi
+- Esempio: `container1` può raggiungere `container2` usando il suo nome
 
-#### Creazione di un account Docker Hub
-
-1. Visitare [Docker Hub](https://hub.docker.com/) e registrarsi
-2. Verificare l'email
-3. Accedere da CLI:
-   ```bash
-   docker login
-   ```
-
-#### Push e pull di immagini
-
+#### Esempio Pratico:
 ```bash
-# Taggare un'immagine per Docker Hub
-docker tag node-app:1.0 username/node-app:1.0
-
-# Pubblicare l'immagine su Docker Hub
-docker push username/node-app:1.0
-
-# Scaricare un'immagine da Docker Hub
-docker pull username/node-app:1.0
-```
-
-#### Gestione dei repository
-
-- **Repository pubblici**: Accessibili a tutti
-- **Repository privati**: Accessibili solo agli utenti autorizzati
-- **Organizzazioni**: Gestione di team e permessi
-- **Automazioni**: Build automatiche da repository Git
-
-### Esercizi pratici guidati
-
-#### Esercizio 1: Configurazione di una rete Docker personalizzata
-
-**Passo 1**: Creare una rete Docker personalizzata
-```bash
-docker network create app-network
-```
-
-**Passo 2**: Ispezionare la rete creata
-```bash
-docker network inspect app-network
-```
-
-**Passo 3**: Eseguire container nella rete personalizzata
-```bash
-docker run -d --name web --network app-network -p 8080:80 nginx
-docker run -d --name db --network app-network postgres:alpine
-```
-
-**Passo 4**: Verificare la comunicazione tra container
-```bash
-docker exec web ping db
-```
-
-**Passo 5**: Verificare la risoluzione DNS
-```bash
-docker exec web sh -c "wget -O- db:5432 || echo 'Connessione riuscita a DB'"
-```
-
-#### Esercizio 2: Comunicazione tra container in rete
-
-**Passo 1**: Creare un'applicazione Node.js che si connette a Redis
-```bash
-mkdir -p /home/studente/node-redis-app
-cd /home/studente/node-redis-app
-```
-
-**Passo 2**: Creare un file `package.json`
-```bash
-cat > package.json << 'EOF'
-{
-  "name": "node-redis-app",
-  "version": "1.0.0",
-  "description": "Applicazione Node.js con Redis",
-  "main": "app.js",
-  "dependencies": {
-    "express": "^4.18.2",
-    "redis": "^4.6.6"
-  }
-}
-EOF
-```
-
-**Passo 3**: Creare un file `app.js`
-```bash
-cat > app.js << 'EOF'
-const express = require('express');
-const redis = require('redis');
-const app = express();
-const port = 3000;
-
-// Configurazione client Redis
-const client = redis.createClient({
-  url: 'redis://redis:6379'
-});
-
-// Connessione a Redis
-(async () => {
-  await client.connect();
-})();
-
-client.on('error', (err) => {
-  console.log('Errore Redis:', err);
-});
-
-// Contatore visite
-app.get('/', async (req, res) => {
-  try {
-    const count = await client.incr('visits');
-    res.send(`Numero di visite: ${count}`);
-  } catch (error) {
-    res.send('Errore nella connessione a Redis: ' + error.message);
-  }
-});
-
-app.listen(port, '0.0.0.0', () => {
-  console.log(`Server in esecuzione su http://0.0.0.0:${port}`);
-});
-EOF
-```
-
-**Passo 4**: Creare un Dockerfile
-```bash
-cat > Dockerfile << 'EOF'
-FROM node:18-alpine
-
-WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
-
-EXPOSE 3000
-
-CMD ["node", "app.js"]
-EOF
-```
-
-**Passo 5**: Costruire l'immagine
-```bash
-docker build -t node-redis-app:1.0 .
-```
-
-**Passo 6**: Creare una rete per l'applicazione
-```bash
-docker network create redis-network
-```
-
-**Passo 7**: Eseguire Redis nella rete
-```bash
-docker run -d --name redis --network redis-network redis:alpine
-```
-
-**Passo 8**: Eseguire l'applicazione Node.js nella stessa rete
-```bash
-docker run -d --name node-app --network redis-network -p 3000:3000 node-redis-app:1.0
-```
-
-**Passo 9**: Verificare che l'applicazione funzioni
-```bash
-curl http://localhost:3000
-```
-
-**Passo 10**: Verificare che il contatore aumenti ad ogni richiesta
-```bash
-curl http://localhost:3000
-curl http://localhost:3000
-```
-
-#### Esercizio 3: Pubblicazione di un'immagine su Docker Hub
-
-**Passo 1**: Accedere a Docker Hub
-```bash
-docker login
-```
-
-**Passo 2**: Taggare l'immagine con il proprio username
-```bash
-docker tag node-redis-app:1.0 username/node-redis-app:1.0
-```
-
-**Passo 3**: Pubblicare l'immagine su Docker Hub
-```bash
-docker push username/node-redis-app:1.0
-```
-
-**Passo 4**: Verificare che l'immagine sia stata pubblicata
-```bash
-docker search username/node-redis-app
-```
-
-**Passo 5**: Rimuovere l'immagine locale
-```bash
-docker rmi username/node-redis-app:1.0
-docker rmi node-redis-app:1.0
-```
-
-**Passo 6**: Scaricare l'immagine da Docker Hub
-```bash
-docker pull username/node-redis-app:1.0
-```
-
-**Passo 7**: Eseguire l'immagine scaricata
-```bash
-docker run -d --name node-app-from-hub -p 3001:3000 --network redis-network username/node-redis-app:1.0
-```
-
-**Passo 8**: Verificare che l'applicazione funzioni
-```bash
-curl http://localhost:3001
-```
-
-#### Esercizio 4: Applicazione multi-container
-
-**Passo 1**: Creare una directory per l'applicazione
-```bash
-mkdir -p /home/studente/multi-container-app
-cd /home/studente/multi-container-app
-```
-
-**Passo 2**: Creare un'applicazione Node.js con MongoDB
-```bash
-mkdir -p api
-cat > api/package.json << 'EOF'
-{
-  "name": "api",
-  "version": "1.0.0",
-  "description": "API per applicazione multi-container",
-  "main": "server.js",
-  "dependencies": {
-    "express": "^4.18.2",
-    "mongoose": "^7.0.3",
-    "cors": "^2.8.5"
-  }
-}
-EOF
-```
-
-**Passo 3**: Creare il file server.js
-```bash
-cat > api/server.js << 'EOF'
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const app = express();
-const port = 3000;
-
-app.use(cors());
-app.use(express.json());
-
-// Connessione a MongoDB
-mongoose.connect('mongodb://db:27017/notesapp', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}).then(() => {
-  console.log('Connesso a MongoDB');
-}).catch(err => {
-  console.error('Errore di connessione a MongoDB:', err);
-});
-
-// Schema e modello
-const noteSchema = new mongoose.Schema({
-  text: String,
-  createdAt: { type: Date, default: Date.now }
-});
-
-const Note = mongoose.model('Note', noteSchema);
-
-// Routes
-app.get('/api/notes', async (req, res) => {
-  try {
-    const notes = await Note.find().sort({ createdAt: -1 });
-    res.json(notes);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-app.post('/api/notes', async (req, res) => {
-  try {
-    const note = new Note({ text: req.body.text });
-    await note.save();
-    res.status(201).json(note);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
-
-app.listen(port, '0.0.0.0', () => {
-  console.log(`API server in esecuzione su http://0.0.0.0:${port}`);
-});
-EOF
-```
-
-**Passo 4**: Creare il Dockerfile per l'API
-```bash
-cat > api/Dockerfile << 'EOF'
-FROM node:18-alpine
-
-WORKDIR /app
-
-COPY package*.json ./
-
-RUN npm install
-
-COPY . .
-
-EXPOSE 3000
-
-CMD ["node", "server.js"]
-EOF
-```
-
-**Passo 5**: Creare un frontend semplice
-```bash
-mkdir -p frontend
-cat > frontend/index.html << 'EOF'
-<!DOCTYPE html>
-<html lang="it">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Note App</title>
-  <style>
-    body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; }
-    .note { background: #f9f9f9; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
-    form { margin-bottom: 20px; }
-    input { padding: 8px; width: 70%; }
-    button { padding: 8px 15px; background: #4CAF50; color: white; border: none; cursor: pointer; }
-  </style>
-</head>
-<body>
-  <h1>Note App</h1>
-  
-  <form id="note-form">
-    <input type="text" id="note-text" placeholder="Scrivi una nota..." required>
-    <button type="submit">Salva</button>
-  </form>
-  
-  <h2>Note</h2>
-  <div id="notes-container"></div>
-
-  <script>
-    const API_URL = 'http://localhost:3000/api/notes';
-    
-    // Carica le note
-    async function loadNotes() {
-      try {
-        const response = await fetch(API_URL);
-        const notes = await response.json();
-        
-        const container = document.getElementById('notes-container');
-        container.innerHTML = '';
-        
-        notes.forEach(note => {
-          const noteEl = document.createElement('div');
-          noteEl.className = 'note';
-          noteEl.textContent = note.text;
-          container.appendChild(noteEl);
-        });
-      } catch (error) {
-        console.error('Errore nel caricamento delle note:', error);
-      }
-    }
-    
-    // Gestisce l'invio del form
-    document.getElementById('note-form').addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const textInput = document.getElementById('note-text');
-      const text = textInput.value;
-      
-      try {
-        await fetch(API_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ text }),
-        });
-        
-        textInput.value = '';
-        loadNotes();
-      } catch (error) {
-        console.error('Errore nel salvataggio della nota:', error);
-      }
-    });
-    
-    // Carica le note all'avvio
-    loadNotes();
-  </script>
-</body>
-</html>
-EOF
-```
-
-**Passo 6**: Creare il Dockerfile per il frontend
-```bash
-cat > frontend/Dockerfile << 'EOF'
-FROM nginx:alpine
-
-COPY index.html /usr/share/nginx/html/
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
-EOF
-```
-
-**Passo 7**: Costruire le immagini
-```bash
-docker build -t notes-api:1.0 ./api
-docker build -t notes-frontend:1.0 ./frontend
-```
-
-**Passo 8**: Creare una rete per l'applicazione
-```bash
-docker network create notes-app-network
-```
-
-**Passo 9**: Eseguire MongoDB
-```bash
-docker run -d --name db --network notes-app-network -v notes-data:/data/db mongo:4.4
-```
-
-**Passo 10**: Eseguire l'API
-```bash
-docker run -d --name api --network notes-app-network -p 3000:3000 notes-api:1.0
-```
-
-**Passo 11**: Eseguire il frontend
-```bash
-docker run -d --name frontend --network notes-app-network -p 8080:80 notes-frontend:1.0
-```
-
-**Passo 12**: Verificare che l'applicazione funzioni
-```bash
-echo "Apri http://localhost:8080 nel browser per utilizzare l'applicazione"
-```
-
-## Verifiche di apprendimento
-
-### Quiz sui concetti di Dockerfile e volumi
-
-1. Qual è lo scopo dell'istruzione WORKDIR in un Dockerfile?
-2. Perché è consigliabile combinare più comandi RUN in un unico comando?
-3. Qual è la differenza tra CMD e ENTRYPOINT?
-4. Quali sono i vantaggi dei volumi Docker rispetto ai bind mount?
-5. Come si può rendere un volume di sola lettura in un container?
-
-### Revisione dei Dockerfile creati
-
-Analizzare i Dockerfile creati durante l'esercitazione e discutere:
-1. Punti di forza e debolezza
-2. Possibili ottimizzazioni
-3. Best practices applicate
-4. Sicurezza delle immagini
-
-### Verifica del funzionamento dell'applicazione multi-container
-
-1. Verificare che tutti i container comunichino correttamente
-2. Testare la persistenza dei dati
-3. Verificare il comportamento in caso di riavvio dei container
-4. Discutere possibili miglioramenti dell'architettura
-
-## Conclusioni e preparazione per la prossima esercitazione
-
-Nella seconda esercitazione abbiamo:
-- Creato immagini Docker personalizzate con Dockerfile
-- Ottimizzato le immagini con multi-stage build
-- Gestito la persistenza dei dati con volumi Docker
-- Configurato reti Docker per la comunicazione tra container
-- Pubblicato e utilizzato immagini su Docker Hub
-- Implementato un'applicazione multi-container
-
-Nella prossima esercitazione approfondiremo:
-- Configurazioni avanzate di networking
-- Gestione delle configurazioni con variabili d'ambiente
-- Introduzione all'orchestrazione con Docker Compose
-- Preparazione per il progetto finale
-
-**Compito per casa (facoltativo)**: Migliorare l'applicazione multi-container aggiungendo funzionalità e ottimizzando le immagini Docker.
+# Creare
+(Content truncated due to size limit. Use line ranges to read in chunks)

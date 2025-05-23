@@ -1,511 +1,516 @@
 # Esercitazione 1: Introduzione a Docker e Concetti Base
 
-## Parte 1: Teoria - Introduzione alla containerizzazione
+## Panoramica dell'Esercitazione
+Questa prima esercitazione di 3 ore è progettata per introdurre i concetti fondamentali di Docker e della containerizzazione, partendo dalle basi teoriche fino all'esecuzione dei primi container. Questa esercitazione si basa sulle conoscenze acquisite nelle sessioni introduttive sui sistemi operativi, filesystem, shell, reti e servizi.
 
-### Cos'è la containerizzazione
+## Parte 1: Teoria della Containerizzazione
 
-La containerizzazione è una tecnologia di virtualizzazione a livello di sistema operativo che permette di impacchettare un'applicazione insieme alle sue dipendenze in un'unità standardizzata chiamata container. A differenza delle macchine virtuali tradizionali, i container condividono il kernel del sistema operativo host, risultando più leggeri ed efficienti.
+### Cos'è la Containerizzazione?
+La containerizzazione è una tecnologia di virtualizzazione a livello di sistema operativo che permette di impacchettare un'applicazione e le sue dipendenze in un'unità standardizzata chiamata container.
 
-I container sono ambienti isolati che contengono tutto ciò che serve per eseguire un'applicazione: codice, runtime, librerie, variabili d'ambiente e file di configurazione. Questo approccio garantisce che l'applicazione funzioni allo stesso modo indipendentemente dall'ambiente in cui viene eseguita, risolvendo il classico problema "funziona sul mio computer".
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Ricordate la differenza tra macchine virtuali e container che abbiamo discusso nella Sessione Introduttiva 2? I container condividono il kernel del sistema operativo host, mentre le VM virtualizzano l'hardware completo.
 
-### Storia ed evoluzione dei container
+#### Caratteristiche Principali:
+- **Isolamento:** I container sono isolati l'uno dall'altro e dalla macchina host
+- **Portabilità:** Funzionano allo stesso modo in qualsiasi ambiente
+- **Leggerezza:** Condividono il kernel del sistema operativo host
+- **Velocità:** Si avviano in pochi secondi
+- **Efficienza:** Utilizzano meno risorse rispetto alle macchine virtuali
 
-La storia dei container ha radici profonde nei sistemi Unix:
+### Storia ed Evoluzione dei Container
+- **Origini:** Concetti di isolamento presenti in Unix (chroot) dagli anni '70
+- **LXC (Linux Containers):** Primo sistema di containerizzazione completo
+- **Docker:** Lanciato nel 2013, ha reso i container accessibili e facili da usare
+- **Standardizzazione:** Open Container Initiative (OCI) per standardizzare il formato
 
-- **1979**: La funzionalità chroot di Unix introduce un primo concetto di isolamento del filesystem
-- **2000**: FreeBSD introduce le "jail", un'evoluzione di chroot con maggiore isolamento
-- **2005**: Solaris Containers (Zones) offre un ambiente virtualizzato completo
-- **2008**: LXC (Linux Containers) introduce i namespace e i cgroups per l'isolamento
-- **2013**: Docker viene rilasciato, semplificando drasticamente l'utilizzo dei container
-- **2015**: Nascita della Open Container Initiative (OCI) per standardizzare i formati dei container
-- **Oggi**: Ecosistema maturo con strumenti di orchestrazione come Kubernetes
+### Differenze tra VM e Container
 
-Docker ha rivoluzionato il settore rendendo i container accessibili a tutti gli sviluppatori, standardizzando il formato e fornendo strumenti semplici per la creazione, distribuzione ed esecuzione.
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Nella Sessione Introduttiva 2 abbiamo visto come le VM virtualizzano l'hardware completo. Ora vedremo come questo si confronta con l'approccio dei container.
 
-### Differenze tra VM e container
+#### Macchine Virtuali:
+- Virtualizzano l'hardware completo
+- Ogni VM include un intero sistema operativo
+- Maggiore isolamento
+- Avvio più lento (minuti)
+- Dimensioni maggiori (GB)
+- Overhead significativo
 
-| Caratteristica | Macchine Virtuali | Container |
-|----------------|-------------------|-----------|
-| Virtualizzazione | Hardware (hypervisor) | Sistema operativo |
-| Sistema operativo | Ogni VM ha il proprio OS completo | Condividono il kernel dell'host |
-| Dimensione | Gigabyte | Megabyte |
-| Avvio | Minuti | Secondi o millisecondi |
-| Isolamento | Completo (più sicuro) | A livello di processo (meno isolato) |
-| Overhead | Elevato | Basso |
-| Densità | Bassa (poche VM per host) | Alta (molti container per host) |
-| Portabilità | Limitata | Elevata |
+#### Container:
+- Virtualizzano solo il sistema operativo
+- Condividono il kernel dell'host
+- Isolamento più leggero
+- Avvio rapido (secondi)
+- Dimensioni ridotte (MB)
+- Overhead minimo
 
-**Riflessione per gli studenti**: Considerando la vostra esperienza con le VM Alpine, quali vantaggi immediati vedete nell'utilizzo dei container? Quali potrebbero essere gli svantaggi?
+### Vantaggi e Svantaggi dei Container
 
-### Vantaggi e svantaggi dei container
+#### Vantaggi:
+- **Efficienza:** Utilizzo ottimale delle risorse hardware
+- **Velocità:** Avvio e arresto rapidi
+- **Consistenza:** Ambiente identico in sviluppo e produzione
+- **Scalabilità:** Facile distribuzione e replica
+- **Isolamento:** Applicazioni separate senza interferenze
+- **Versioning:** Controllo delle versioni delle immagini
 
-**Vantaggi:**
-- **Leggerezza**: Consumano meno risorse rispetto alle VM
-- **Velocità**: Si avviano in pochi secondi
-- **Portabilità**: Funzionano allo stesso modo in qualsiasi ambiente
-- **Consistenza**: Eliminano le differenze tra ambienti di sviluppo, test e produzione
-- **Scalabilità**: Facili da replicare per gestire carichi variabili
-- **Isolamento**: Le applicazioni non interferiscono tra loro
-- **Efficienza delle risorse**: Permettono una maggiore densità di applicazioni per server
+#### Svantaggi:
+- **Sicurezza:** Isolamento meno robusto rispetto alle VM
+- **Limitazioni:** Tutti i container condividono lo stesso kernel
+- **Complessità:** Curva di apprendimento per orchestrazione avanzata
+- **Persistenza:** Gestione dei dati persistenti più complessa
 
-**Svantaggi:**
-- **Sicurezza**: Isolamento meno robusto rispetto alle VM (condivisione del kernel)
-- **Limitazioni del sistema operativo**: Tutti i container su un host devono utilizzare lo stesso tipo di kernel
-- **Persistenza dei dati**: I container sono effimeri per natura, richiedono soluzioni specifiche per i dati persistenti
-- **Complessità di gestione**: In ambienti di produzione complessi, richiedono strumenti di orchestrazione
+## Parte 2: Architettura di Docker
 
-## Architettura di Docker
+### Componenti Principali di Docker
 
-### Componenti principali
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 1:** Ricordate il concetto di client-server che abbiamo visto nella Sessione Introduttiva 1? Docker utilizza proprio questa architettura per il suo funzionamento.
 
-**Docker Engine**:
-È il cuore della piattaforma Docker, un'applicazione client-server composta da:
-- **dockerd**: Il demone che gestisce oggetti Docker come immagini, container, reti e volumi
-- **REST API**: Interfaccia che programmi e comandi possono usare per comunicare con il demone
-- **CLI**: Interfaccia a riga di comando per interagire con Docker
+#### Docker Engine:
+- **Docker Daemon (dockerd):** Servizio in background che gestisce container
+- **REST API:** Interfaccia per comunicare con il daemon
+- **Docker CLI:** Interfaccia a riga di comando per interagire con l'API
 
-**Docker CLI**:
-L'interfaccia a riga di comando che permette agli utenti di interagire con Docker attraverso comandi come `docker run`, `docker build`, ecc.
+#### Docker Registry:
+- Repository per le immagini Docker
+- Docker Hub: registry pubblico ufficiale
+- Possibilità di registry privati
 
-**Docker Registry**:
-Un repository che memorizza le immagini Docker. Docker Hub è il registry pubblico ufficiale, ma è possibile utilizzare registry privati.
+#### Docker Objects:
+- **Immagini:** Template di sola lettura per creare container
+- **Container:** Istanze in esecuzione di un'immagine
+- **Volumi:** Meccanismo per la persistenza dei dati
+- **Network:** Sistema per la comunicazione tra container
 
-### Concetto di immagine e container
+### Concetto di Immagine e Container
 
-**Immagine Docker**:
-- Template di sola lettura con istruzioni per creare un container
-- Composta da layer sovrapposti (filesystem a strati)
+#### Immagini Docker:
+- Template di sola lettura
+- Composte da layer sovrapposti
 - Ogni layer rappresenta un'istruzione nel Dockerfile
-- Immutabile: una volta creata non può essere modificata
-- Può essere basata su altre immagini (ereditarietà)
+- Sistema di caching per ottimizzare build e download
+- Immutabili: una volta create non cambiano
 
-**Container Docker**:
-- Istanza eseguibile di un'immagine
-- Aggiunge un layer scrivibile sopra l'immagine di base
-- Ha un ciclo di vita definito (creazione, esecuzione, pausa, stop, eliminazione)
-- Isolato ma condivide risorse con l'host
-- Può essere connesso a reti e avere volumi collegati
+#### Container Docker:
+- Istanza in esecuzione di un'immagine
+- Aggiunge un layer scrivibile sopra l'immagine
+- Ha un ciclo di vita (creazione, esecuzione, pausa, arresto, eliminazione)
+- Isolato ma può comunicare con altri container e con l'host
 
-**Analogia per gli studenti**: Se l'immagine è come una classe in programmazione orientata agli oggetti, il container è come un'istanza di quella classe.
+### Ciclo di Vita di un Container
 
-### Ciclo di vita di un container
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 1:** Ricordate il concetto di processo che abbiamo visto nella Sessione Introduttiva 1? I container hanno un ciclo di vita simile ai processi, ma con caratteristiche aggiuntive.
 
-1. **Creazione**: `docker create` - Prepara un container ma non lo avvia
-2. **Avvio**: `docker start` - Avvia un container creato
-3. **Esecuzione**: `docker run` - Combina creazione e avvio
-4. **Pausa/Ripresa**: `docker pause`/`docker unpause` - Sospende/riprende i processi
-5. **Stop**: `docker stop` - Invia SIGTERM e poi SIGKILL se necessario
-6. **Kill**: `docker kill` - Invia direttamente SIGKILL
-7. **Riavvio**: `docker restart` - Ferma e riavvia un container
-8. **Eliminazione**: `docker rm` - Rimuove un container fermato
+#### Stati di un Container:
+- **Created:** Container creato ma non avviato
+- **Running:** Container in esecuzione
+- **Paused:** Esecuzione sospesa
+- **Stopped:** Container fermato
+- **Deleted:** Container eliminato
 
-**Nota per gli studenti**: I container sono progettati per essere effimeri. Quando un container viene eliminato, tutte le modifiche non salvate in un volume vengono perse.
+#### Comandi del Ciclo di Vita:
+- `docker create`: Crea un container
+- `docker start`: Avvia un container
+- `docker pause`: Sospende un container
+- `docker stop`: Ferma un container
+- `docker rm`: Elimina un container
 
-### Docker Hub e repository di immagini
+### Docker Hub e Repository di Immagini
 
-**Docker Hub**:
-- Registry pubblico ufficiale di Docker
-- Contiene migliaia di immagini pronte all'uso
-- Offre immagini ufficiali mantenute da Docker e dai fornitori di software
-- Permette di pubblicare e condividere immagini personalizzate
-- Supporta repository privati (con account)
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Nella Sessione Introduttiva 2 abbiamo parlato dei gestori di pacchetti. Docker Hub funziona in modo simile, ma per le immagini Docker.
 
-**Altri registry**:
-- Amazon Elastic Container Registry (ECR)
-- Google Container Registry (GCR)
-- Azure Container Registry
-- Registry privati self-hosted
+#### Docker Hub:
+- Registry pubblico ufficiale per le immagini Docker
+- Migliaia di immagini pronte all'uso
+- Immagini ufficiali e verificate
+- Possibilità di pubblicare immagini personalizzate
 
-**Best practices per l'utilizzo delle immagini**:
-- Preferire immagini ufficiali o verificate
-- Utilizzare tag specifici invece di `latest`
-- Verificare la provenienza delle immagini
-- Scansionare le immagini per vulnerabilità
-- Mantenere le immagini aggiornate
+#### Altre Opzioni:
+- Registry privati (Docker Trusted Registry)
+- Registry cloud (Amazon ECR, Google Container Registry, Azure Container Registry)
+- Registry self-hosted (Harbor, Nexus)
 
-## Parte 2: Installazione e configurazione
+## Parte 3: Installazione e Configurazione
 
 ### Installazione di Docker su Alpine Linux
 
-**Requisiti di sistema**:
-- Alpine Linux 3.13 o superiore
-- Kernel Linux 3.10 o superiore
-- Accesso root o sudo
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 1:** Ricordate i comandi di gestione pacchetti che abbiamo visto nella Sessione Introduttiva 1? Useremo `apk`, il gestore pacchetti di Alpine Linux.
+
+#### Prerequisiti:
+- VM Alpine Linux con accesso root
 - Connessione Internet
+- Conoscenza base dei comandi Linux
 
-**Comandi di installazione**:
+#### Passi per l'Installazione:
+1. Aggiornare i repository:
+   ```bash
+   apk update
+   ```
 
-```bash
-# Aggiornare i repository
-apk update
+2. Installare Docker:
+   ```bash
+   apk add docker
+   ```
 
-# Installare Docker
-apk add docker
+3. Abilitare e avviare il servizio Docker:
+   ```bash
+   rc-update add docker boot
+   service docker start
+   ```
 
-# Abilitare e avviare il servizio Docker
-rc-update add docker boot
-service docker start
+4. Verificare l'installazione:
+   ```bash
+   docker --version
+   docker info
+   ```
 
-# Verificare che Docker sia in esecuzione
-service docker status
-```
+### Configurazione dell'Ambiente Docker
 
-**Verifica dell'installazione**:
-
-```bash
-# Verificare la versione di Docker
-docker --version
-
-# Verificare che Docker funzioni correttamente
-docker run hello-world
-```
-
-**Possibili problemi e soluzioni**:
-- Se il comando `docker` richiede privilegi root, aggiungere l'utente al gruppo docker:
+#### Configurazione di Base:
+- Aggiungere l'utente al gruppo docker per eseguire comandi senza sudo:
   ```bash
   addgroup <username> docker
   ```
-- Se il servizio non si avvia, verificare i log:
+
+- Configurare il daemon Docker (opzionale):
   ```bash
-  cat /var/log/docker.log
-  ```
-- Se Alpine è in esecuzione in una VM, assicurarsi che la virtualizzazione nidificata sia abilitata
-
-### Configurazione dell'ambiente Docker
-
-**Gestione del servizio Docker**:
-```bash
-# Avviare il servizio
-service docker start
-
-# Fermare il servizio
-service docker stop
-
-# Riavviare il servizio
-service docker restart
-
-# Verificare lo stato
-service docker status
-```
-
-**Configurazione dei permessi**:
-```bash
-# Creare il gruppo docker se non esiste
-addgroup docker
-
-# Aggiungere l'utente al gruppo docker
-addgroup <username> docker
-
-# Applicare le modifiche (richiede logout/login)
-newgrp docker
-```
-
-**File di configurazione**:
-- `/etc/docker/daemon.json`: Configurazione del demone Docker
-- Esempio di configurazione per modificare la directory dei dati:
-  ```json
-  {
-    "data-root": "/path/to/docker/data",
-    "storage-driver": "overlay2"
-  }
+  mkdir -p /etc/docker
+  echo '{"storage-driver": "overlay2"}' > /etc/docker/daemon.json
   ```
 
-**Test di funzionamento**:
+- Riavviare il servizio Docker:
+  ```bash
+  service docker restart
+  ```
+
+#### Configurazione Avanzata:
+- Impostazione di registry alternativi
+- Configurazione di rete
+- Limiti di risorse
+- Logging
+
+### Test di Funzionamento
+
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Ricordate i test di connettività che abbiamo fatto nella Sessione Introduttiva 2? Ora faremo un test simile per verificare che Docker funzioni correttamente.
+
+#### Esecuzione del Container "Hello World":
 ```bash
-# Eseguire un container di test
-docker run --rm alpine echo "Docker funziona correttamente!"
-```
-
-## Parte 3: Primi passi con Docker
-
-### Comandi Docker di base
-
-**Informazioni sul sistema**:
-```bash
-# Visualizzare la versione di Docker
-docker version
-
-# Visualizzare informazioni dettagliate sul sistema Docker
-docker info
-
-# Visualizzare l'utilizzo del disco
-docker system df
-```
-
-**Gestione delle immagini**:
-```bash
-# Elencare le immagini disponibili localmente
-docker images
-
-# Scaricare un'immagine dal registry
-docker pull alpine:latest
-
-# Cercare immagini su Docker Hub
-docker search nginx
-
-# Rimuovere un'immagine
-docker rmi alpine:latest
-```
-
-**Gestione dei container**:
-```bash
-# Creare ed eseguire un container
-docker run alpine echo "Hello, Docker!"
-
-# Eseguire un container in modalità interattiva
-docker run -it alpine sh
-
-# Eseguire un container in background (demone)
-docker run -d nginx
-
-# Elencare i container in esecuzione
-docker ps
-
-# Elencare tutti i container (anche quelli fermati)
-docker ps -a
-
-# Fermare un container
-docker stop <container_id>
-
-# Avviare un container fermato
-docker start <container_id>
-
-# Rimuovere un container
-docker rm <container_id>
-```
-
-**Parametri principali di docker run**:
-```bash
-# Assegnare un nome al container
-docker run --name my-container alpine
-
-# Mappare una porta (host:container)
-docker run -p 8080:80 nginx
-
-# Montare un volume (host:container)
-docker run -v /host/path:/container/path alpine
-
-# Impostare variabili d'ambiente
-docker run -e VAR_NAME=value alpine
-
-# Limitare risorse (CPU, memoria)
-docker run --memory=512m --cpus=0.5 alpine
-
-# Rimuovere automaticamente il container dopo l'esecuzione
-docker run --rm alpine
-```
-
-### Esercizi pratici guidati
-
-#### Esercizio 1: Hello World Docker
-
-```bash
-# Eseguire il container hello-world
 docker run hello-world
 ```
 
 Questo comando:
-1. Cerca l'immagine hello-world localmente
+1. Cerca l'immagine "hello-world" localmente
 2. Se non la trova, la scarica da Docker Hub
 3. Crea un container dall'immagine
 4. Esegue il container, che stampa un messaggio e termina
 
-**Analisi dell'output**: Discutere con gli studenti il messaggio visualizzato, che spiega il funzionamento di Docker.
+#### Verifica dei Componenti:
+- Docker daemon in esecuzione
+- Connettività a Docker Hub
+- Creazione ed esecuzione di container
+- Gestione delle immagini
 
-#### Esercizio 2: Container interattivo
+### Risoluzione dei Problemi Comuni
 
-```bash
-# Eseguire un container Alpine in modalità interattiva
-docker run -it alpine sh
-```
+#### Problemi di Installazione:
+- Dipendenze mancanti
+- Versioni incompatibili
+- Permessi insufficienti
 
-All'interno del container, esplorare l'ambiente:
-```bash
-# Verificare la versione di Alpine
-cat /etc/os-release
+#### Problemi di Connettività:
+- Firewall che blocca le connessioni
+- Proxy non configurato
+- DNS non funzionante
 
-# Elencare i processi
-ps aux
+#### Problemi di Avvio:
+- Conflitti di porte
+- Spazio su disco insufficiente
+- Problemi di driver di storage
 
-# Installare un pacchetto
-apk add curl
+#### Comandi Utili per il Troubleshooting:
+- `docker info`: Informazioni sul sistema Docker
+- `docker system df`: Utilizzo dello spazio
+- `docker logs`: Log di un container
+- `journalctl -u docker`: Log del servizio Docker
 
-# Verificare l'indirizzo IP
-ip addr
+## Parte 4: Primi Passi con Docker
 
-# Uscire dal container
-exit
-```
+### Comandi Docker di Base
 
-**Riflessione**: Dopo l'uscita, eseguire `docker ps -a` per vedere che il container esiste ancora ma è fermato.
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 1:** Ricordate la struttura dei comandi bash che abbiamo visto nella Sessione Introduttiva 1? I comandi Docker seguono una struttura simile: `docker <comando> [opzioni] [argomenti]`.
 
-#### Esercizio 3: Container in background
+#### Gestione delle Immagini:
+- `docker images`: Elenco delle immagini disponibili
+- `docker pull <immagine>`: Scarica un'immagine
+- `docker rmi <immagine>`: Rimuove un'immagine
+- `docker build`: Costruisce un'immagine da un Dockerfile
 
-```bash
-# Eseguire un server web NGINX in background
-docker run -d -p 8080:80 --name my-nginx nginx
-```
+#### Gestione dei Container:
+- `docker ps`: Elenco dei container in esecuzione
+- `docker ps -a`: Elenco di tutti i container
+- `docker run <immagine>`: Crea ed esegue un container
+- `docker start/stop/restart <container>`: Gestisce lo stato di un container
+- `docker rm <container>`: Rimuove un container
 
-Verificare che il container sia in esecuzione:
-```bash
-# Elencare i container in esecuzione
-docker ps
+#### Informazioni e Monitoraggio:
+- `docker inspect <oggetto>`: Dettagli su un oggetto Docker
+- `docker logs <container>`: Visualizza i log di un container
+- `docker stats <container>`: Statistiche di utilizzo risorse
+- `docker top <container>`: Processi in esecuzione in un container
 
-# Verificare l'accesso al server web
-curl http://localhost:8080
-```
+### Esecuzione di Container
 
-**Interazione con il container**:
-```bash
-# Visualizzare i log del container
-docker logs my-nginx
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Ricordate il concetto di porte di rete che abbiamo visto nella Sessione Introduttiva 2? Useremo il port mapping per esporre servizi dai container.
 
-# Eseguire un comando all'interno del container in esecuzione
-docker exec my-nginx ls -la /usr/share/nginx/html
+#### Modalità di Esecuzione:
+- **Interattiva:** `docker run -it <immagine> <comando>`
+- **Background (detached):** `docker run -d <immagine>`
+- **Con nome specifico:** `docker run --name <nome> <immagine>`
 
-# Accedere al container in modalità interattiva
-docker exec -it my-nginx bash
-```
+#### Opzioni Comuni:
+- `-p <host_port>:<container_port>`: Mapping delle porte
+- `-v <host_path>:<container_path>`: Mounting di volumi
+- `-e <variabile>=<valore>`: Variabili d'ambiente
+- `--rm`: Rimuove il container dopo l'arresto
+- `--network <rete>`: Specifica la rete da utilizzare
 
-#### Esercizio 4: Gestione del ciclo di vita dei container
+#### Esempi:
+- Eseguire un container Nginx e mappare la porta 80:
+  ```bash
+  docker run -d -p 8080:80 --name webserver nginx
+  ```
 
-```bash
-# Fermare il container NGINX
-docker stop my-nginx
+- Eseguire un container interattivo con Alpine Linux:
+  ```bash
+  docker run -it --name alpine_test alpine /bin/sh
+  ```
 
-# Verificare che il container sia fermato
-docker ps -a
+### Gestione del Ciclo di Vita dei Container
 
-# Riavviare il container
-docker start my-nginx
+#### Comandi di Gestione:
+- `docker start <container>`: Avvia un container fermato
+- `docker stop <container>`: Ferma un container in esecuzione
+- `docker restart <container>`: Riavvia un container
+- `docker pause/unpause <container>`: Sospende/riprende l'esecuzione
+- `docker kill <container>`: Termina forzatamente un container
 
-# Verificare che il container sia di nuovo in esecuzione
-docker ps
+#### Monitoraggio:
+- `docker logs <container>`: Visualizza i log
+- `docker logs -f <container>`: Segue i log in tempo reale
+- `docker stats <container>`: Monitora l'utilizzo delle risorse
+- `docker inspect <container>`: Visualizza informazioni dettagliate
 
-# Fermare e rimuovere il container
-docker rm -f my-nginx
-```
+#### Pulizia:
+- `docker rm <container>`: Rimuove un container fermato
+- `docker rm -f <container>`: Rimuove forzatamente un container
+- `docker container prune`: Rimuove tutti i container fermati
+- `docker system prune`: Pulizia completa di risorse inutilizzate
 
-#### Esercizio 5: Esplorazione di Docker Hub
+### Esecuzione di un'Applicazione Node.js in Container
 
-1. Visitare [Docker Hub](https://hub.docker.com/) tramite browser
-2. Cercare immagini ufficiali di Node.js
-3. Leggere la documentazione dell'immagine
-4. Identificare i tag disponibili e il loro significato
+#### Richiamo alle Sessioni Introduttive:
+- **Collegamento con la Sessione 2:** Ricordate il concetto di applicazioni e servizi che abbiamo visto nella Sessione Introduttiva 2? Ora containerizzeremo un'applicazione Node.js.
 
-```bash
-# Scaricare l'immagine Node.js
-docker pull node:18-alpine
+#### Preparazione dell'Applicazione:
+1. Creare una directory per l'applicazione:
+   ```bash
+   mkdir -p nodejs-app
+   cd nodejs-app
+   ```
 
-# Verificare che l'immagine sia stata scaricata
-docker images
-```
+2. Creare un file `package.json`:
+   ```json
+   {
+     "name": "docker-nodejs-example",
+     "version": "1.0.0",
+     "description": "Esempio di applicazione Node.js in Docker",
+     "main": "app.js",
+     "scripts": {
+       "start": "node app.js"
+     },
+     "dependencies": {
+       "express": "^4.17.1"
+     }
+   }
+   ```
 
-### Esercizio finale: Esecuzione di un'applicazione Node.js in container
+3. Creare un file `app.js`:
+   ```javascript
+   const express = require('express');
+   const app = express();
+   const PORT = process.env.PORT || 3000;
 
-#### Passo 1: Creare un semplice script JavaScript
+   app.get('/', (req, res) => {
+     res.send('Hello from Docker!');
+   });
 
-Creare un file `app.js`:
+   app.listen(PORT, () => {
+     console.log(`Server running on port ${PORT}`);
+   });
+   ```
 
-```javascript
-const http = require('http');
-const hostname = '0.0.0.0';
-const port = 3000;
+4. Creare un `Dockerfile`:
+   ```dockerfile
+   FROM node:14-alpine
+   WORKDIR /app
+   COPY package.json .
+   RUN npm install
+   COPY app.js .
+   EXPOSE 3000
+   CMD ["npm", "start"]
+   ```
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Ciao dal container Docker!\n');
-});
+#### Costruzione ed Esecuzione:
+1. Costruire l'immagine:
+   ```bash
+   docker build -t nodejs-app .
+   ```
 
-server.listen(port, hostname, () => {
-  console.log(`Server in esecuzione su http://${hostname}:${port}/`);
-});
-```
+2. Eseguire il container:
+   ```bash
+   docker run -d -p 3000:3000 --name nodejs-example nodejs-app
+   ```
 
-#### Passo 2: Eseguire l'applicazione in un container
+3. Verificare il funzionamento:
+   ```bash
+   curl http://localhost:3000
+   ```
 
-```bash
-# Creare una directory per l'applicazione
-mkdir -p /home/studente/node-app
-cd /home/studente/node-app
+## Esercizi Pratici
 
-# Copiare il file app.js nella directory
-# (il file app.js deve essere creato come indicato sopra)
+### Esercizio 1: Hello World Docker
+**Obiettivo:** Familiarizzare con i comandi base di Docker
 
-# Eseguire l'applicazione in un container
-docker run -d \
-  --name node-app \
-  -p 3000:3000 \
-  -v "$(pwd):/app" \
-  -w /app \
-  node:18-alpine \
-  node app.js
-```
+**Istruzioni:**
+1. Eseguire il container "hello-world":
+   ```bash
+   docker run hello-world
+   ```
+2. Elencare tutti i container:
+   ```bash
+   docker ps -a
+   ```
+3. Elencare le immagini disponibili:
+   ```bash
+   docker images
+   ```
+4. Rimuovere il container "hello-world":
+   ```bash
+   docker rm <container_id>
+   ```
 
-#### Passo 3: Verificare il funzionamento
+### Esercizio 2: Container Interattivo
+**Obiettivo:** Utilizzare un container in modalità interattiva
 
-```bash
-# Verificare che il container sia in esecuzione
-docker ps
+**Istruzioni:**
+1. Eseguire un container Alpine in modalità interattiva:
+   ```bash
+   docker run -it --name alpine_interactive alpine /bin/sh
+   ```
+2. All'interno del container, eseguire alcuni comandi:
+   ```bash
+   ls -la
+   echo "Hello from Alpine container" > test.txt
+   cat test.txt
+   ```
+3. Uscire dal container:
+   ```bash
+   exit
+   ```
+4. Riavviare e ricollegarsi al container:
+   ```bash
+   docker start alpine_interactive
+   docker attach alpine_interactive
+   ```
+5. Verificare che il file creato sia ancora presente:
+   ```bash
+   cat test.txt
+   ```
 
-# Verificare l'accesso all'applicazione
-curl http://localhost:3000
-```
+### Esercizio 3: Container in Background
+**Obiettivo:** Eseguire e gestire container in modalità detached
 
-#### Passo 4: Monitorare e gestire l'applicazione
+**Istruzioni:**
+1. Eseguire un container Nginx in background:
+   ```bash
+   docker run -d -p 8080:80 --name webserver nginx
+   ```
+2. Verificare che il container sia in esecuzione:
+   ```bash
+   docker ps
+   ```
+3. Accedere alla pagina web servita da Nginx:
+   ```bash
+   curl http://localhost:8080
+   ```
+4. Visualizzare i log del container:
+   ```bash
+   docker logs webserver
+   ```
+5. Fermare e rimuovere il container:
+   ```bash
+   docker stop webserver
+   docker rm webserver
+   ```
 
-```bash
-# Visualizzare i log dell'applicazione
-docker logs node-app
+### Esercizio 4: Gestione del Ciclo di Vita dei Container
+**Obiettivo:** Praticare i comandi di gestione del ciclo di vita
 
-# Fermare l'applicazione
-docker stop node-app
+**Istruzioni:**
+1. Creare un container senza avviarlo:
+   ```bash
+   docker create --name lifecycle_test alpine ping localhost
+   ```
+2. Verificare lo stato del container:
+   ```bash
+   docker ps -a
+   ```
+3. Avviare il container:
+   ```bash
+   docker start lifecycle_test
+   ```
+4. Verificare che sia in esecuzione:
+   ```bash
+   docker ps
+   ```
+5. Mettere in pausa il container:
+   ```bash
+   docker pause lifecycle_test
+   ```
+6. Riprendere l'esecuzione:
+   ```bash
+   docker unpause lifecycle_test
+   ```
+7. Fermare il container:
+   ```bash
+   docker stop lifecycle_test
+   ```
+8. Rimuovere il container:
+   ```bash
+   docker rm lifecycle_test
+   ```
 
-# Rimuovere il container
-docker rm node-app
-```
+### Esercizio 5: Esplorazione di Docker Hub
+**Obiettivo:** Familiarizzare con Docker Hub e le immagini pubbliche
 
-## Verifiche di apprendimento
-
-### Quiz rapido sui concetti fondamentali
-
-1. Qual è la differenza principale tra container e macchine virtuali?
-2. Cosa rappresenta un'immagine Docker?
-3. Quali sono i componenti principali dell'architettura Docker?
-4. Perché i container sono considerati "effimeri"?
-5. Quali sono i vantaggi principali della containerizzazione?
-
-### Esercizi pratici di verifica
-
-1. Eseguire un container Ubuntu in modalità interattiva e installare il pacchetto `nano`
-2. Creare un container che mostri la data corrente e si chiuda automaticamente
-3. Eseguire un container NGINX, modificare la pagina HTML predefinita e verificare le modifiche
-4. Elencare tutte le immagini Docker presenti nel sistema e ordinare per dimensione
-5. Eseguire un container in background, visualizzare i suoi log e poi fermarlo e rimuoverlo
-
-### Discussione di gruppo
-
-Discutere i seguenti punti:
-1. In quali scenari i container offrono vantaggi significativi rispetto alle VM?
-2. Quali sfide potrebbe presentare l'adozione di Docker in un ambiente di produzione?
-3. Come potrebbe Docker migliorare il workflow di sviluppo per applicazioni Node.js?
-4. Quali sono le implicazioni di sicurezza nell'utilizzo dei container?
-
-## Conclusioni e preparazione per la prossima esercitazione
-
-Nella prima esercitazione abbiamo:
-- Compreso i concetti fondamentali della containerizzazione
-- Confrontato VM e container
-- Installato e configurato Docker su Alpine Linux
-- Eseguito i primi comandi Docker
-- Utilizzato container esistenti
-- Eseguito un'applicazione Node.js in un container
-
-Nella prossima esercitazione approfondiremo:
-- La creazione di immagini Docker personalizzate con Dockerfile
-- La gestione dei volumi per la persistenza dei dati
-- La configurazione del networking
-- La pubblicazione di immagini su Docker Hub
-
-**Compito per casa (facoltativo)**: Sperimentare con diversi container disponibili su Docker Hub e provare a eseguire un'applicazione Node.js più complessa in un container.
+**Istruzioni:**
+1. Cercare immagini di PostgreSQL su Docker Hub:
+   ```bash
+   docker search postgres
+   ```
+2. Scaricare l'immagine ufficiale di PostgreSQL:
+   ```bash
+   docker pull postgres:13-alpine
+   ```
+3. Visualizzare i dettagli dell'immagine:
+   ```bash
+   docker inspect postgres:1
+(Content truncated due to size limit. Use line ranges to read in chunks)

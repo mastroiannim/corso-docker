@@ -1,265 +1,195 @@
-# Documentazione del Corso: Docker e Containerizzazione
+# Corso Ristrutturato: Docker e Containerizzazione
 
 ## Panoramica del Corso
 
-### Obiettivi Formativi
-1. Comprendere i principi di base della containerizzazione (Docker, immagini, volumi e networking)
-2. Acquisire capacità operative nell'utilizzo di Docker per creare, gestire e distribuire container anche attraverso il DockerHub
-3. Analizzare le differenze tra virtualizzazione tradizionale e containerizzazione, valutandone vantaggi e casi d'uso
-4. Applicare le tecniche apprese in scenari reali, come il deployment di applicazioni web o servizi distribuiti
-
-### Prerequisiti 
-Conoscenze pregresse di:
-- JavaScript e Node.js
-- Virtual Machine e Alpine Linux
-- [Esercitazione di Laboratorio del modulo introduttivo](https://github.com/mastroiannim/corso-docker/blob/main/Esercitazione%20di%20Laboratorio%3A%20Modalit%C3%A0%20di%20Rete%20in%20VirtualBox%20con%20Alpine%20Linux.md)
+Questo corso completo è progettato per fornire agli studenti una comprensione approfondita di Docker e della containerizzazione, partendo dalle basi dei sistemi operativi e delle reti fino all'implementazione di applicazioni distribuite in container.
 
 ### Struttura del Corso
-- Tre esercitazioni di 3 ore ciascuna
-- Progetto finale: implementazione di un'infrastruttura ibrida (VM + container)
-- Ambiente di lavoro: VM Linux Alpine con accesso root e connessione Internet via SSH
 
-## Esercitazione 1: [Introduzione a Docker e Concetti Base](https://github.com/mastroiannim/corso-docker/blob/main/Esercitazione%201%3A%20Introduzione%20a%20Docker%20e%20Concetti%20Base.md)
+Il corso è strutturato in tre fasi principali:
 
-### Obiettivi Specifici
-- Comprendere i concetti fondamentali della containerizzazione
-- Confrontare VM e container
-- Installare e configurare Docker su Linux Alpine
-- Eseguire i primi comandi Docker
-- Utilizzare container esistenti
-- Comprendere il concetto di immagine Docker
+1. **Fase Preliminare**: Due sessioni introduttive di 5 ore ciascuna per acquisire i prerequisiti necessari, ciascuna con una esercitazione pratica di laboratorio di 3 ore
+2. **Fase Principale**: Tre esercitazioni pratiche di 3 ore ciascuna su Docker e containerizzazione
+3. **Fase Finale**: Un progetto applicativo che integra tutte le conoscenze acquisite
 
-### Contenuti
-1. **Teoria della containerizzazione**
-   - Cos'è la containerizzazione
-   - Storia ed evoluzione dei container
-   - Differenze tra VM e container
-   - Vantaggi e svantaggi dei container
+### Target
 
-2. **Architettura di Docker**
-   - Componenti principali (Docker Engine, Docker CLI, Docker Registry)
-   - Concetto di immagine e container
-   - Ciclo di vita di un container
-   - Docker Hub e repository di immagini
+Il corso è rivolto a studenti di quarta superiore di un istituto tecnico industriale a indirizzo informatico, senza prerequisiti specifici. La fase preliminare è progettata per fornire le conoscenze di base necessarie per affrontare con successo la fase principale.
 
-3. **Installazione e configurazione**
-   - Installazione di Docker su Alpine Linux
-   - Configurazione dell'ambiente Docker
-   - Test di funzionamento
-   - Risoluzione dei problemi comuni
+### Ambiente di Lavoro
 
-4. **Primi passi con Docker**
-   - Comandi Docker di base
-   - Esecuzione di container
-   - Gestione del ciclo di vita dei container
-   - Esecuzione di un'applicazione Node.js in container
+Gli studenti avranno a disposizione:
+- Computer con Windows 11 (account senza privilegi di amministratore)
+- VirtualBox installato
+- Immagine ISO di Alpine Linux
+- Accesso alla VM Alpine Linux tramite SSH
 
-### Esercizi Pratici
-1. Hello World Docker
-2. Container interattivo
-3. Container in background
-4. Gestione del ciclo di vita dei container
-5. Esplorazione di Docker Hub
-6. Esecuzione di un'applicazione Node.js in container
+## Fase Preliminare: Allineamento delle Conoscenze
 
-## Esercitazione 2: [Creazione e Gestione di Container Docker](https://github.com/mastroiannim/corso-docker/blob/main/Esercitazione%202%3A%20Creazione%20e%20Gestione%20di%20Container%20Docker.md)
+### Sessione Introduttiva 1: Sistemi Operativi, Filesystem e Shell (5 ore)
 
-### Obiettivi Specifici
-- Creare immagini Docker personalizzate con Dockerfile
-- Gestire il ciclo di vita dei container
-- Utilizzare volumi per la persistenza dei dati
-- Configurare il networking di base
-- Pubblicare e utilizzare immagini su DockerHub
+**Obiettivo**: Fornire le conoscenze di base sui sistemi operativi, la struttura del filesystem e l'utilizzo della shell.
 
-### Contenuti
-1. **Creazione di immagini Docker**
-   - Introduzione ai Dockerfile
-   - Sintassi e istruzioni principali
-   - Best practices nella scrittura di Dockerfile
-   - Ottimizzazione delle immagini
-   - Creazione di immagini personalizzate
-   - Gestione dei tag e versionamento
+**Contenuti**:
+- Introduzione ai sistemi operativi
+- Filesystem e organizzazione dei dati
+- Introduzione alla shell
+- Comandi bash fondamentali
+- Comandi avanzati e recap
 
-2. **Persistenza dei dati e volumi**
-   - Problema della persistenza nei container
-   - Tipi di storage in Docker
-   - Volumi Docker
-   - Bind mount
-   - Condivisione di dati tra container
-   - Backup e ripristino dei dati
+**Materiali**:
+- [Slide Teoriche](./sessione_introduttiva_1/slide.md)
+- [Contenuto Teorico](./sessione_introduttiva_1/contenuto_teorico.md)
 
-3. **Networking e distribuzione**
-   - Networking in Docker
-   - Reti Docker predefinite
-   - Creazione di reti personalizzate
-   - Comunicazione tra container
-   - Esposizione di porte e port mapping
-   - Distribuzione di immagini Docker
-   - Docker Hub e registry
+### Esercitazione Pratica 1: Sistemi Operativi, Filesystem e Shell (3 ore)
 
-### Esercizi Pratici
-1. Creazione di un'immagine per un'applicazione Node.js semplice
-2. Ottimizzazione del Dockerfile
-3. Gestione delle dipendenze
-4. Multi-stage build per ridurre la dimensione dell'immagine
-5. Creazione e gestione di volumi Docker
-6. Utilizzo di bind mount
-7. Condivisione di dati tra container
-8. Backup e ripristino dei dati
-9. Configurazione di una rete Docker personalizzata
-10. Comunicazione tra container in rete
-11. Pubblicazione di un'immagine su Docker Hub
-12. Applicazione multi-container
+**Obiettivo**: Mettere in pratica i concetti teorici appresi nella Sessione Introduttiva 1.
 
-## Esercitazione 3: [Docker Avanzato e Applicazioni Distribuite](https://github.com/mastroiannim/corso-docker/blob/main/Esercitazione%203%3A%20Docker%20Avanzato%20e%20Applicazioni%20Distribuite.md)
+**Contenuti**:
+- Configurazione dell'ambiente di lavoro (Windows e Alpine Linux)
+- Confronto tra terminali Windows e Linux
+- Navigazione nel filesystem
+- Gestione di file e directory
+- Esercizio finale integrato
 
-### Obiettivi Specifici
-- Configurare reti Docker avanzate
-- Implementare comunicazione tra container
-- Gestire configurazioni con variabili d'ambiente
-- Ottimizzare immagini Docker
-- Introdurre concetti di orchestrazione semplice
-- Preparare il terreno per il progetto finale
+**Materiali**:
+- [Guida all'Esercitazione](./sessione_introduttiva_1/esercitazione_laboratorio.md)
 
-### Contenuti
-1. **Networking avanzato in Docker**
-   - Tipologie di reti in Docker
-   - Configurazione avanzata delle reti
-   - DNS e service discovery
-   - Gestione degli indirizzi IP
-   - Comunicazione tra container
-   - Modelli di comunicazione tra container
-   - Utilizzo di nomi DNS per la comunicazione
-   - Implementazione di pattern client-server
-   - Gestione delle dipendenze tra container
+### Sessione Introduttiva 2: Reti, Applicazioni e Servizi (5 ore)
 
-2. **Configurazione e ottimizzazione**
-   - Gestione delle configurazioni
-   - Utilizzo di variabili d'ambiente
-   - File di configurazione e secrets
-   - Gestione di configurazioni in ambienti diversi
-   - Best practices per la configurazione di applicazioni containerizzate
-   - Ottimizzazione delle immagini Docker
-   - Tecniche avanzate di multi-stage build
-   - Riduzione della dimensione delle immagini
-   - Sicurezza delle immagini
-   - Strategie di caching
+**Obiettivo**: Fornire le conoscenze di base sulle reti informatiche, le applicazioni, i servizi e un'introduzione alla virtualizzazione.
 
-3. **Introduzione all'orchestrazione e preparazione al progetto finale**
-   - Concetti base di orchestrazione
-   - Panoramica degli strumenti di orchestrazione
-   - Docker Compose come strumento di base
-   - Casi d'uso dell'orchestrazione
-   - Introduzione a Docker Compose
-   - Sintassi del file docker-compose.yml
-   - Definizione di servizi, reti e volumi
-   - Gestione del ciclo di vita delle applicazioni
-   - Scaling dei servizi
-   - Preparazione al progetto finale
+**Contenuti**:
+- Concetti fondamentali di reti
+- Modello client-server
+- Comandi di rete e diagnostica
+- Applicazioni e servizi
+- Introduzione alla virtualizzazione
 
-### Esercizi Pratici
-1. Creazione di reti personalizzate con configurazioni specifiche
-2. Implementazione di comunicazione tra container in diverse reti
-3. Risoluzione di problemi di networking comuni
-4. Monitoraggio del traffico di rete tra container
-5. Implementazione di configurazioni tramite variabili d'ambiente
-6. Ottimizzazione di un'immagine Docker esistente
-7. Analisi e miglioramento della sicurezza delle immagini
-8. Benchmark delle prestazioni prima e dopo l'ottimizzazione
-9. Creazione di un file docker-compose.yml per un'applicazione multi-container
-10. Gestione del ciclo di vita dell'applicazione con Docker Compose
-11. Scaling dei servizi e gestione del carico
-12. Debugging di applicazioni multi-container
+**Materiali**:
+- [Slide Teoriche](./sessione_introduttiva_2/slide.md)
+- [Contenuto Teorico](./sessione_introduttiva_2/contenuto_teorico.md)
 
-## Progetto Finale: Infrastruttura Ibrida VM + Container
+### Esercitazione Pratica 2: Reti, Applicazioni e Servizi (3 ore)
 
-### Obiettivi
-- Progettare e implementare un'infrastruttura ibrida che combina VM e container
-- Creare una semplice applicazione web distribuita dimostrativa
-- Applicare le conoscenze acquisite durante le tre esercitazioni
-- Comprendere i vantaggi e le sfide dell'approccio ibrido
+**Obiettivo**: Mettere in pratica i concetti teorici appresi nella Sessione Introduttiva 2.
 
-### Architettura dell'Infrastruttura
-- VM Alpine Linux come host per i container Docker
-- Container Docker per i vari componenti dell'applicazione
-- Networking tra VM e container
-- Persistenza dei dati
+**Contenuti**:
+- Analisi della configurazione di rete in Windows e Linux
+- Utilizzo di strumenti di diagnostica di rete
+- Implementazione di un semplice server web
+- Analisi di processi e servizi
+- Introduzione pratica alla virtualizzazione
 
-### Componenti dell'Applicazione
-- Frontend (Nginx + Vue.js)
-- Backend API (Node.js)
-- Database (MongoDB)
-- Cache (Redis)
-- Reverse Proxy (Nginx)
+**Materiali**:
+- [Guida all'Esercitazione](./sessione_introduttiva_2/esercitazione_laboratorio.md)
 
-### Tutorial Guidato
-1. Configurazione dell'ambiente
-2. Esplorazione dell'architettura
-3. Avvio dell'infrastruttura
-4. Test dell'applicazione
-5. Esplorazione avanzata
+## Fase Principale: Docker e Containerizzazione
 
-## Risorse Didattiche
+### Esercitazione 1: Introduzione a Docker e Concetti Base (3 ore)
 
-### Materiali di Riferimento
-- Documentazione ufficiale di Docker: [https://docs.docker.com/](https://docs.docker.com/)
-- Docker Hub: [https://hub.docker.com/](https://hub.docker.com/)
-- Documentazione di Alpine Linux: [https://docs.alpinelinux.org/](https://docs.alpinelinux.org/)
-- Documentazione di Node.js: [https://nodejs.org/en/docs/](https://nodejs.org/en/docs/)
+**Obiettivo**: Introdurre i concetti fondamentali di Docker e della containerizzazione, dall'installazione all'esecuzione dei primi container.
 
-### Strumenti Necessari
-- VM Linux Alpine con accesso root
-- Connessione Internet
-- Client SSH
-- Browser web
+**Contenuti**:
+- Teoria della containerizzazione
+- Architettura di Docker
+- Installazione e configurazione
+- Primi passi con Docker
 
-## Metodologia Didattica
-- Lezioni teoriche interattive
-- Esercitazioni pratiche guidate
-- Apprendimento basato su progetti
-- Discussioni di gruppo
-- Troubleshooting collaborativo
+**Materiali**:
+- [Contenuto Teorico](./esercitazione_1/contenuto_teorico_aggiornato.md)
 
-## Valutazione
-- Partecipazione attiva durante le esercitazioni
-- Completamento degli esercizi pratici
-- Implementazione del progetto finale
-- Comprensione dei concetti teorici
-- Capacità di risolvere problemi
+**Collegamenti con le Sessioni Introduttive**:
+- Utilizzo dei concetti di sistema operativo dalla Sessione 1
+- Applicazione dei comandi bash appresi nella Sessione 1
+- Riferimenti ai concetti di client-server dalla Sessione 2
+- Confronto con la virtualizzazione tradizionale vista nella Sessione 2
 
-## Consigli per gli Studenti
-- Sperimentare attivamente con i comandi Docker
-- Consultare regolarmente la documentazione ufficiale
-- Collaborare con i compagni per risolvere problemi
-- Prendere appunti durante le esercitazioni
-- Applicare le conoscenze acquisite in progetti personali
+### Esercitazione 2: Creazione e Gestione di Container Docker (3 ore)
 
-## Appendici
+**Obiettivo**: Approfondire la creazione di immagini Docker personalizzate, la gestione della persistenza dei dati e il networking di base.
 
-### Glossario dei Termini
-- **Container**: Unità standard di software che impacchetta il codice e tutte le sue dipendenze
-- **Immagine Docker**: Template di sola lettura con istruzioni per creare un container
-- **Dockerfile**: File di testo che contiene istruzioni per costruire un'immagine Docker
-- **Docker Hub**: Registry pubblico per le immagini Docker
-- **Volume**: Meccanismo per la persistenza dei dati nei container
-- **Networking**: Sistema di comunicazione tra container
-- **Orchestrazione**: Automazione della gestione, coordinamento e organizzazione di container
+**Contenuti**:
+- Creazione di immagini Docker
+- Persistenza dei dati e volumi
+- Networking e distribuzione
+- Applicazioni multi-container
 
-### Comandi Docker Comuni
-- `docker run`: Crea ed esegue un container
-- `docker ps`: Elenca i container in esecuzione
-- `docker images`: Elenca le immagini disponibili
-- `docker build`: Costruisce un'immagine da un Dockerfile
-- `docker pull`: Scarica un'immagine da un registry
-- `docker push`: Pubblica un'immagine su un registry
-- `docker volume`: Gestisce i volumi
-- `docker network`: Gestisce le reti
-- `docker-compose`: Gestisce applicazioni multi-container
+**Materiali**:
+- [Contenuto Teorico](./esercitazione_2/contenuto_teorico_aggiornato.md)
 
-### Troubleshooting Comune
-- Problemi di installazione di Docker
-- Errori nei Dockerfile
-- Problemi di networking
-- Persistenza dei dati
-- Conflitti di porte
-- Problemi di permessi
+**Collegamenti con le Sessioni Introduttive**:
+- Utilizzo dei concetti di filesystem dalla Sessione 1
+- Applicazione dei concetti di gestione dei file dalla Sessione 1
+- Riferimenti ai concetti di rete dalla Sessione 2
+- Applicazione dei concetti di applicazioni e servizi dalla Sessione 2
+
+### Esercitazione 3: Docker Avanzato e Applicazioni Distribuite (3 ore)
+
+**Obiettivo**: Approfondire aspetti avanzati di Docker, come il networking avanzato, l'ottimizzazione delle immagini, la gestione delle configurazioni e un'introduzione all'orchestrazione.
+
+**Contenuti**:
+- Networking avanzato in Docker
+- Configurazione e ottimizzazione
+- Introduzione all'orchestrazione con Docker Compose
+- Preparazione al progetto finale
+
+**Materiali**:
+- [Contenuto Teorico](./esercitazione_3/contenuto_teorico_aggiornato.md)
+
+**Collegamenti con le Sessioni Introduttive**:
+- Applicazione avanzata dei concetti di rete dalla Sessione 2
+- Utilizzo dei concetti di ottimizzazione dalla Sessione 2
+- Riferimenti ai concetti di gestione dei servizi dalla Sessione 2
+- Integrazione dei concetti di virtualizzazione dalla Sessione 2
+
+## Fase Finale: Progetto Applicativo
+
+### Progetto Finale: Infrastruttura Ibrida VM + Container
+
+**Obiettivo**: Progettare e implementare un'infrastruttura ibrida (VM + container) per una semplice applicazione web distribuita.
+
+**Contenuti**:
+- Definizione del progetto
+- Configurazione della VM Alpine
+- Implementazione dei container
+- Configurazione del networking e persistenza
+- Orchestrazione con Docker Compose
+- Test e ottimizzazione
+
+**Materiali**:
+- [Struttura del Progetto](./progetto_finale/struttura_progetto.md)
+
+**Collegamenti con le Sessioni Introduttive e le Esercitazioni**:
+- Integrazione di tutti i concetti visti nelle sessioni introduttive
+- Applicazione pratica delle tecniche apprese nelle esercitazioni Docker
+- Implementazione di un'architettura completa che combina VM e container
+
+## Risorse Aggiuntive
+
+### Documentazione
+
+- [Documentazione Completa del Corso](./documentazione_completa_aggiornata.md)
+- [Verifica di Coerenza e Completezza](./verifica_coerenza_aggiornata.md)
+
+### Risorse Online
+
+- [Docker Documentation](https://docs.docker.com/)
+- [Docker Compose Documentation](https://docs.docker.com/compose/)
+- [Docker Hub](https://hub.docker.com/)
+- [Alpine Linux Wiki](https://wiki.alpinelinux.org/)
+
+### Glossario
+
+Un glossario completo dei termini tecnici è disponibile nella documentazione del corso.
+
+## Come Utilizzare Questo Repository
+
+1. Iniziare con le sessioni introduttive e le relative esercitazioni pratiche
+2. Procedere con le esercitazioni Docker in ordine
+3. Completare il corso con il progetto finale
+4. Utilizzare le risorse aggiuntive per approfondimenti
+
+## Nota per i Docenti
+
+Questo corso è progettato per essere flessibile e adattabile alle esigenze specifiche degli studenti. Le sessioni introduttive possono essere abbreviate o approfondite in base al livello di conoscenza pregresso degli studenti.
