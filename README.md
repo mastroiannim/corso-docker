@@ -53,7 +53,7 @@ Gli studenti avranno a disposizione:
 - Esercizio finale integrato
 
 **Materiali**:
-- [Guida all'Esercitazione](Esercitazione%20Pratica%20di%20Laboratorio%20-%20Sessione%20Introduttiva%201.md)
+- [Esercitazione](Esercitazione%20Pratica%20di%20Laboratorio%20-%20Sessione%20Introduttiva%201.md)
 
 ### Sessione Introduttiva 2: Reti, Applicazioni e Servizi (5 ore)
 
@@ -82,7 +82,9 @@ Gli studenti avranno a disposizione:
 - Introduzione pratica alla virtualizzazione
 
 **Materiali**:
-- [Guida all'Esercitazione](Esercitazione%20Pratica%20di%20Laboratorio%20-%20Sessione%20Introduttiva%202.md)
+- [Esercitazione](Esercitazione%20Pratica%20di%20Laboratorio%20-%20Sessione%20Introduttiva%202.md)
+
+- [Modalità di Rete in VirtualBox](Esercitazione%20di%20Laboratorio%20-%20Modalità%20di%20Rete%20in%20VirtualBox%20con%20Alpine%20Linux.md)
 
 ## Fase Principale: Docker e Containerizzazione
 
@@ -97,7 +99,7 @@ Gli studenti avranno a disposizione:
 - Primi passi con Docker
 
 **Materiali**:
-- [Contenuto Teorico](Esercitazione%201%20-%20Introduzione%20a%20Docker%20e%20Concetti%20Base.md)
+- [Esercitazione 1](Esercitazione%201%20-%20Introduzione%20a%20Docker%20e%20Concetti%20Base.md)
 
 **Collegamenti con le Sessioni Introduttive**:
 - Utilizzo dei concetti di sistema operativo dalla Sessione 1
@@ -116,7 +118,7 @@ Gli studenti avranno a disposizione:
 - Applicazioni multi-container
 
 **Materiali**:
-- [Contenuto Teorico](Esercitazione%202%20-%20Creazione%20e%20Gestione%20di%20Container%20Docker.md)
+- [Esercitazione 2](Esercitazione%202%20-%20Creazione%20e%20Gestione%20di%20Container%20Docker.md)
 
 **Collegamenti con le Sessioni Introduttive**:
 - Utilizzo dei concetti di filesystem dalla Sessione 1
@@ -135,7 +137,7 @@ Gli studenti avranno a disposizione:
 - Preparazione al progetto finale
 
 **Materiali**:
-- [Contenuto Teorico](Esercitazione%203%20-%20Docker%20Avanzato%20e%20Applicazioni%20Distribuite.md)
+- [Esercitazione 3](Esercitazione%203%20-%20Docker%20Avanzato%20e%20Applicazioni%20Distribuite.md)
 
 **Collegamenti con le Sessioni Introduttive**:
 - Applicazione avanzata dei concetti di rete dalla Sessione 2
@@ -157,8 +159,6 @@ Gli studenti avranno a disposizione:
 - Orchestrazione con Docker Compose
 - Test e ottimizzazione
 
-**Materiali**:
-- [Modalità di Rete in VirtualBox](Esercitazione%20di%20Laboratorio%20-%20Modalità%20di%20Rete%20in%20VirtualBox%20con%20Alpine%20Linux.md)
 
 **Collegamenti con le Sessioni Introduttive e le Esercitazioni**:
 - Integrazione di tutti i concetti visti nelle sessioni introduttive
