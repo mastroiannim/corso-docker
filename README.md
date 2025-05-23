@@ -8,9 +8,9 @@ Questo corso completo è progettato per fornire agli studenti una comprensione a
 
 Il corso è strutturato in tre fasi principali:
 
-1. **Fase Preliminare**: Due sessioni introduttive di 5 ore ciascuna per acquisire i prerequisiti necessari, ciascuna con una esercitazione pratica di laboratorio di 3 ore
-2. **Fase Principale**: Tre esercitazioni pratiche di 3 ore ciascuna su Docker e containerizzazione
-3. **Fase Finale**: Un progetto applicativo che integra tutte le conoscenze acquisite
+1. [**Fase Preliminare**](#fase-preliminare-allineamento-delle-conoscenze): Due sessioni introduttive di 5 ore ciascuna per acquisire i prerequisiti necessari, ciascuna con una esercitazione pratica di laboratorio di 3 ore
+2. [**Fase Principale**](#fase-principale-docker-e-containerizzazione): Tre esercitazioni pratiche di 3 ore ciascuna su Docker e containerizzazione
+3. [**Fase Finale**](#fase-finale-progetto-applicativo): Un progetto applicativo che integra tutte le conoscenze acquisite
 
 ### Target
 
