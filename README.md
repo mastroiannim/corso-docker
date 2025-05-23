@@ -38,8 +38,8 @@ Gli studenti avranno a disposizione:
 - Comandi avanzati e recap
 
 **Materiali**:
-- [Slide Teoriche](./sessione_introduttiva_1/slide.md)
-- [Contenuto Teorico](./sessione_introduttiva_1/contenuto_teorico.md)
+- [Slide Teoriche](./SLIDE_ SESSIONE INTRODUTTIVA 1.md)
+- [Contenuto Teorico](./Sessione Introduttiva 1 - Sistemi Operativi, Filesystem e Shell.md)
 
 ### Esercitazione Pratica 1: Sistemi Operativi, Filesystem e Shell (3 ore)
 
@@ -53,7 +53,7 @@ Gli studenti avranno a disposizione:
 - Esercizio finale integrato
 
 **Materiali**:
-- [Guida all'Esercitazione](./sessione_introduttiva_1/esercitazione_laboratorio.md)
+- [Guida all'Esercitazione](./Esercitazione Pratica di Laboratorio - Sessione Introduttiva 1.md)
 
 ### Sessione Introduttiva 2: Reti, Applicazioni e Servizi (5 ore)
 
@@ -67,8 +67,8 @@ Gli studenti avranno a disposizione:
 - Introduzione alla virtualizzazione
 
 **Materiali**:
-- [Slide Teoriche](./sessione_introduttiva_2/slide.md)
-- [Contenuto Teorico](./sessione_introduttiva_2/contenuto_teorico.md)
+- [Slide Teoriche](./SLIDE_ SESSIONE INTRODUTTIVA 2.md)
+- [Contenuto Teorico](./Sessione Introduttiva 2 - Reti, Applicazioni e Servizi.md)
 
 ### Esercitazione Pratica 2: Reti, Applicazioni e Servizi (3 ore)
 
@@ -82,7 +82,7 @@ Gli studenti avranno a disposizione:
 - Introduzione pratica alla virtualizzazione
 
 **Materiali**:
-- [Guida all'Esercitazione](./sessione_introduttiva_2/esercitazione_laboratorio.md)
+- [Guida all'Esercitazione](./Esercitazione Pratica di Laboratorio - Sessione Introduttiva 2.md)
 
 ## Fase Principale: Docker e Containerizzazione
 
@@ -97,7 +97,7 @@ Gli studenti avranno a disposizione:
 - Primi passi con Docker
 
 **Materiali**:
-- [Contenuto Teorico](./esercitazione_1/contenuto_teorico_aggiornato.md)
+- [Contenuto Teorico](./Esercitazione 1 - Introduzione a Docker e Concetti Base.md)
 
 **Collegamenti con le Sessioni Introduttive**:
 - Utilizzo dei concetti di sistema operativo dalla Sessione 1
@@ -116,7 +116,7 @@ Gli studenti avranno a disposizione:
 - Applicazioni multi-container
 
 **Materiali**:
-- [Contenuto Teorico](./esercitazione_2/contenuto_teorico_aggiornato.md)
+- [Contenuto Teorico](./Esercitazione 2 - Creazione e Gestione di Container Docker.md)
 
 **Collegamenti con le Sessioni Introduttive**:
 - Utilizzo dei concetti di filesystem dalla Sessione 1
@@ -135,7 +135,7 @@ Gli studenti avranno a disposizione:
 - Preparazione al progetto finale
 
 **Materiali**:
-- [Contenuto Teorico](./esercitazione_3/contenuto_teorico_aggiornato.md)
+- [Contenuto Teorico](./Esercitazione 3 - Docker Avanzato e Applicazioni Distribuite.md)
 
 **Collegamenti con le Sessioni Introduttive**:
 - Applicazione avanzata dei concetti di rete dalla Sessione 2
@@ -158,7 +158,7 @@ Gli studenti avranno a disposizione:
 - Test e ottimizzazione
 
 **Materiali**:
-- [Struttura del Progetto](./progetto_finale/struttura_progetto.md)
+- [Modalità di Rete in VirtualBox](./Esercitazione di Laboratorio - Modalità di Rete in VirtualBox con Alpine Linux.md)
 
 **Collegamenti con le Sessioni Introduttive e le Esercitazioni**:
 - Integrazione di tutti i concetti visti nelle sessioni introduttive
@@ -169,8 +169,7 @@ Gli studenti avranno a disposizione:
 
 ### Documentazione
 
-- [Documentazione Completa del Corso](./documentazione_completa_aggiornata.md)
-- [Verifica di Coerenza e Completezza](./verifica_coerenza_aggiornata.md)
+- [Verifica di Coerenza e Completezza](./Verifica di Coerenza e Completezza del Corso Ristrutturato.md)
 
 ### Risorse Online
 
