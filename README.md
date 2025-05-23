@@ -84,9 +84,11 @@ Gli studenti avranno a disposizione:
 **Materiali**:
 - [Esercitazione](Esercitazione%20Pratica%20di%20Laboratorio%20-%20Sessione%20Introduttiva%202.md)
 
-- [Modalità di Rete in VirtualBox](Esercitazione%20di%20Laboratorio%20-%20Modalità%20di%20Rete%20in%20VirtualBox%20con%20Alpine%20Linux.md)
 
 ## Fase Principale: Docker e Containerizzazione
+
+**Prerequisiti**:
+- [Modalità di Rete in VirtualBox](Esercitazione%20di%20Laboratorio%20-%20Modalità%20di%20Rete%20in%20VirtualBox%20con%20Alpine%20Linux.md)
 
 ### Esercitazione 1: Introduzione a Docker e Concetti Base (3 ore)
 
