@@ -55,6 +55,8 @@ Gli studenti avranno a disposizione:
 - ✅ Accesso SSH da Windows alla VM
 - ✅ Docker e tutti gli strumenti necessari (editor, git, bash)
 
+**Nota didattica**: durante le esercitazioni useremo SSH perché, nella configurazione base di VirtualBox, il copia/incolla host↔guest non è disponibile senza Guest Additions.
+
 **Prerequisiti**: NESSUNO — questa è la base di partenza.
 
 **Materiali**:

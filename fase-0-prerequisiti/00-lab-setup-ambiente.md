@@ -503,10 +503,12 @@ alpine-docker:~#
 
 ### Perché SSH?
 
-Lavorare direttamente nella finestra della console di VirtualBox è scomodo:
-- Non puoi fare copia-incolla facilmente
+Lavorare direttamente nella finestra della console di VirtualBox è meno pratico:
+- Nella configurazione base non c'è copia/incolla host↔guest (serve installare Guest Additions)
 - Lo schermo è piccolo
 - Non puoi aprire più finestre/tab
+
+Nel corso useremo SSH anche per un motivo pratico: permette di copiare/incollare rapidamente i comandi delle esercitazioni dal terminale Windows.
 
 Con SSH ti colleghi alla VM da un terminale Windows (es. Windows Terminal, PowerShell, o il nuovo prompt di Windows) e lavori comodamente.
 

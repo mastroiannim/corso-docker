@@ -32,6 +32,8 @@ Questo documento è il percorso guidato in ordine cronologico: per ogni lezione 
 - 1:30–2:15 → rete + SSH
 - 2:15–3:00 → strumenti minimi + test finale
 
+**Nota metodologica**: SSH viene introdotto subito perché, nella configurazione base di VirtualBox, il copia/incolla host↔guest non è disponibile senza Guest Additions.
+
 ### Tutorial guidato (laboratorio)
 - `hostname` / `ip a` → verifica stato iniziale VM (rif. setup rete e host)
 - `setup-alpine` → installazione guidata Alpine
