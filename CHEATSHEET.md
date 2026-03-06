@@ -111,8 +111,8 @@ Output atteso: solo repository `https://...` e messaggio finale `OK: ... distinc
 | `ip addr show` | Mostra gli indirizzi IP delle interfacce di rete |
 | `ip route show` | Mostra la tabella di routing |
 | `ping -c 4 host` | Verifica la raggiungibilità di un host (4 pacchetti) |
-| `curl http://host:porta` | Invia una richiesta HTTP e mostra la risposta |
-| `wget http://url` | Scarica un file da un URL |
+| `curl https://host` | Invia una richiesta HTTPS e mostra la risposta |
+| `wget https://url` | Scarica un file da un URL HTTPS |
 | `ss -tlnp` | Mostra le porte TCP in ascolto |
 | `nslookup dominio` | Risolve un nome di dominio in indirizzo IP |
 | `traceroute host` | Mostra il percorso dei pacchetti verso un host |
