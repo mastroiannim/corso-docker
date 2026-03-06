@@ -981,7 +981,61 @@ user.name=Il Tuo Nome
 user.email=tua.email@esempio.com
 ```
 
-### Step 7.5 — Snapshot della VM (raccomandato)
+### Step 7.5 — Cartella condivisa Windows ↔ Alpine (VirtualBox)
+
+Questa sezione configura una cartella condivisa tra Windows (host) e Alpine (guest).
+
+> Usa lo **stesso nome** della cartella condivisa in tutti i comandi. In questo corso useremo `html`.
+
+1. In VirtualBox, con VM spenta:
+   - Apri **Impostazioni** della VM → **Cartelle condivise**
+   - Aggiungi la cartella di Windows da condividere
+   - Imposta **Nome cartella**: `html`
+
+2. Avvia la VM Alpine e installa il supporto guest additions:
+
+```bash
+apk add virtualbox-guest-additions
+mkdir -p /mnt/html
+```
+
+3. Montaggio manuale (immediato):
+
+```bash
+modprobe vboxsf
+mount -t vboxsf html /mnt/html
+```
+
+4. Verifica mount manuale:
+
+```bash
+mount | grep /mnt/html
+ls -la /mnt/html
+```
+
+**Output atteso**:
+- una riga con `type vboxsf` e `/mnt/html`
+- il contenuto della cartella condivisa (oppure directory vuota se non ci sono file)
+
+5. Montaggio automatico all'avvio:
+
+```bash
+echo "html /mnt/html vboxsf defaults 0 0" | tee -a /etc/fstab > /dev/null
+mount -a
+```
+
+6. Verifica configurazione automatica:
+
+```bash
+grep -n "^html /mnt/html vboxsf" /etc/fstab
+mount | grep /mnt/html
+```
+
+**Output atteso**:
+- una riga in `/etc/fstab` con `html /mnt/html vboxsf defaults 0 0`
+- mount attivo su `/mnt/html`
+
+### Step 7.6 — Snapshot della VM (raccomandato)
 
 Ora che hai tutto configurato, è il momento perfetto per creare uno **snapshot** (istantanea) della VM. Se qualcosa va storto in futuro, potrai ripristinare la VM a questo punto.
 

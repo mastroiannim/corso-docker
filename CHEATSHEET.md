@@ -126,7 +126,7 @@ Output atteso: solo repository `https://...` e messaggio finale `OK: ... distinc
 | `apk add virtualbox-guest-additions` | Installa le guest additions su Alpine |
 | `mkdir /mnt/html` | Crea il punto di mount per la cartella condivisa |
 | `modprobe vboxsf` | Carica il modulo kernel per le cartelle condivise |
-| `mount -t vboxsf shared /mnt/html` | Monta la cartella condivisa manualmente |
+| `mount -t vboxsf html /mnt/html` | Monta la cartella condivisa manualmente |
 | `echo "html /mnt/html vboxsf defaults 0 0" \| tee -a /etc/fstab > /dev/null` | Monta la cartella condivisa automaticamente all'avvio |
 
 ### Modalità di Rete VirtualBox
