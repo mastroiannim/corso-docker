@@ -29,6 +29,19 @@
 | `uname -a` | Mostra informazioni sul sistema |
 | `df -h` | Mostra lo spazio su disco |
 
+### 🔐 Laboratorio sicuro: repository APK solo HTTPS
+
+Se `apk update` fallisce perché in laboratorio è bloccato `http`, eseguire:
+
+```bash
+cp /etc/apk/repositories /etc/apk/repositories.bak
+sed -i 's|^http://|https://|g' /etc/apk/repositories
+grep -nE '^http://|^https://' /etc/apk/repositories
+apk update
+```
+
+Output atteso: solo repository `https://...` e messaggio finale `OK: ... distinct packages available`.
+
 ### Servizi essenziali
 
 | Comando | Descrizione |
