@@ -32,7 +32,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 - Conoscenze di base sull'uso del computer
 
 ### Durata
-3 ore di laboratorio
+3 ore e 45 minuti di laboratorio (versione completa)
 
 ### Obiettivi di Apprendimento
 - Confrontare i terminali Windows e Linux

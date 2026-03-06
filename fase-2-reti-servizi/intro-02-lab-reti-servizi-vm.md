@@ -33,7 +33,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 - Conoscenze acquisite nella Sessione Introduttiva 1 e relativa esercitazione
 
 ### Durata
-3 ore di laboratorio
+3 ore e 45 minuti di laboratorio (versione completa)
 
 ### Obiettivi di Apprendimento
 - Comprendere i concetti fondamentali di reti informatiche

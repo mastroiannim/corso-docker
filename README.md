@@ -254,3 +254,6 @@ Un glossario completo dei termini tecnici è disponibile nella documentazione de
 ## Nota per i Docenti
 
 Questo corso è progettato per essere flessibile e adattabile alle esigenze specifiche degli studenti. Le sessioni introduttive possono essere abbreviate o approfondite in base al livello di conoscenza pregresso degli studenti.
+
+Per la prossima erogazione è disponibile una pianificazione operativa completa in 10 incontri da 3 ore:
+- [Proposta Operativa — 10 incontri da 3 ore](docs/PIANO-EROGAZIONE-10-INCONTRI-3H.md)
