@@ -8,7 +8,7 @@ Questo corso completo è progettato per fornire agli studenti una comprensione a
 
 Il corso è strutturato in tre fasi principali:
 
-1. [**Fase Preliminare**](#fase-preliminare-allineamento-delle-conoscenze): Due sessioni introduttive di 5 ore ciascuna per acquisire i prerequisiti necessari, ciascuna con una esercitazione pratica di laboratorio di 3 ore
+1. [**Fase Preliminare**](#fase-preliminare-allineamento-delle-conoscenze): Sessioni introduttive con teoria essenziale e laboratori centrali per acquisire rapidamente i prerequisiti operativi
 2. [**Fase Principale**](#fase-principale-docker-e-containerizzazione): Tre esercitazioni pratiche di 3 ore ciascuna su Docker e containerizzazione
 3. [**Fase Finale**](#fase-finale-progetto-applicativo): Un progetto applicativo che integra tutte le conoscenze acquisite
 
@@ -19,7 +19,7 @@ Il corso è strutturato in tre fasi principali:
         ↓
 [Sessione Teoria 1] → [Slide 1] → [Lab 1]
         ↓
-[Sessione Teoria 2] → [Slide 2] → [Lab VirtualBox] → [Lab 2]
+[Sessione Teoria 2 (Essenziale)] → [Slide 2] → [Lab VirtualBox (Opzionale)] → [Lab 2 (Centrale)]
         ↓
 [Docker 1: Intro] → [Docker 2: Container] → [Docker 3: Compose]
         ↓
@@ -111,16 +111,15 @@ Dopo aver completato il setup base, puoi approfondire le diverse modalità di re
 **Materiali**:
 - [Esercitazione](fase-1-introduzione/intro-01-lab-os-filesystem-shell.md)
 
-### Sessione Introduttiva 2: Reti, Applicazioni e Servizi (5 ore)
+### Sessione Introduttiva 2: Reti, Applicazioni e Servizi (teoria essenziale, 30-40 min)
 
-**Obiettivo**: Fornire le conoscenze di base sulle reti informatiche, le applicazioni, i servizi e un'introduzione alla virtualizzazione.
+**Obiettivo**: Fornire solo i concetti minimi di rete e servizi necessari per affrontare la fase Docker.
 
-**Contenuti**:
-- Concetti fondamentali di reti
-- Modello client-server
-- Comandi di rete e diagnostica
-- Applicazioni e servizi
-- Introduzione alla virtualizzazione
+**Contenuti essenziali**:
+- IP, porte, DNS e routing di base
+- Modello client-server in chiave operativa
+- Diagnostica minima (ip, ping, curl, ss)
+- Ponte concettuale VM → container
 
 **Materiali**:
 - [Slide Teoriche](fase-2-reti-servizi/intro-02-slide-reti-servizi-vm.md)
@@ -128,14 +127,15 @@ Dopo aver completato il setup base, puoi approfondire le diverse modalità di re
 
 ### Esercitazione Pratica 2: Reti, Applicazioni e Servizi (3 ore)
 
-**Obiettivo**: Mettere in pratica i concetti teorici appresi nella Sessione Introduttiva 2.
+**Obiettivo**: Costituire il blocco centrale della Sessione 2, traducendo la teoria essenziale in attività operative.
 
-**Contenuti**:
-- Analisi della configurazione di rete in Windows e Linux
-- Utilizzo di strumenti di diagnostica di rete
-- Implementazione di un semplice server web
-- Analisi di processi e servizi
-- Introduzione pratica alla virtualizzazione
+**Contenuti (percorso core)**:
+- Configurazione rete e diagnostica su Alpine Linux
+- Implementazione e test di un semplice server web
+- Analisi processi/servizi su Alpine Linux
+- Anteprima pratica del passaggio VM → Docker
+
+**Nota**: i confronti dettagliati Windows/PowerShell e i percorsi avanzati restano disponibili come approfondimento opzionale.
 
 **Materiali**:
 - [Esercitazione](fase-2-reti-servizi/intro-02-lab-reti-servizi-vm.md)
