@@ -1056,7 +1056,7 @@ Se tutti i test sopra funzionano, hai un ambiente completo e pronto per il corso
 # Configura manualmente la rete
 setup-interfaces
 # Riavvia la rete
-service networking restart
+rc-service networking restart
 # Riprova setup
 setup-alpine
 ```
@@ -1094,7 +1094,7 @@ udhcpc -i eth0
 **C. Ripristina configurazione di rete**:
 ```bash
 # Nella VM
-service networking restart
+rc-service networking restart
 ```
 
 ### Problema 4: SSH connection refused
