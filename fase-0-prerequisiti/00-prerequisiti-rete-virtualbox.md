@@ -141,13 +141,22 @@ La modalità NAT (Network Address Translation) è la configurazione di rete pred
 ### Esercizio 1: Analisi del funzionamento NAT
 
 #### Attività
-1. Installare gli strumenti di rete in Alpine Linux:
+1. Verificare che i repository Alpine usino HTTPS (obbligatorio in laboratorio):
+   ```
+   cat /etc/apk/repositories
+   cp /etc/apk/repositories /etc/apk/repositories.bak
+   sed -i 's|^http://|https://|g' /etc/apk/repositories
+   grep -nE '^http://|^https://' /etc/apk/repositories
+   ```
+   Output atteso: tutte le righe dei repository iniziano con `https://`
+
+2. Installare gli strumenti di rete in Alpine Linux:
    ```
    apk update
    apk add tcpdump iptables curl
    ```
 
-2. Analizzare il traffico di rete durante una richiesta HTTP:
+3. Analizzare il traffico di rete durante una richiesta HTTP:
    ```
    tcpdump -i eth0 -n host 8.8.8.8 &
    ping -c 4 8.8.8.8
@@ -155,7 +164,7 @@ La modalità NAT (Network Address Translation) è la configurazione di rete pred
    # Premere Ctrl+C per terminare tcpdump
    ```
 
-3. Verificare l'indirizzo IP pubblico della VM:
+4. Verificare l'indirizzo IP pubblico della VM:
    ```
    curl ifconfig.me
    ```
@@ -1191,6 +1200,37 @@ Prima di affrontare problemi specifici, è importante conoscere gli strumenti di
    ```
    ping -c 4 8.8.8.8
    ```
+
+#### Problemi con `apk update` in laboratorio (HTTP bloccato)
+
+##### Sintomi:
+- Errori durante `apk update` con URL `http://...`
+- Timeout o fetch falliti verso i repository Alpine
+
+##### Diagnosi:
+1. Verificare i repository configurati:
+   ```
+   cat /etc/apk/repositories
+   ```
+
+##### Soluzioni:
+1. Creare backup del file:
+   ```
+   cp /etc/apk/repositories /etc/apk/repositories.bak
+   ```
+
+2. Convertire i repository da HTTP a HTTPS:
+   ```
+   sed -i 's|^http://|https://|g' /etc/apk/repositories
+   ```
+
+3. Verificare e riprovare l'aggiornamento:
+   ```
+   grep -nE '^http://|^https://' /etc/apk/repositories
+   apk update
+   ```
+
+Output atteso: righe `fetch https://...` e messaggio `OK: ... distinct packages available`.
 
 #### Problemi Specifici per Modalità di Rete
 
