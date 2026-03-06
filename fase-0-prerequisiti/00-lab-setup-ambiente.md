@@ -1106,13 +1106,13 @@ service networking restart
 1. Verifica che SSH sia in esecuzione nella VM:
 ```bash
 # Nella console VM (non SSH)
-service sshd status
+rc-service sshd status
 ```
 
 Se non è attivo:
 ```bash
-service sshd start
-rc-update add sshd
+rc-service sshd start
+rc-update add sshd default
 ```
 
 2. Verifica che SSH ascolti sulla porta 22:
