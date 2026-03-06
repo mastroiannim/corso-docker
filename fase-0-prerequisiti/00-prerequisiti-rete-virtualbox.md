@@ -62,78 +62,32 @@ L'esercitazione è progettata per essere completata in circa 3 ore, suddivise co
 - Scenario 4 (Modalità Internal Network): 45 minuti
 - Troubleshooting e riflessioni finali: 15 minuti
 
-## Preparazione dell'Ambiente
+## Preparazione dell'Ambiente (Sintesi)
 
-### Download e Installazione di VirtualBox
+La preparazione completa (download, installazione, `setup-alpine`, SSH e test finali) è già nel modulo obbligatorio:
+- [Setup Ambiente di Lavoro](00-lab-setup-ambiente.md)
 
-1. Scaricare VirtualBox dal sito ufficiale: [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)
-2. Installare VirtualBox seguendo le istruzioni per il proprio sistema operativo
-3. Installare anche il "VirtualBox Extension Pack" per funzionalità aggiuntive
+Per questa esercitazione di approfondimento servono solo questi controlli rapidi:
 
-### Download di Alpine Linux
+1. VirtualBox installato e funzionante
+2. VM Alpine base già pronta
+3. Template `Alpine-Template` disponibile per la clonazione
+4. Accesso alla VM confermato (console o SSH)
 
-1. Scaricare l'immagine ISO di Alpine Linux ottimizzata per la virtualizzazione:
-   [https://alpinelinux.org/downloads/](https://alpinelinux.org/downloads/)
-2. Scegliere la versione "Virtual" per l'architettura appropriata (x86_64 per sistemi a 64 bit)
-3. Salvare l'immagine ISO in una posizione facilmente accessibile
+### Checkpoint rapido
 
-### Creazione della Prima Macchina Virtuale
+Avvia la VM base e verifica:
 
-1. Avviare VirtualBox e fare clic su "Nuova"
-2. Configurare la VM con i seguenti parametri:
-   - Nome: `Alpine-Base`
-   - Tipo: Linux
-   - Versione: Other Linux (64-bit)
-   - Memoria: 512MB
-   - Disco rigido: Creare un nuovo disco virtuale
-   - Tipo di file: VDI (VirtualBox Disk Image)
-   - Archiviazione: Dinamicamente allocato
-   - Dimensione: 2GB
+```bash
+ip addr show
+ip route show
+ping -c 2 8.8.8.8
+```
 
-3. Selezionare la VM appena creata e fare clic su "Impostazioni"
-4. Nella sezione "Archiviazione", selezionare il controller IDE vuoto e aggiungere l'immagine ISO di Alpine Linux
-5. Fare clic su "OK" per salvare le impostazioni
-
-### Installazione di Base di Alpine Linux
-
-1. Avviare la VM facendo clic su "Avvia"
-2. Al prompt di avvio, accedere come `root` (senza password)
-3. Eseguire il comando di installazione:
-   ```
-   setup-alpine
-   ```
-4. Seguire la procedura guidata di installazione:
-   - Selezionare la tastiera (es. `it` per italiano)
-   - Impostare il nome host (es. `alpine-base`)
-   - Configurare la rete:
-     - Selezionare l'interfaccia `eth0`
-     - Scegliere la configurazione DHCP
-     - Non configurare IPv6 per semplicità
-   - Impostare il fuso orario (es. `Europe/Rome`)
-   - Configurare i repository (usare i mirror predefiniti)
-   - Impostare una password per l'utente root
-   - Scegliere il disco di installazione (solitamente `sda`)
-   - Scegliere `sys` come modalità di installazione
-   - Confermare la formattazione del disco
-
-5. Al termine dell'installazione, riavviare la VM:
-   ```
-   reboot
-   ```
-
-6. Rimuovere l'immagine ISO dal controller IDE nelle impostazioni della VM prima di riavviare
-
-### Creazione di un Template
-
-Per risparmiare tempo durante l'esercitazione, è consigliabile creare un template della VM di base:
-
-1. Spegnere la VM `Alpine-Base`
-2. In VirtualBox, fare clic con il tasto destro sulla VM e selezionare "Clona"
-3. Assegnare un nome significativo (es. `Alpine-Template`)
-4. Selezionare "Clonazione completa"
-5. Fare clic su "Clona"
-
-Questo template servirà come base per tutte le VM che creeremo durante l'esercitazione.
+**Output atteso**:
+- Interfaccia di rete attiva (`eth0` o equivalente)
+- Gateway predefinito presente
+- Ping con risposta (0% packet loss o perdita minima)
 
 ## Scenario 1: Modalità NAT
 
@@ -441,7 +395,7 @@ In questo esercizio, configureremo un server web sulla VM e lo renderemo accessi
 
 2. Creare una semplice pagina web:
    ```
-   echo "<html><body><h1>Alpine Linux Bridge Test</h1><p>Questa pagina è servita da una VM Alpine Linux in modalità Bridge</p><p>Indirizzo IP: $(hostname -I)</p></body></html>" > /var/www/localhost/htdocs/index.html
+   echo "<html><body><h1>Alpine Linux Bridge Test</h1><p>Questa pagina è servita da una VM Alpine Linux in modalità Bridge</p><p>Indirizzo IP: $(ip -4 addr show eth0 | awk '/inet / {print $2}' | cut -d'/' -f1)</p></body></html>" > /var/www/localhost/htdocs/index.html
    ```
 
 3. Verificare che il server web funzioni localmente:
@@ -669,7 +623,7 @@ In questo esercizio, configureremo un server web sulla VM e lo renderemo accessi
 
 2. Creare una semplice pagina web:
    ```
-   echo "<html><body><h1>Alpine Linux Host-Only Test</h1><p>Questa pagina è servita da una VM Alpine Linux in modalità Host-Only</p><p>Indirizzo IP: $(hostname -I)</p></body></html>" > /var/www/localhost/htdocs/index.html
+   echo "<html><body><h1>Alpine Linux Host-Only Test</h1><p>Questa pagina è servita da una VM Alpine Linux in modalità Host-Only</p><p>Indirizzo IP: $(ip -4 addr show eth0 | awk '/inet / {print $2}' | cut -d'/' -f1)</p></body></html>" > /var/www/localhost/htdocs/index.html
    ```
 
 3. Verificare che il server web funzioni localmente:
@@ -1130,11 +1084,11 @@ Prima di affrontare problemi specifici, è importante conoscere gli strumenti di
    traceroute 8.8.8.8
    ```
 
-4. **netstat** - Visualizza le connessioni di rete, le tabelle di routing e le statistiche delle interfacce
+4. **ss** - Visualizza le connessioni di rete e le porte in ascolto
    ```
    apk add net-tools
-   netstat -tuln  # Mostra le porte in ascolto
-   netstat -r     # Mostra la tabella di routing
+   ss -tuln       # Mostra le porte in ascolto
+   ip route show  # Mostra la tabella di routing
    ```
 
 #### Strumenti Avanzati

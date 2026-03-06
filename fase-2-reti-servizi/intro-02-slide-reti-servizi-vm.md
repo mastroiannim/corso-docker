@@ -137,7 +137,7 @@ Al termine saprai:
 - **Contenuto:** Istruzioni passo-passo per:
   - Identificare il proprio indirizzo IP locale:
     - Windows: `ipconfig`
-    - Linux/macOS: `ifconfig` o `ip addr`
+    - Linux/macOS: `ip addr`
   - Identificare il proprio indirizzo IP pubblico
   - Testare la connettività con `ping`
   - Risolvere nomi di dominio con `nslookup` o `dig`
@@ -232,7 +232,7 @@ Al termine saprai:
   - `traceroute` (Windows: `tracert`): mostra il percorso dei pacchetti
   - `nslookup` / `dig`: interroga i server DNS
   - `curl` / `wget`: interagisce con server web
-  - `netstat`: mostra connessioni di rete attive
+  - `ss`: mostra connessioni di rete attive
 - **Collegamento con Docker:** Questi strumenti sono utili per diagnosticare problemi di rete nei container
 
 ---
@@ -367,7 +367,7 @@ Al termine saprai:
     - Processi in background
     - Avvio automatico
     - Nomi spesso terminanti con "d" in Linux (httpd, sshd)
-    - Gestione: `systemctl` (Linux), Services Manager (Windows)
+    - Gestione: `rc-service` e `rc-status` (Alpine/OpenRC), Services Manager (Windows)
 - **Esercizio rapido:** Identifica tre processi e un demone in esecuzione sul tuo sistema
 
 ---
@@ -375,12 +375,12 @@ Al termine saprai:
 ### Slide 23: Gestione dei Servizi
 - **Titolo:** Controllare i Servizi
 - **Contenuto:**
-  - **Linux (systemd):**
-    - `systemctl start servizio`: avvia un servizio
-    - `systemctl stop servizio`: ferma un servizio
-    - `systemctl status servizio`: verifica lo stato
-    - `systemctl enable servizio`: abilita all'avvio
-    - `systemctl disable servizio`: disabilita all'avvio
+  - **Linux (Alpine/OpenRC):**
+    - `rc-service servizio start`: avvia un servizio
+    - `rc-service servizio stop`: ferma un servizio
+    - `rc-service servizio status`: verifica lo stato
+    - `rc-update add servizio default`: abilita all'avvio
+    - `rc-update del servizio default`: disabilita all'avvio
   - **Windows:**
     - Services Manager (interfaccia grafica)
     - `net start servizio`: avvia un servizio
@@ -401,7 +401,7 @@ Al termine saprai:
   - **Gestori di pacchetti:**
     - Installano e aggiornano software
     - Gestiscono le dipendenze
-    - Esempi: apt (Debian/Ubuntu), yum/dnf (Red Hat/Fedora), apk (Alpine)
+    - Esempi: apk (Alpine), yum/dnf (Red Hat/Fedora), pacman (Arch)
   - **Problemi comuni:**
     - Dipendenze mancanti
     - Conflitti di versione
@@ -414,7 +414,7 @@ Al termine saprai:
 - **Titolo:** Esploriamo Applicazioni e Servizi
 - **Contenuto:** Tutorial guidato per:
   - Identificare servizi in esecuzione:
-    - Linux: `systemctl list-units --type=service --state=running`
+    - Linux: `rc-status`
     - Windows: Services Manager
   - Analizzare le dipendenze di un'applicazione:
     - Linux: `ldd /path/to/executable`
@@ -559,140 +559,19 @@ Al termine saprai:
 
 ---
 
-## ESERCIZI PRATICI DETTAGLIATI
+## ESERCIZI PRATICI (RIMANDO OPERATIVO)
 
-### Esercizio 1: Analisi della Propria Rete
-**Obiettivo:** Comprendere la propria connessione di rete
-**Materiali:** Computer con accesso a Internet, terminale/shell
-**Durata:** 20 minuti
+Queste slide restano un supporto visivo.
+Per istruzioni complete, output attesi e checkpoint usa i materiali operativi:
 
-**Istruzioni:**
-1. Apri il terminale o prompt dei comandi
-2. Identifica il tuo indirizzo IP locale:
-   - Windows: esegui `ipconfig`
-   - Linux/macOS: esegui `ifconfig` o `ip addr`
-3. Identifica il tuo indirizzo IP pubblico:
-   - Visita un sito come whatismyip.com
-   - Oppure esegui `curl ifconfig.me`
-4. Testa la connettività con il comando `ping`:
-   - `ping google.com` (esegui per 5-10 secondi, poi interrompi con Ctrl+C)
-   - `ping 8.8.8.8` (DNS di Google)
-5. Risolvi nomi di dominio:
-   - `nslookup example.com`
-   - Se disponibile, prova anche `dig example.com`
-6. Compila una "carta d'identità" della tua connessione con:
-   - Indirizzo IP locale
-   - Indirizzo IP pubblico
-   - Gateway predefinito
-   - Server DNS utilizzati
-   - Tempo medio di risposta (ping)
+- [Sessione Introduttiva 2 — Teoria](intro-02-teoria-reti-servizi-vm.md)
+- [Lab Sessione 2](intro-02-lab-reti-servizi-vm.md)
 
-**Verifica:**
-- Hai identificato correttamente tutti gli indirizzi IP?
-- Comprendi la differenza tra indirizzo locale e pubblico?
-- Sei in grado di interpretare i risultati di ping?
-
----
-
-### Esercizio 2: Analisi di Richieste Web
-**Obiettivo:** Visualizzare l'interazione client-server
-**Materiali:** Browser web con strumenti di sviluppo
-**Durata:** 25 minuti
-
-**Istruzioni:**
-1. Apri il browser (Chrome, Firefox, Edge)
-2. Apri gli strumenti di sviluppo:
-   - Chrome/Edge: F12 o Ctrl+Shift+I
-   - Firefox: F12 o Ctrl+Shift+I
-3. Seleziona la scheda "Network" (Rete)
-4. Attiva l'opzione "Preserve log" (Conserva log)
-5. Visita un sito web semplice (es. example.com)
-6. Osserva le richieste generate:
-   - Identifica la richiesta principale HTML
-   - Nota eventuali risorse aggiuntive (CSS, JavaScript, immagini)
-7. Per ogni richiesta, analizza:
-   - Metodo (GET, POST)
-   - URL richiesto
-   - Codice di stato (200, 404, 500)
-   - Tipo di contenuto (Content-Type)
-   - Dimensione e tempo di risposta
-8. Visita un sito più complesso (es. wikipedia.org) e ripeti l'analisi
-9. Crea un diagramma del flusso di richieste e risposte, indicando l'ordine e le dipendenze
-
-**Verifica:**
-- Hai identificato correttamente le diverse richieste?
-- Comprendi il significato dei codici di stato HTTP?
-- Sei in grado di spiegare il flusso di caricamento di una pagina web?
-
----
-
-### Esercizio 3: Diagnostica di Rete
-**Obiettivo:** Risolvere problemi di connettività simulati
-**Materiali:** Computer con accesso a Internet, terminale/shell
-**Durata:** 30 minuti
-
-**Istruzioni:**
-1. **Scenario 1: "Il sito non risponde"**
-   - Simula il problema visitando un dominio inesistente (es. nonexistentwebsite123456.com)
-   - Esegui la diagnosi:
-     - Verifica la connettività di base con `ping 8.8.8.8`
-     - Controlla la risoluzione DNS con `nslookup nonexistentwebsite123456.com`
-     - Analizza il percorso con `traceroute google.com` per confronto
-   - Identifica se è un problema DNS o di connettività
-   - Documenta i risultati e la conclusione
-
-2. **Scenario 2: "Connessione lenta"**
-   - Simula il problema visitando un sito con server distanti o lenti
-   - Esegui la diagnosi:
-     - Misura i tempi di risposta con `ping -c 10 sito_lento.com`
-     - Identifica colli di bottiglia con `traceroute sito_lento.com`
-     - Verifica la velocità di download con `curl -o /dev/null sito_lento.com -w "%{time_total}\n"`
-   - Documenta i risultati e possibili soluzioni
-
-3. **Scenario 3: "Accesso bloccato"**
-   - Simula il problema provando ad accedere a una porta non in ascolto (es. 12345)
-   - Esegui la diagnosi:
-     - Verifica se il servizio è in ascolto con `netstat -tuln | grep 12345`
-     - Prova a connetterti con `telnet localhost 12345` o `nc -v localhost 12345`
-     - Controlla eventuali blocchi del firewall
-   - Documenta i risultati e possibili soluzioni
-
-**Verifica:**
-- Hai seguito un approccio sistematico alla diagnosi?
-- Hai identificato correttamente la causa di ciascun problema?
-- Sei in grado di proporre soluzioni appropriate?
-
----
-
-### Esercizio 4: Progetto "Mappa dei Servizi"
-**Obiettivo:** Identificare e mappare servizi in esecuzione
-**Materiali:** Computer con sistema operativo, terminale/shell
-**Durata:** 35 minuti
-
-**Istruzioni:**
-1. Crea un inventario dei servizi attivi sul sistema:
-   - Linux: `systemctl list-units --type=service --state=running`
-   - Windows: apri Services Manager o esegui `net start`
-2. Seleziona 5 servizi importanti e per ciascuno:
-   - Identifica la sua funzione principale
-   - Verifica il suo stato attuale
-   - Controlla se è configurato per l'avvio automatico
-   - Identifica le porte in ascolto (se applicabile):
-     - Linux: `sudo netstat -tulpn | grep nome_servizio`
-     - Windows: `netstat -ano | findstr nome_servizio`
-3. Analizza le dipendenze tra i servizi:
-   - Linux: `systemctl list-dependencies nome_servizio`
-   - Windows: controlla le dipendenze nelle proprietà del servizio
-4. Crea una rappresentazione visiva della "mappa dei servizi":
-   - Disegna un diagramma con i servizi come nodi
-   - Collega i servizi in base alle loro dipendenze
-   - Evidenzia i servizi critici per il sistema
-5. Documenta le tue scoperte in un report strutturato
-
-**Verifica:**
-- Hai identificato correttamente i servizi principali?
-- Comprendi le relazioni e dipendenze tra i servizi?
-- La tua mappa rappresenta accuratamente l'ecosistema dei servizi?
+### Traccia rapida in aula
+1. Analisi della propria rete (IP locale/pubblico, DNS, ping)
+2. Analisi delle richieste web dal browser (tab Network)
+3. Diagnostica di rete su scenari guidati
+4. Mappa dei servizi principali del sistema
 
 ---
 
@@ -722,7 +601,7 @@ Al termine saprai:
 ### Quiz 4: Applicazioni e Servizi
 1. Qual è la differenza principale tra un'applicazione e un servizio?
 2. Cosa sono i demoni in un sistema Linux?
-3. Come gestiresti un servizio in Linux usando systemctl?
+3. Come gestiresti un servizio in Linux usando OpenRC (`rc-service` e `rc-update`)?
 4. Cosa sono le librerie condivise e perché sono importanti?
 5. Quali problemi possono sorgere con le dipendenze software?
 

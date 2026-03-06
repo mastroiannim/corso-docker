@@ -260,7 +260,7 @@ Questo comando:
 - `docker info`: Informazioni sul sistema Docker
 - `docker system df`: Utilizzo dello spazio
 - `docker logs`: Log di un container
-- `journalctl -u docker`: Log del servizio Docker
+- `rc-service docker status`: Stato del servizio Docker
 
 ## Parte 4: Primi Passi con Docker
 

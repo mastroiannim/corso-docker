@@ -859,6 +859,7 @@ content-type: text/html; charset=ISO-8859-1
 ### Step 6.8 — Installazione sudo (opzionale ma consigliato)
 
 `sudo` permette di eseguire comandi singoli come root senza dover fare login come root.
+In questo modulo stai già operando come `root`, quindi i comandi restano senza `sudo`.
 
 ```bash
 apk add sudo

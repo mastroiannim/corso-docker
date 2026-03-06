@@ -186,6 +186,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 
 **Attività**:
 1. Accedere alla VM Alpine Linux come utente "studente"
+   - Mantieni questo utente per le attività del laboratorio: usa `sudo` solo quando il comando richiede privilegi amministrativi.
 
 2. Esplorare la shell Bash:
    - Eseguire i seguenti comandi e annotare l'output:

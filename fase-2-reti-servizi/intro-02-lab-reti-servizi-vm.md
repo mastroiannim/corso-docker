@@ -89,6 +89,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 
 **Attività**:
 1. Accedere alla VM Alpine Linux come utente "studente"
+   - Mantieni questo utente per le attività del laboratorio: usa `sudo` solo quando il comando richiede privilegi amministrativi.
 
 2. Visualizzare la configurazione di rete:
    ```bash
@@ -115,8 +116,8 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
    echo "Configurazione di Rete Linux" > ~/LabDocker/network_linux.txt
    echo "===========================" >> ~/LabDocker/network_linux.txt
    echo "" >> ~/LabDocker/network_linux.txt
-   echo "Indirizzo IP: $(ip -4 addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '127.0.0.1')" >> ~/LabDocker/network_linux.txt
-   echo "Subnet Mask: $(ip -4 addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}/\d+' | grep -v '127.0.0.1' | cut -d'/' -f2)" >> ~/LabDocker/network_linux.txt
+   echo "Indirizzo IP: $(ip -4 addr show scope global | awk '/inet / {print $2}' | head -1 | cut -d'/' -f1)" >> ~/LabDocker/network_linux.txt
+   echo "Subnet Mask: $(ip -4 addr show scope global | awk '/inet / {print $2}' | head -1 | cut -d'/' -f2)" >> ~/LabDocker/network_linux.txt
    echo "Gateway: $(ip route | grep default | awk '{print $3}')" >> ~/LabDocker/network_linux.txt
    echo "Server DNS: $(grep nameserver /etc/resolv.conf | awk '{print $2}')" >> ~/LabDocker/network_linux.txt
    ```
@@ -223,7 +224,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 
 6. Analizzare le statistiche di rete:
    ```bash
-   netstat -tuln
+   ss -tuln
    ```
 
 7. Creare un file di report con i risultati:
@@ -253,7 +254,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
    | Traceroute | `tracert` | `traceroute` |
    | Risoluzione DNS | `nslookup`, `Resolve-DnsName` | `nslookup`, `dig` |
    | Test porte | `Test-NetConnection` | `nc` (netcat) |
-   | Statistiche di rete | `netstat` | `netstat`, `ss` |
+   | Statistiche di rete | `netstat` | `ss` |
 
 2. Discutere le differenze e le similitudini:
    - Molti comandi hanno nomi simili o identici
@@ -303,7 +304,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 
 5. Prendere nota dell'indirizzo IP della VM Alpine:
    ```bash
-   ip addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '127.0.0.1'
+   ip -4 addr show scope global | awk '/inet / {print $2}' | cut -d'/' -f1
    ```
 
 ### 3.2 Accesso al Server Web da Windows
@@ -424,7 +425,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 
 5. Visualizzare le applicazioni in ascolto sulle porte:
    ```bash
-   sudo netstat -tulpn
+   ss -tulpn
    ```
 
 6. Creare un report sui processi e servizi:
@@ -439,7 +440,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
    rc-status >> ~/LabDocker/process_report_linux.txt
    echo "" >> ~/LabDocker/process_report_linux.txt
    echo "Applicazioni in Ascolto:" >> ~/LabDocker/process_report_linux.txt
-   sudo netstat -tulpn >> ~/LabDocker/process_report_linux.txt
+   ss -tulpn >> ~/LabDocker/process_report_linux.txt
    ```
 
 ### 4.3 Confronto tra Gestione dei Processi
@@ -451,10 +452,10 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
    | Funzione | Windows | Linux |
    |----------|---------|-------|
    | Visualizzare processi | `Get-Process` | `ps`, `top`, `htop` |
-   | Visualizzare servizi | `Get-Service` | `rc-status`, `systemctl` |
+   | Visualizzare servizi | `Get-Service` | `rc-status` |
    | Terminare un processo | `Stop-Process` | `kill`, `pkill` |
-   | Avviare un servizio | `Start-Service` | `rc-service`, `systemctl` |
-   | Porte in ascolto | `Get-NetTCPConnection` | `netstat`, `ss` |
+   | Avviare un servizio | `Start-Service` | `rc-service` |
+   | Porte in ascolto | `Get-NetTCPConnection` | `ss` |
 
 2. Discutere le differenze e le similitudini:
    - Windows utilizza un modello di servizi centralizzato (SCM)

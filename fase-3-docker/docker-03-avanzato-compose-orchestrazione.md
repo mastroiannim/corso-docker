@@ -248,7 +248,7 @@ docker run -p 127.0.0.1:80:80 nginx
 
 #### Applicazione delle Modifiche:
 ```bash
-sudo systemctl restart docker
+rc-service docker restart
 ```
 
 ### Gestione delle Risorse
@@ -340,10 +340,8 @@ docker inspect container_name
    - Pulire cache e file temporanei nello stesso layer
    - Esempio:
      ```dockerfile
-     RUN apt-get update && \
-         apt-get install -y --no-install-recommends package1 package2 && \
-         apt-get clean && \
-         rm -rf /var/lib/apt/lists/*
+   RUN apk add --no-cache package1 package2 && \
+     rm -rf /var/cache/apk/*
      ```
 
 4. **Utilizzare .dockerignore:**

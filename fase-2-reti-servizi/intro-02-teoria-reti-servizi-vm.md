@@ -90,7 +90,7 @@ Oltre agli indirizzi IP, la comunicazione di rete si basa su porte e protocolli:
 **Attività**:
 1. Identificare il proprio indirizzo IP locale:
    - Windows: `ipconfig`
-   - Linux/macOS: `ifconfig` o `ip addr`
+  - Linux/macOS: `ip addr`
 2. Identificare il proprio indirizzo IP pubblico:
    - Visitare un sito come whatismyip.com
 3. Testare la connettività con il comando `ping`:
@@ -200,11 +200,11 @@ Esistono diversi comandi per diagnosticare problemi di rete:
 - **Output**: Contenuto della risposta o file scaricato
 - **Esempio**: `curl -I https://example.com` (solo header)
 
-#### `netstat`:
+#### `ss`:
 - **Funzione**: Mostra connessioni di rete attive
-- **Utilizzo**: `netstat -tuln`
+- **Utilizzo**: `ss -tuln`
 - **Output**: Lista di porte in ascolto e connessioni stabilite
-- **Esempio**: `netstat -tuln | grep LISTEN`
+- **Esempio**: `ss -tuln`
 
 ### Monitoraggio del Traffico di Rete
 Per analisi più approfondite, esistono strumenti specializzati:
@@ -241,7 +241,7 @@ Per analisi più approfondite, esistono strumenti specializzati:
    - Verificare la velocità di download con `curl -o /dev/null URL`
 
 3. **Scenario 3: "Accesso bloccato"**
-   - Verificare se il servizio è in ascolto con `netstat`
+  - Verificare se il servizio è in ascolto con `ss`
    - Controllare se il firewall blocca la connessione
    - Testare con diversi protocolli e porte
 
@@ -290,7 +290,7 @@ Nel sistema operativo, applicazioni e servizi sono rappresentati come processi:
   - Nessun terminale di controllo
   - Nomi spesso terminanti con "d" in Linux (httpd, sshd)
 - **Gestione**:
-  - Linux (systemd): `systemctl start/stop/status servizio`
+  - Linux (OpenRC su Alpine): `rc-service <servizio> start|stop|status`
   - Windows: Services Manager
 
 ### Dipendenze Software
@@ -309,7 +309,7 @@ Le applicazioni e i servizi raramente funzionano in isolamento:
 #### Gestori di Pacchetti:
 - **Funzione**: Installano, aggiornano e rimuovono software gestendo le dipendenze
 - **Esempi**:
-  - Linux: apt (Debian/Ubuntu), yum/dnf (Red Hat/Fedora), apk (Alpine)
+  - Linux: apk (Alpine), yum/dnf (Red Hat/Fedora), pacman (Arch)
   - macOS: Homebrew, MacPorts
   - Windows: Windows Store, Chocolatey
   - Linguaggi di programmazione: npm (Node.js), pip (Python)
@@ -325,7 +325,7 @@ Le applicazioni e i servizi raramente funzionano in isolamento:
 
 **Attività**:
 1. Identificare i servizi in esecuzione sul sistema:
-   - Linux: `systemctl list-units --type=service --state=running`
+  - Linux: `rc-status`
    - Windows: Services Manager
 2. Analizzare le dipendenze di un'applicazione:
    - Linux: `ldd /path/to/executable`

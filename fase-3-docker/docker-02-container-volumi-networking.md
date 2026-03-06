@@ -56,7 +56,7 @@ FROM <immagine>:<tag>
 ```
 - Definisce l'immagine base
 - Deve essere la prima istruzione (eccetto ARG)
-- Esempi: `FROM ubuntu:20.04`, `FROM node:14-alpine`
+- Esempi: `FROM alpine:3.20`, `FROM node:20-alpine`
 
 #### RUN:
 ```dockerfile
@@ -66,7 +66,7 @@ RUN ["eseguibile", "param1", "param2"]
 ```
 - Esegue comandi durante la build
 - Crea un nuovo layer nell'immagine
-- Esempi: `RUN apt-get update && apt-get install -y nginx`, `RUN ["pip", "install", "flask"]`
+- Esempi: `RUN apk add --no-cache nginx`, `RUN ["pip", "install", "flask"]`
 
 #### COPY e ADD:
 ```dockerfile
@@ -129,7 +129,7 @@ ENTRYPOINT ["eseguibile", "param1", "param2"]
 #### Sicurezza:
 - Evitare di esporre informazioni sensibili
 - Non eseguire container come root quando possibile
-- Usare `--no-install-recommends` con apt-get
+- Usare `apk add --no-cache` per evitare cache e pacchetti superflui
 - Scansionare le immagini per vulnerabilità
 
 #### Esempio di Dockerfile Ottimizzato:
