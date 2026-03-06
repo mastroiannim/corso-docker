@@ -33,7 +33,8 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 - Conoscenze acquisite nella Sessione Introduttiva 1 e relativa esercitazione
 
 ### Durata
-3 ore e 45 minuti di laboratorio (versione completa)
+- **Percorso core (consigliato)**: 2h-2h30
+- **Percorso esteso (versione completa)**: 3h45
 
 ### Obiettivi di Apprendimento
 - Comprendere i concetti fondamentali di reti informatiche
@@ -41,6 +42,23 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 - Esplorare il modello client-server attraverso esempi pratici
 - Analizzare applicazioni e servizi in esecuzione
 - Sperimentare con la virtualizzazione come ponte verso i container
+
+## 🚀 Percorso core (rete essenziale per Docker)
+
+Per coerenza con la teoria essenziale della Sessione 2, in classe usa questo percorso minimo:
+
+1. `1.2 Analisi della Configurazione di Rete in Alpine Linux`
+2. `2.2 Strumenti di Diagnostica in Alpine Linux`
+3. `3.1 Implementazione di un Server Web Semplice`
+4. `4.2 Analisi dei Processi in Alpine Linux`
+5. `5.2 Da VM a Container: Un'Anteprima`
+6. `5.3 Esercizio Finale: Preparazione per Docker`
+
+Ogni blocco va chiuso con comando di verifica e output atteso.
+
+## Percorso esteso (opzionale)
+
+Le sezioni Windows (`1.1`, `2.1`, `3.2`, `4.1`) restano disponibili come confronto piattaforme o recupero individuale.
 
 ## Parte 1: Concetti Fondamentali di Reti (45 minuti)
 

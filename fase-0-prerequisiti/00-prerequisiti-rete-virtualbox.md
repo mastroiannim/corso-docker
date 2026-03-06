@@ -53,7 +53,12 @@ Al termine di questa esercitazione, gli studenti saranno in grado di:
 
 ### Tempistiche
 
-L'esercitazione è progettata per essere completata in circa 3 ore, suddivise come segue:
+L'esercitazione può essere svolta in due modalità:
+
+- **Percorso core (consigliato in classe)**: 75-90 minuti
+- **Percorso esteso (approfondimento completo)**: circa 3 ore
+
+Percorso esteso suddiviso come segue:
 
 - Preparazione dell'ambiente: 30 minuti
 - Scenario 1 (Modalità NAT): 30 minuti
@@ -61,6 +66,17 @@ L'esercitazione è progettata per essere completata in circa 3 ore, suddivise co
 - Scenario 3 (Modalità Host-Only): 30 minuti
 - Scenario 4 (Modalità Internal Network): 45 minuti
 - Troubleshooting e riflessioni finali: 15 minuti
+
+## 🚀 Percorso core (consigliato in classe)
+
+Per mantenere il focus sul percorso Docker, in laboratorio standard esegui solo:
+
+1. **Preparazione ambiente (sintesi)**
+2. **Scenario 1: NAT**
+3. **Scenario 2: Bridge**
+4. **Troubleshooting** (solo se necessario)
+
+Gli scenari **Host-Only** e **Internal Network** restano utili come approfondimento opzionale.
 
 ## Preparazione dell'Ambiente (Sintesi)
 
@@ -500,6 +516,10 @@ In questo esercizio, creeremo una seconda VM in modalità Bridge e testeremo la 
 - Maggiore esposizione della VM a potenziali minacce di rete
 - Può causare conflitti di indirizzi IP se non configurata correttamente
 - Non funziona in alcune reti wireless con isolamento client
+
+## Percorso esteso (opzionale)
+
+Le sezioni seguenti ampliano il laboratorio ma non sono necessarie per avviare la fase Docker.
 
 ## Scenario 3: Modalità Host-Only
 

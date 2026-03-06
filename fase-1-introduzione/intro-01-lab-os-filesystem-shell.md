@@ -32,7 +32,8 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 - Conoscenze di base sull'uso del computer
 
 ### Durata
-3 ore e 45 minuti di laboratorio (versione completa)
+- **Percorso core (consigliato)**: 1h45-2h15
+- **Percorso esteso (versione completa)**: 3h45
 
 ### Obiettivi di Apprendimento
 - Confrontare i terminali Windows e Linux
@@ -40,6 +41,26 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 - Eseguire comandi di base per la gestione di file e directory
 - Comprendere le differenze tra i due sistemi operativi
 - Preparare l'ambiente per le future esercitazioni su Docker
+
+## 🚀 Percorso core (pre-Docker, consigliato)
+
+Per mantenere il laboratorio snello e centrato sul percorso Docker:
+
+1. Esegui il setup iniziale dal modulo dedicato [Setup Ambiente di Lavoro](../fase-0-prerequisiti/00-lab-setup-ambiente.md)
+2. In questo modulo, lavora **prima su Alpine Linux** (terminale, filesystem, file/directory)
+3. Usa i blocchi Windows come confronto rapido o recupero
+4. Chiudi sempre con un checkpoint pratico (comandi eseguiti + output verificato)
+
+### Sequenza minima consigliata
+
+- `2.2 Terminale Linux (Alpine)`
+- `3.2 Filesystem Linux`
+- `4.2 Gestione File in Linux`
+- `5.1 Progetto "Preparazione Ambiente Docker"` (solo parte Linux)
+
+## Percorso esteso (opzionale)
+
+La versione completa include anche tutti i confronti dettagliati Windows (CMD/PowerShell) utili come approfondimento.
 
 ## Parte 1: Configurazione dell'Ambiente di Lavoro (45 minuti)
 
