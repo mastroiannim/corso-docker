@@ -9,83 +9,54 @@ Nessun prerequisito — questo è il primo sotto-modulo del corso.
 ### 🎯 Obiettivi di questo modulo
 
 Al termine saprai:
-- Spiegare cos'è un sistema operativo e le sue funzioni principali
-- Distinguere tra i principali sistemi operativi (Windows, macOS, Linux)
-- Comprendere perché Linux è fondamentale per Docker
+- Spiegare il ruolo operativo di un sistema operativo
+- Collegare kernel, processi e filesystem al funzionamento dei container
+- Comprendere perché Linux è la base tecnica di Docker
 
 ---
 
-# Modulo 1a: Sistemi Operativi e Kernel
+# Modulo 1a: Sistemi Operativi e Kernel (essenziale)
 
-## Cos'è un Sistema Operativo?
+## Cosa serve sapere per il percorso Docker
 
-Un sistema operativo è il software fondamentale che gestisce tutte le risorse hardware e software di un computer. Possiamo pensarlo come il "direttore d'orchestra" del computer, che coordina tutte le attività e assegna le risorse ai vari programmi.
+Un sistema operativo gestisce risorse hardware e software. Per il corso ci interessano soprattutto tre aspetti:
 
-### Funzioni Principali di un Sistema Operativo:
-- **Gestione dell'hardware**: Controlla e coordina i dispositivi fisici (CPU, memoria, dischi, periferiche)
-- **Gestione della memoria**: Alloca e libera la memoria RAM per i programmi
-- **Gestione dei processi**: Avvia, monitora e termina i programmi in esecuzione
-- **Gestione del filesystem**: Organizza e gestisce l'accesso ai dati memorizzati
-- **Interfaccia utente**: Fornisce un modo per interagire con il computer
+- **Kernel**: coordina CPU, memoria, processi e I/O
+- **Filesystem**: organizza i dati in directory/file
+- **Processi**: esecuzione dei programmi e dei servizi
 
-## Principali Sistemi Operativi
+Docker si appoggia a questi meccanismi Linux per isolare i container.
 
-Esistono diversi sistemi operativi, ciascuno con caratteristiche specifiche:
+## Focus didattico su Linux
 
-### Windows
-- Sviluppato da Microsoft
-- Interfaccia grafica intuitiva
-- Ampia compatibilità con software commerciale
-- Predominante nei computer desktop aziendali e personali
+- I container Docker usano funzionalità del kernel Linux
+- Alpine Linux è l'ambiente base del corso
+- Sapere usare shell + filesystem Linux è prerequisito diretto per Docker
 
-### macOS
-- Sviluppato da Apple
-- Interfaccia elegante e coerente
-- Ottimizzato per l'hardware Apple
-- Popolare tra professionisti creativi
+## Checkpoint rapido
 
-### Linux
-- Open source e gratuito
-- Altamente personalizzabile
-- Disponibile in molte distribuzioni (Ubuntu, Fedora, Debian, Alpine, ecc.)
-- Predominante nei server e nei sistemi embedded
-- **Fondamentale per Docker**: Docker è basato sul kernel Linux
+Esegui su Alpine Linux:
 
-## Focus su Linux
+```bash
+uname -s
+uname -r
+ps aux | head
+```
 
-Linux merita un'attenzione particolare perché:
-- È la base per la maggior parte dei server web
-- Il kernel Linux fornisce le funzionalità che rendono possibili i container
-- Docker è nato su Linux e sfrutta le sue caratteristiche native
-- Alpine Linux (che gli studenti utilizzeranno) è una distribuzione Linux leggera e sicura
+**Output atteso**:
+- `uname -s` restituisce `Linux`
+- `uname -r` mostra la versione del kernel
+- `ps aux | head` mostra processi attivi (inclusi processi di sistema)
 
-## Esercizio Pratico: Esplorazione del Sistema Operativo
+## Rinvio operativo
 
-**Obiettivo**: Familiarizzare con i componenti visibili del sistema operativo
+Per la pratica completa di shell/filesystem:
+- [Lab Sessione 1](intro-01-lab-os-filesystem-shell.md)
 
-**Attività**:
-1. Identificare il sistema operativo in uso
-2. Esplorare il menu principale e le impostazioni di sistema
-3. Trovare informazioni sul sistema (versione, memoria, processore)
-4. Identificare dove si trovano i programmi installati
-5. Discutere le differenze tra i sistemi operativi conosciuti
+## Approfondimento opzionale (archivio)
 
-## 📝 Quiz di Verifica
-
-1. **Qual è il ruolo principale di un sistema operativo?**
-   - a) Navigare su internet
-   - b) Gestire le risorse hardware e software del computer ✅
-   - c) Creare documenti di testo
-
-2. **Perché Linux è importante per Docker?**
-   - a) Perché è gratuito
-   - b) Perché Docker è basato sul kernel Linux e sfrutta le sue funzionalità native ✅
-   - c) Perché è più veloce di Windows
-
-3. **Cosa significa "open source"?**
-   - a) Che il software è gratis ma non modificabile
-   - b) Che il codice sorgente è disponibile e modificabile da chiunque ✅
-   - c) Che funziona solo su internet
+Versione estesa originale del modulo:
+- [Modulo 1a esteso (archivio)](../docs/archivio/intro-01a-sistemi-operativi-esteso.md)
 
 ---
 
