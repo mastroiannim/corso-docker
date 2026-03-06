@@ -5,9 +5,11 @@
 ### ✅ Prerequisiti
 
 Prima di iniziare questo modulo devi aver completato:
+- [ ] **[Setup Ambiente di Lavoro](../fase-0-prerequisiti/00-lab-setup-ambiente.md)** ← OBBLIGATORIO (Docker già installato!)
 - [ ] [Sessione Introduttiva 1 — Teoria](../fase-1-introduzione/intro-01-teoria-os-filesystem-shell.md)
 - [ ] [Sessione Introduttiva 2 — Teoria](../fase-2-reti-servizi/intro-02-teoria-reti-servizi-vm.md)
-- [ ] [Lab Modalità di Rete VirtualBox](../fase-0-prerequisiti/00-prerequisiti-rete-virtualbox.md)
+
+**Nota**: Se hai completato il setup ambiente, Docker è già installato e funzionante nella tua VM Alpine.
 
 ### 🎯 Obiettivi di questo modulo
 

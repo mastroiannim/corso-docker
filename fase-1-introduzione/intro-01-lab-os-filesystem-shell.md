@@ -5,7 +5,10 @@
 ### ✅ Prerequisiti
 
 Prima di iniziare questo modulo devi aver completato:
+- [ ] **[Setup Ambiente di Lavoro](../fase-0-prerequisiti/00-lab-setup-ambiente.md)** ← OBBLIGATORIO
 - [ ] [Sessione Introduttiva 1 — Teoria](intro-01-teoria-os-filesystem-shell.md)
+
+**Nota**: Il setup ambiente installa e configura VirtualBox, Alpine Linux, Docker e tutti gli strumenti necessari.
 
 ### 🎯 Obiettivi di questo modulo
 

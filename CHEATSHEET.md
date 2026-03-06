@@ -4,7 +4,73 @@
 
 ---
 
-## 🐧 Shell Linux
+## � Setup Iniziale dell'Ambiente
+
+### Installazione Alpine Linux
+
+| Comando / Azione | Descrizione |
+|-------------------|-------------|
+| `setup-alpine` | Avvia la procedura guidata di installazione di Alpine |
+| `setup-keymap` | Configura il layout della tastiera |
+| `passwd root` | Cambia la password di root |
+
+### Comandi di base per il setup
+
+| Comando | Descrizione |
+|---------|-------------|
+| `apk update` | Aggiorna la lista dei pacchetti disponibili |
+| `apk add pacchetto` | Installa un pacchetto |
+| `apk upgrade` | Aggiorna tutti i pacchetti installati |
+| `ip addr show eth0` | Mostra l'indirizzo IP dell'interfaccia eth0 |
+| `ssh root@192.168.X.X` | Connessione SSH alla VM (da Windows) |
+| `ping -c 4 google.com` | Testa la connettività Internet |
+| `hostname` | Mostra il nome del sistema |
+| `whoami` | Mostra l'utente corrente |
+| `uname -a` | Mostra informazioni sul sistema |
+| `df -h` | Mostra lo spazio su disco |
+
+### Servizi essenziali
+
+| Comando | Descrizione |
+|---------|-------------|
+| `service sshd start` | Avvia il servizio SSH |
+| `service sshd status` | Verifica lo stato del servizio SSH |
+| `rc-update add sshd` | Abilita SSH all'avvio automatico |
+| `service docker start` | Avvia il servizio Docker |
+| `rc-update add docker boot` | Abilita Docker all'avvio automatico |
+
+### Strumenti di sviluppo
+
+| Comando | Descrizione |
+|---------|-------------|
+| `apk add nano` | Installa l'editor di testo nano |
+| `apk add git` | Installa Git |
+| `apk add bash bash-completion` | Installa Bash e il completamento automatico |
+| `apk add docker docker-cli-compose` | Installa Docker e Docker Compose |
+| `apk add curl wget bind-tools htop` | Installa strumenti di rete e monitoring |
+| `chsh -s /bin/bash` | Cambia la shell predefinita a Bash |
+
+### Configurazione Bash
+
+| Comando | Descrizione |
+|---------|-------------|
+| `echo 'export EDITOR=nano' >> ~/.bashrc` | Imposta nano come editor predefinito |
+| `source ~/.bashrc` | Ricarica la configurazione Bash |
+| `git config --global user.name "Nome"` | Configura il nome utente per Git |
+| `git config --global user.email "email"` | Configura l'email per Git |
+
+### Gestione VM (VirtualBox)
+
+| Comando / Azione | Descrizione |
+|-------------------|-------------|
+| `poweroff` | Spegne la VM Alpine |
+| `reboot` | Riavvia la VM Alpine |
+| **Istantanee** → **Crea** | Crea uno snapshot della VM (da VirtualBox) |
+| **Dispositivi** → **Unità ottiche** → **Rimuovi disco** | Rimuove l'ISO dal lettore virtuale |
+
+---
+
+## �🐧 Shell Linux
 
 | Comando | Descrizione |
 |---------|-------------|

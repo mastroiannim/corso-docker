@@ -15,6 +15,8 @@ Il corso è strutturato in tre fasi principali:
 ### Percorso Consigliato
 
 ```
+[Setup Ambiente] ← INIZIA QUI
+        ↓
 [Sessione Teoria 1] → [Slide 1] → [Lab 1]
         ↓
 [Sessione Teoria 2] → [Slide 2] → [Lab VirtualBox] → [Lab 2]
@@ -35,6 +37,39 @@ Gli studenti avranno a disposizione:
 - VirtualBox installato
 - Immagine ISO di Alpine Linux
 - Accesso alla VM Alpine Linux tramite SSH
+
+---
+
+## Fase 0: Setup dell'Ambiente di Lavoro
+
+### 🚀 Laboratorio: Setup Completo dell'Ambiente (90-120 minuti)
+
+**⚠️ INIZIA QUI** — Questo è il primo passo obbligatorio del corso.
+
+**Obiettivo**: Configurare passo-passo tutto l'ambiente di lavoro necessario per seguire il corso Docker, partendo da zero.
+
+**Cosa configurerai**:
+- ✅ VirtualBox sul tuo computer Windows
+- ✅ Alpine Linux in una macchina virtuale
+- ✅ Rete funzionante per comunicare con la VM
+- ✅ Accesso SSH da Windows alla VM
+- ✅ Docker e tutti gli strumenti necessari (editor, git, bash)
+
+**Prerequisiti**: NESSUNO — questa è la base di partenza.
+
+**Materiali**:
+- **[📖 Laboratorio: Setup Ambiente](fase-0-prerequisiti/00-lab-setup-ambiente.md)** ← INIZIA DA QUI
+
+**Nota**: Questo laboratorio non richiede conoscenze pregresse di Linux o virtualizzazione. Ogni passo è spiegato in dettaglio.
+
+### Approfondimento: Configurazione Rete VirtualBox (opzionale)
+
+Dopo aver completato il setup base, puoi approfondire le diverse modalità di rete disponibili in VirtualBox.
+
+**Materiali**:
+- [Modalità di Rete in VirtualBox](fase-0-prerequisiti/00-prerequisiti-rete-virtualbox.md)
+
+---
 
 ## Fase Preliminare: Allineamento delle Conoscenze
 

@@ -5,8 +5,11 @@
 ### ✅ Prerequisiti
 
 Prima di iniziare questo modulo devi aver completato:
+- [ ] **[Setup Ambiente di Lavoro](../fase-0-prerequisiti/00-lab-setup-ambiente.md)** ← OBBLIGATORIO
 - [ ] [Sessione Introduttiva 2 — Teoria](intro-02-teoria-reti-servizi-vm.md)
-- [ ] [Lab Modalità di Rete VirtualBox](../fase-0-prerequisiti/00-prerequisiti-rete-virtualbox.md)
+- [ ] [Lab Modalità di Rete VirtualBox](../fase-0-prerequisiti/00-prerequisiti-rete-virtualbox.md) ← Approfondimento opzionale
+
+**Nota**: Il setup ambiente configura la rete in modalità bridge, sufficiente per questo laboratorio.
 
 ### 🎯 Obiettivi di questo modulo
 

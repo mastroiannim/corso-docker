@@ -1,12 +1,15 @@
 ## 📍 Navigazione
 
-**Fase**: Preliminare  |  **Modulo**: 0  |  **Tipo**: Lab
+**Fase**: Preliminare  |  **Modulo**: 0  |  **Tipo**: Lab (Approfondimento)
 
 ### ✅ Prerequisiti
 
 Prima di iniziare questo modulo devi aver completato:
+- [ ] **[Setup Ambiente di Lavoro](00-lab-setup-ambiente.md)** ← OBBLIGATORIO
 - [ ] [Sessione Introduttiva 1 — Teoria](../fase-1-introduzione/intro-01-teoria-os-filesystem-shell.md)
 - [ ] [Sessione Introduttiva 2 — Teoria](../fase-2-reti-servizi/intro-02-teoria-reti-servizi-vm.md)
+
+**Nota**: Questo modulo è un **approfondimento opzionale** sulle modalità di rete di VirtualBox. Il setup base è già coperto nel laboratorio di setup ambiente.
 
 ### 🎯 Obiettivi di questo modulo
 
