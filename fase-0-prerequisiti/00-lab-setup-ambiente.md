@@ -659,6 +659,44 @@ Per seguire il corso hai bisogno di:
 - **bash**: una shell più avanzata rispetto a `ash` (quella predefinita di Alpine)
 - **sudo**: per eseguire comandi come amministratore (utile per il futuro)
 
+### Step 6.0 — Verifica repository Alpine su HTTPS (obbligatorio in laboratorio)
+
+In alcuni laboratori scolastici il traffico `http` è bloccato per sicurezza. Prima di aggiornare i pacchetti, verifica che Alpine usi solo repository `https`.
+
+1. Controlla il contenuto attuale del file repository:
+
+```bash
+cat /etc/apk/repositories
+```
+
+2. Se vedi righe che iniziano con `http://`, fai prima una copia di sicurezza:
+
+```bash
+cp /etc/apk/repositories /etc/apk/repositories.bak
+```
+
+3. Sostituisci automaticamente `http://` con `https://`:
+
+```bash
+sed -i 's|^http://|https://|g' /etc/apk/repositories
+```
+
+4. Verifica che non ci siano più URL in `http`:
+
+```bash
+grep -nE '^http://|^https://' /etc/apk/repositories
+```
+
+**Output atteso** (esempio):
+```
+1:https://dl-cdn.alpinelinux.org/alpine/v3.XX/main
+2:https://dl-cdn.alpinelinux.org/alpine/v3.XX/community
+```
+
+✅ **Checkpoint 6.0**: Se tutte le righe repository iniziano con `https://`, puoi proseguire.
+
+---
+
 ### Step 6.1 — Aggiornamento lista pacchetti
 
 Prima di installare qualsiasi software, aggiorna la lista dei pacchetti disponibili:
@@ -1066,6 +1104,33 @@ setup-alpine
 - In VirtualBox, Impostazioni → Rete
 - Prova a cambiare da "Scheda con bridge" a "NAT Network"
 - Riavvia la VM e riprova
+
+### Problema 2-bis: `apk update` fallisce perché i repository usano HTTP
+
+**Sintomo**: `apk update` mostra errori di fetch oppure timeout quando prova URL `http://...`
+
+**Causa tipica in laboratorio**: il firewall consente solo traffico `https`.
+
+**Soluzione passo passo**:
+
+```bash
+# 1) Controlla repository attuali
+cat /etc/apk/repositories
+
+# 2) Backup file
+cp /etc/apk/repositories /etc/apk/repositories.bak
+
+# 3) Converti http -> https
+sed -i 's|^http://|https://|g' /etc/apk/repositories
+
+# 4) Verifica e aggiorna indice
+grep -nE '^http://|^https://' /etc/apk/repositories
+apk update
+```
+
+**Output atteso**: righe `fetch https://...` e messaggio finale `OK: ... distinct packages available`.
+
+Se anche con `https` non funziona, segnala al tecnico di laboratorio un possibile blocco verso `dl-cdn.alpinelinux.org`.
 
 ### Problema 3: Ping da Windows alla VM fallisce
 
