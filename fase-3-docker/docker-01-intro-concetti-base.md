@@ -170,23 +170,32 @@ La containerizzazione è una tecnologia di virtualizzazione a livello di sistema
 - Conoscenza base dei comandi Linux
 
 #### Passi per l'Installazione:
-1. Aggiornare i repository:
+1. Verificare che i repository Alpine usino HTTPS (obbligatorio in laboratorio):
+   ```bash
+   cat /etc/apk/repositories
+   cp /etc/apk/repositories /etc/apk/repositories.bak
+   sed -i 's|^http://|https://|g' /etc/apk/repositories
+   grep -nE '^http://|^https://' /etc/apk/repositories
+   ```
+   Output atteso: tutte le righe dei repository iniziano con `https://`
+
+2. Aggiornare i repository:
    ```bash
    apk update
    ```
 
-2. Installare Docker:
+3. Installare Docker:
    ```bash
    apk add docker
    ```
 
-3. Abilitare e avviare il servizio Docker:
+4. Abilitare e avviare il servizio Docker:
    ```bash
    rc-update add docker default
    rc-service docker start
    ```
 
-4. Verificare l'installazione:
+5. Verificare l'installazione:
    ```bash
    docker --version
    docker info

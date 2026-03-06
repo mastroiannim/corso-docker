@@ -110,26 +110,35 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
    reboot
    ```
 
-7. Dopo il riavvio, accedere come root e installare alcuni pacchetti utili:
+7. Dopo il riavvio, verificare che i repository Alpine usino HTTPS (obbligatorio in laboratorio):
+   ```
+   cat /etc/apk/repositories
+   cp /etc/apk/repositories /etc/apk/repositories.bak
+   sed -i 's|^http://|https://|g' /etc/apk/repositories
+   grep -nE '^http://|^https://' /etc/apk/repositories
+   ```
+   Output atteso: tutte le righe dei repository iniziano con `https://`
+
+8. Accedere come root e installare alcuni pacchetti utili:
    ```
    apk update
    apk add bash vim nano less grep
    ```
 
-8. Creare un utente non privilegiato per le esercitazioni:
+9. Creare un utente non privilegiato per le esercitazioni:
    ```
    adduser studente
    ```
    (Seguire le istruzioni per impostare la password)
 
-9. Aggiungere l'utente al gruppo wheel per consentire l'uso di sudo:
+10. Aggiungere l'utente al gruppo wheel per consentire l'uso di sudo:
    ```
    apk add sudo
    echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel
    addgroup studente wheel
    ```
 
-10. Verificare che tutto funzioni correttamente:
+11. Verificare che tutto funzioni correttamente:
     - Disconnettersi: `exit`
     - Accedere come "studente"
     - Provare un comando sudo: `sudo ls /root`

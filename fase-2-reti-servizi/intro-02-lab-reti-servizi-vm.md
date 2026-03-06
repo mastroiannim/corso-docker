@@ -193,41 +193,50 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 **Obiettivo**: Utilizzare gli strumenti di diagnostica di rete disponibili in Linux.
 
 **Attività**:
-1. Installare gli strumenti necessari:
+1. Verificare che i repository Alpine usino HTTPS (obbligatorio in laboratorio):
+   ```bash
+   cat /etc/apk/repositories
+   sudo cp /etc/apk/repositories /etc/apk/repositories.bak
+   sudo sed -i 's|^http://|https://|g' /etc/apk/repositories
+   grep -nE '^http://|^https://' /etc/apk/repositories
+   ```
+   Output atteso: tutte le righe dei repository iniziano con `https://`
+
+2. Installare gli strumenti necessari:
    ```bash
    sudo apk update
    sudo apk add iputils bind-tools traceroute
    ```
 
-2. Testare la connettività con ping:
+3. Testare la connettività con ping:
    ```bash
    ping -c 4 www.google.com
    ping -c 4 8.8.8.8
    ```
 
-3. Tracciare il percorso di rete:
+4. Tracciare il percorso di rete:
    ```bash
    traceroute www.google.com
    ```
 
-4. Risolvere nomi DNS:
+5. Risolvere nomi DNS:
    ```bash
    dig www.google.com
    nslookup www.google.com
    ```
 
-5. Verificare le porte aperte:
+6. Verificare le porte aperte:
    ```bash
    nc -zv www.google.com 80
    nc -zv www.google.com 443
    ```
 
-6. Analizzare le statistiche di rete:
+7. Analizzare le statistiche di rete:
    ```bash
    ss -tuln
    ```
 
-7. Creare un file di report con i risultati:
+8. Creare un file di report con i risultati:
    ```bash
    echo "Report Diagnostica di Rete Linux" > ~/LabDocker/network_diagnostics_linux.txt
    echo "===============================" >> ~/LabDocker/network_diagnostics_linux.txt
