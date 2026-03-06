@@ -182,8 +182,8 @@ La containerizzazione è una tecnologia di virtualizzazione a livello di sistema
 
 3. Abilitare e avviare il servizio Docker:
    ```bash
-   rc-update add docker boot
-   service docker start
+   rc-update add docker default
+   rc-service docker start
    ```
 
 4. Verificare l'installazione:
@@ -208,7 +208,7 @@ La containerizzazione è una tecnologia di virtualizzazione a livello di sistema
 
 - Riavviare il servizio Docker:
   ```bash
-  service docker restart
+   rc-service docker restart
   ```
 
 #### Configurazione Avanzata:

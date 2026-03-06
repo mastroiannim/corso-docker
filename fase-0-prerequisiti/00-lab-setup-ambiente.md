@@ -774,13 +774,13 @@ OK: XXX MiB in XX packages
 
 **Avvia il servizio Docker**:
 ```bash
-rc-update add docker boot
-service docker start
+rc-update add docker default
+rc-service docker start
 ```
 
 **Output atteso**:
 ```
- * service docker added to runlevel boot
+ * service docker added to runlevel default
  * Caching service dependencies ...
  * Starting docker ...
 ```
@@ -1122,7 +1122,7 @@ netstat -tlnp | grep :22
 
 ### Problema 5: Docker non si avvia
 
-**Sintomo**: `service docker start` fallisce.
+**Sintomo**: `rc-service docker start` fallisce.
 
 **Soluzione**:
 
@@ -1139,7 +1139,7 @@ modprobe br_netfilter
 
 3. Riavvia il servizio:
 ```bash
-service docker restart
+rc-service docker restart
 ```
 
 ### Problema 6: "docker run hello-world" dà errore di permessi
@@ -1149,8 +1149,8 @@ service docker restart
 **Soluzione**:
 Assicurati che il servizio Docker sia in esecuzione:
 ```bash
-service docker status
-service docker start  # se non è attivo
+rc-service docker status
+rc-service docker start  # se non è attivo
 ```
 
 Se il problema persiste:
@@ -1238,8 +1238,8 @@ reboot -f
 | `ssh <user>@<host>` | Connessione SSH | `ssh root@192.168.1.150` |
 | `docker --version` | Mostra versione Docker | `docker --version` |
 | `docker run <immagine>` | Esegue un container | `docker run hello-world` |
-| `service <servizio> start` | Avvia un servizio | `service docker start` |
-| `rc-update add <srv> boot` | Abilita avvio automatico | `rc-update add docker boot` |
+| `rc-service <servizio> start` | Avvia un servizio | `rc-service docker start` |
+| `rc-update add <srv> default` | Abilita avvio automatico | `rc-update add docker default` |
 | `poweroff` | Spegne il sistema | `poweroff` |
 | `reboot` | Riavvia il sistema | `reboot` |
 

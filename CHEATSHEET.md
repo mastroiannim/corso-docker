@@ -36,8 +36,8 @@
 | `service sshd start` | Avvia il servizio SSH |
 | `service sshd status` | Verifica lo stato del servizio SSH |
 | `rc-update add sshd` | Abilita SSH all'avvio automatico |
-| `service docker start` | Avvia il servizio Docker |
-| `rc-update add docker boot` | Abilita Docker all'avvio automatico |
+| `rc-service docker start` | Avvia il servizio Docker |
+| `rc-update add docker default` | Abilita Docker all'avvio automatico |
 
 ### Strumenti di sviluppo
 
