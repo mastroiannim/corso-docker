@@ -1,3 +1,22 @@
+## 📍 Navigazione
+
+**Fase**: Principale  |  **Modulo**: 3  |  **Tipo**: Lab
+
+### ✅ Prerequisiti
+
+Prima di iniziare questo modulo devi aver completato:
+- [ ] [Esercitazione 2 — Container, Volumi e Networking](docker-02-container-volumi-networking.md)
+
+### 🎯 Obiettivi di questo modulo
+
+Al termine saprai:
+- Configurare reti Docker avanzate (bridge custom, overlay)
+- Ottimizzare immagini Docker con multi-stage build
+- Usare Docker Compose per orchestrare applicazioni multi-servizio
+- Preparare il progetto finale
+
+---
+
 # Esercitazione 3: Docker Avanzato e Applicazioni Distribuite
 
 ## Panoramica dell'Esercitazione
@@ -593,5 +612,20 @@ docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
 #### Esempio di Configurazioni:
 ```yaml
 # docker-compose.yml (base)
-serv
+services:
+  web:
+    build: ./web
+    ports:
+      - "8080:80"
+```
+
+---
+
+## ➡️ Prossimi passi
+
+- **Continua con**: [Progetto Finale — Infrastruttura Ibrida](docker-04-progetto-finale.md)
+- **Approfondisci**: [Docker Compose Documentation](https://docs.docker.com/compose/)
+- **Hai dubbi?** Consulta [CHEATSHEET.md](../CHEATSHEET.md)
+
+↩ [Torna all'indice principale](../README.md)
 (Content truncated due to size limit. Use line ranges to read in chunks)

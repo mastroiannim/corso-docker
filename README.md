@@ -12,6 +12,18 @@ Il corso è strutturato in tre fasi principali:
 2. [**Fase Principale**](#fase-principale-docker-e-containerizzazione): Tre esercitazioni pratiche di 3 ore ciascuna su Docker e containerizzazione
 3. [**Fase Finale**](#fase-finale-progetto-applicativo): Un progetto applicativo che integra tutte le conoscenze acquisite
 
+### Percorso Consigliato
+
+```
+[Sessione Teoria 1] → [Slide 1] → [Lab 1]
+        ↓
+[Sessione Teoria 2] → [Slide 2] → [Lab VirtualBox] → [Lab 2]
+        ↓
+[Docker 1: Intro] → [Docker 2: Container] → [Docker 3: Compose]
+        ↓
+[PROGETTO FINALE: Infrastruttura Ibrida]
+```
+
 ### Target
 
 Il corso è rivolto a studenti di quarta superiore di un istituto tecnico industriale a indirizzo informatico, senza prerequisiti specifici. La fase preliminare è progettata per fornire le conoscenze di base necessarie per affrontare con successo la fase principale.
@@ -38,8 +50,15 @@ Gli studenti avranno a disposizione:
 - Comandi avanzati e recap
 
 **Materiali**:
-- [Slide Teoriche](./SLIDE_%20SESSIONE%20INTRODUTTIVA%201.md)
-- [Contenuto Teorico](./Sessione%20Introduttiva%201%20-%20Sistemi%20Operativi,%20Filesystem%20e%20Shell.md)
+- [Slide Teoriche](fase-1-introduzione/intro-01-slide-os-filesystem-shell.md)
+- [Contenuto Teorico](fase-1-introduzione/intro-01-teoria-os-filesystem-shell.md)
+
+**Sotto-moduli** (per studio progressivo):
+- [1a — Sistemi Operativi](fase-1-introduzione/intro-01a-sistemi-operativi.md)
+- [1b — Filesystem](fase-1-introduzione/intro-01b-filesystem.md)
+- [1c — Shell Base](fase-1-introduzione/intro-01c-shell-base.md)
+- [1d — Shell Avanzata](fase-1-introduzione/intro-01d-shell-avanzata.md)
+- [1e — Recap e Connessioni](fase-1-introduzione/intro-01e-recap-connessioni.md)
 
 ### Esercitazione Pratica 1: Sistemi Operativi, Filesystem e Shell (3 ore)
 
@@ -53,7 +72,7 @@ Gli studenti avranno a disposizione:
 - Esercizio finale integrato
 
 **Materiali**:
-- [Esercitazione](Esercitazione%20Pratica%20di%20Laboratorio%20-%20Sessione%20Introduttiva%201.md)
+- [Esercitazione](fase-1-introduzione/intro-01-lab-os-filesystem-shell.md)
 
 ### Sessione Introduttiva 2: Reti, Applicazioni e Servizi (5 ore)
 
@@ -67,8 +86,8 @@ Gli studenti avranno a disposizione:
 - Introduzione alla virtualizzazione
 
 **Materiali**:
-- [Slide Teoriche](SLIDE_%20SESSIONE%20INTRODUTTIVA%202.md)
-- [Contenuto Teorico](Sessione%20Introduttiva%202%20-%20Reti,%20Applicazioni%20e%20Servizi.md)
+- [Slide Teoriche](fase-2-reti-servizi/intro-02-slide-reti-servizi-vm.md)
+- [Contenuto Teorico](fase-2-reti-servizi/intro-02-teoria-reti-servizi-vm.md)
 
 ### Esercitazione Pratica 2: Reti, Applicazioni e Servizi (3 ore)
 
@@ -82,13 +101,13 @@ Gli studenti avranno a disposizione:
 - Introduzione pratica alla virtualizzazione
 
 **Materiali**:
-- [Esercitazione](Esercitazione%20Pratica%20di%20Laboratorio%20-%20Sessione%20Introduttiva%202.md)
+- [Esercitazione](fase-2-reti-servizi/intro-02-lab-reti-servizi-vm.md)
 
 
 ## Fase Principale: Docker e Containerizzazione
 
 **Prerequisiti**:
-- [Modalità di Rete in VirtualBox](Esercitazione%20di%20Laboratorio%20-%20Modalità%20di%20Rete%20in%20VirtualBox%20con%20Alpine%20Linux.md)
+- [Modalità di Rete in VirtualBox](fase-0-prerequisiti/00-prerequisiti-rete-virtualbox.md)
 
 ### Esercitazione 1: Introduzione a Docker e Concetti Base (3 ore)
 
@@ -101,7 +120,7 @@ Gli studenti avranno a disposizione:
 - Primi passi con Docker
 
 **Materiali**:
-- [Esercitazione 1](Esercitazione%201%20-%20Introduzione%20a%20Docker%20e%20Concetti%20Base.md)
+- [Esercitazione 1](fase-3-docker/docker-01-intro-concetti-base.md)
 
 **Collegamenti con le Sessioni Introduttive**:
 - Utilizzo dei concetti di sistema operativo dalla Sessione 1
@@ -120,7 +139,7 @@ Gli studenti avranno a disposizione:
 - Applicazioni multi-container
 
 **Materiali**:
-- [Esercitazione 2](Esercitazione%202%20-%20Creazione%20e%20Gestione%20di%20Container%20Docker.md)
+- [Esercitazione 2](fase-3-docker/docker-02-container-volumi-networking.md)
 
 **Collegamenti con le Sessioni Introduttive**:
 - Utilizzo dei concetti di filesystem dalla Sessione 1
@@ -139,7 +158,7 @@ Gli studenti avranno a disposizione:
 - Preparazione al progetto finale
 
 **Materiali**:
-- [Esercitazione 3](Esercitazione%203%20-%20Docker%20Avanzato%20e%20Applicazioni%20Distribuite.md)
+- [Esercitazione 3](fase-3-docker/docker-03-avanzato-compose-orchestrazione.md)
 
 **Collegamenti con le Sessioni Introduttive**:
 - Applicazione avanzata dei concetti di rete dalla Sessione 2
@@ -161,6 +180,8 @@ Gli studenti avranno a disposizione:
 - Orchestrazione con Docker Compose
 - Test e ottimizzazione
 
+**Materiali**:
+- [Progetto Finale](fase-3-docker/docker-04-progetto-finale.md)
 
 **Collegamenti con le Sessioni Introduttive e le Esercitazioni**:
 - Integrazione di tutti i concetti visti nelle sessioni introduttive
@@ -169,9 +190,13 @@ Gli studenti avranno a disposizione:
 
 ## Risorse Aggiuntive
 
-### Documentazione
+### Riferimenti Rapidi
 
-- [Verifica di Coerenza e Completezza](Verifica%20di%20Coerenza%20e%20Completezza%20del%20Corso%20Ristrutturato.md)
+- [📋 CHEATSHEET — Comandi Rapidi](CHEATSHEET.md)
+
+### Documentazione Interna
+
+- [Verifica di Coerenza e Completezza](docs/INTERNAL-verifica-coerenza.md) *(uso interno)*
 
 ### Risorse Online
 
@@ -189,7 +214,7 @@ Un glossario completo dei termini tecnici è disponibile nella documentazione de
 1. Iniziare con le sessioni introduttive e le relative esercitazioni pratiche
 2. Procedere con le esercitazioni Docker in ordine
 3. Completare il corso con il progetto finale
-4. Utilizzare le risorse aggiuntive per approfondimenti
+4. Consultare la [CHEATSHEET](CHEATSHEET.md) per un riferimento rapido ai comandi
 
 ## Nota per i Docenti
 

@@ -1,3 +1,22 @@
+## 📍 Navigazione
+
+**Fase**: Principale  |  **Modulo**: 2  |  **Tipo**: Lab
+
+### ✅ Prerequisiti
+
+Prima di iniziare questo modulo devi aver completato:
+- [ ] [Esercitazione 1 — Introduzione a Docker](docker-01-intro-concetti-base.md)
+
+### 🎯 Obiettivi di questo modulo
+
+Al termine saprai:
+- Creare immagini Docker personalizzate con Dockerfile
+- Gestire la persistenza dei dati con volumi e bind mount
+- Configurare il networking di base tra container
+- Eseguire applicazioni multi-container
+
+---
+
 # Esercitazione 2: Creazione e Gestione di Container Docker
 
 ## Panoramica dell'Esercitazione
@@ -507,5 +526,19 @@ docker network connect my-custom-network container2
 
 #### Esempio Pratico:
 ```bash
-# Creare
+# Creare una rete e collegare i container
+docker network create app-net
+docker run -d --name web --network app-net nginx:alpine
+docker run -d --name api --network app-net alpine sleep 3600
+```
+
+---
+
+## ➡️ Prossimi passi
+
+- **Continua con**: [Esercitazione 3 — Docker Avanzato e Compose](docker-03-avanzato-compose-orchestrazione.md)
+- **Approfondisci**: [Docker Networking](https://docs.docker.com/network/)
+- **Hai dubbi?** Consulta [CHEATSHEET.md](../CHEATSHEET.md)
+
+↩ [Torna all'indice principale](../README.md)
 (Content truncated due to size limit. Use line ranges to read in chunks)

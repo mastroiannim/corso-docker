@@ -1,3 +1,24 @@
+## 📍 Navigazione
+
+**Fase**: Principale  |  **Modulo**: 1  |  **Tipo**: Lab
+
+### ✅ Prerequisiti
+
+Prima di iniziare questo modulo devi aver completato:
+- [ ] [Sessione Introduttiva 1 — Teoria](../fase-1-introduzione/intro-01-teoria-os-filesystem-shell.md)
+- [ ] [Sessione Introduttiva 2 — Teoria](../fase-2-reti-servizi/intro-02-teoria-reti-servizi-vm.md)
+- [ ] [Lab Modalità di Rete VirtualBox](../fase-0-prerequisiti/00-prerequisiti-rete-virtualbox.md)
+
+### 🎯 Obiettivi di questo modulo
+
+Al termine saprai:
+- Spiegare cos'è la containerizzazione e la differenza con la virtualizzazione
+- Descrivere l'architettura di Docker (client, daemon, registry)
+- Installare Docker su Alpine Linux
+- Eseguire i primi container e gestire immagini
+
+---
+
 # Esercitazione 1: Introduzione a Docker e Concetti Base
 
 ## Panoramica dell'Esercitazione
@@ -512,5 +533,16 @@ Questo comando:
    ```
 3. Visualizzare i dettagli dell'immagine:
    ```bash
-   docker inspect postgres:1
+   docker inspect postgres:13-alpine
+   ```
+
+---
+
+## ➡️ Prossimi passi
+
+- **Continua con**: [Esercitazione 2 — Container, Volumi e Networking](docker-02-container-volumi-networking.md)
+- **Approfondisci**: [Docker Documentation](https://docs.docker.com/get-started/)
+- **Hai dubbi?** Consulta [CHEATSHEET.md](../CHEATSHEET.md)
+
+↩ [Torna all'indice principale](../README.md)
 (Content truncated due to size limit. Use line ranges to read in chunks)

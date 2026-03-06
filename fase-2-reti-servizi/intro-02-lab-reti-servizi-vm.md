@@ -1,3 +1,23 @@
+## 📍 Navigazione
+
+**Fase**: Preliminare  |  **Modulo**: 2  |  **Tipo**: Lab
+
+### ✅ Prerequisiti
+
+Prima di iniziare questo modulo devi aver completato:
+- [ ] [Sessione Introduttiva 2 — Teoria](intro-02-teoria-reti-servizi-vm.md)
+- [ ] [Lab Modalità di Rete VirtualBox](../fase-0-prerequisiti/00-prerequisiti-rete-virtualbox.md)
+
+### 🎯 Obiettivi di questo modulo
+
+Al termine saprai:
+- Analizzare la configurazione di rete in Windows e Linux
+- Usare strumenti di diagnostica di rete (ping, ip, curl, ss)
+- Implementare un semplice server web su Alpine Linux
+- Gestire processi e servizi
+
+---
+
 # Esercitazione Pratica di Laboratorio - Sessione Introduttiva 2
 ## Reti, Applicazioni e Servizi
 
@@ -612,3 +632,13 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 - [Introduzione a HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Overview)
 - [Gestione dei processi in Linux](https://www.linuxjournal.com/content/managing-processes-linux)
 - [Introduzione ai container](https://www.docker.com/resources/what-container/)
+
+---
+
+## ➡️ Prossimi passi
+
+- **Continua con**: [Esercitazione Docker 1 — Introduzione a Docker](../fase-3-docker/docker-01-intro-concetti-base.md)
+- **Approfondisci**: [Docker Documentation](https://docs.docker.com/)
+- **Hai dubbi?** Consulta [CHEATSHEET.md](../CHEATSHEET.md)
+
+↩ [Torna all'indice principale](../README.md)

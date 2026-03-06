@@ -1,3 +1,23 @@
+## 📍 Navigazione
+
+**Fase**: Preliminare  |  **Modulo**: 2  |  **Tipo**: Teoria
+
+### ✅ Prerequisiti
+
+Prima di iniziare questo modulo devi aver completato:
+- [ ] [Sessione Introduttiva 1 — Teoria](../fase-1-introduzione/intro-01-teoria-os-filesystem-shell.md)
+- [ ] [Lab Sessione 1](../fase-1-introduzione/intro-01-lab-os-filesystem-shell.md)
+
+### 🎯 Obiettivi di questo modulo
+
+Al termine saprai:
+- Spiegare i concetti fondamentali delle reti (IP, porte, protocolli)
+- Descrivere il modello client-server
+- Utilizzare comandi di diagnostica di rete
+- Comprendere la differenza tra VM e container
+
+---
+
 # Sessione Introduttiva 2: Reti, Applicazioni e Servizi
 
 ## Panoramica della Sessione
@@ -420,6 +440,47 @@ I container rappresentano un'evoluzione della virtualizzazione:
    - Container all'interno di VM
    - Orchestrazione di container su cluster di VM
 
+## Dalla VM al Container
+
+Hai appena visto come una macchina virtuale permette di eseguire un intero sistema operativo all'interno di un altro. Ma cosa succederebbe se non avessi bisogno di un intero sistema operativo, ma solo dell'applicazione e delle sue dipendenze?
+
+### Confronto VM vs Container
+
+| Caratteristica | Macchina Virtuale | Container |
+|----------------|-------------------|-----------|
+| **Cosa include** | OS completo + kernel + app | Solo app + dipendenze |
+| **Dimensione** | GB (es. Alpine VM ~200 MB) | MB (es. Alpine container ~5 MB) |
+| **Tempo di avvio** | Minuti | Secondi |
+| **Isolamento** | Completo (kernel separato) | A livello di processo (kernel condiviso) |
+| **Risorse** | Riservate (RAM, CPU fisse) | Condivise e dinamiche |
+| **Portabilità** | Legata all'hypervisor | Funziona ovunque ci sia Docker |
+
+### 💡 Domanda Riflessiva
+
+> Nella nostra esercitazione abbiamo creato una VM Alpine Linux con VirtualBox per far girare un web server. Se potessi far girare lo stesso web server in pochi secondi, usando meno memoria e senza installare un intero sistema operativo... lo faresti?
+>
+> **Questa è esattamente la promessa dei container Docker**, e sarà il tema della Fase Principale del corso.
+
+### Anteprima: Cosa Vedrai nella Fase Docker
+
+Nella Fase Principale del corso imparerai a:
+1. **Creare container** — avviare applicazioni isolate con un singolo comando
+2. **Scrivere Dockerfile** — definire come costruire un'immagine (simile a configurare una VM, ma più veloce)
+3. **Gestire volumi** — salvare dati persistenti (come le cartelle condivise di VirtualBox)
+4. **Configurare reti Docker** — far comunicare i container (come le modalità di rete di VirtualBox)
+5. **Usare Docker Compose** — orchestrare più servizi insieme
+
 ## Conclusione
-In questa sessione abbiamo esplorato i concetti fondamentali di reti, applicazioni, servizi e virtualizzazione. Queste conoscenze sono es
+In questa sessione abbiamo esplorato i concetti fondamentali di reti, applicazioni, servizi e virtualizzazione. Queste conoscenze sono essenziali per comprendere come funzionano i container Docker, che vedremo nelle prossime esercitazioni.
+
+---
+
+## ➡️ Prossimi passi
+
+- **Slide di supporto**: [Slide Sessione 2](intro-02-slide-reti-servizi-vm.md)
+- **Configura la rete**: [Lab Modalità di Rete VirtualBox](../fase-0-prerequisiti/00-prerequisiti-rete-virtualbox.md)
+- **Metti in pratica**: [Lab Sessione 2](intro-02-lab-reti-servizi-vm.md)
+- **Hai dubbi?** Consulta [CHEATSHEET.md](../CHEATSHEET.md)
+
+↩ [Torna all'indice principale](../README.md)
 (Content truncated due to size limit. Use line ranges to read in chunks)

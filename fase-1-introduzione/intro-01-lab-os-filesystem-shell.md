@@ -1,3 +1,21 @@
+## 📍 Navigazione
+
+**Fase**: Preliminare  |  **Modulo**: 1  |  **Tipo**: Lab
+
+### ✅ Prerequisiti
+
+Prima di iniziare questo modulo devi aver completato:
+- [ ] [Sessione Introduttiva 1 — Teoria](intro-01-teoria-os-filesystem-shell.md)
+
+### 🎯 Obiettivi di questo modulo
+
+Al termine saprai:
+- Configurare l'ambiente di lavoro (Windows + Alpine Linux su VirtualBox)
+- Eseguire comandi base nel terminale Linux
+- Navigare nel filesystem e gestire file e directory
+
+---
+
 # Esercitazione Pratica di Laboratorio - Sessione Introduttiva 1
 ## Sistemi Operativi, Filesystem e Shell
 
@@ -580,3 +598,13 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 - [Guida Bash](https://www.gnu.org/software/bash/manual/bash.html)
 - [Alpine Linux Wiki](https://wiki.alpinelinux.org/)
 - [Confronto tra comandi Windows e Linux](https://www.lemoda.net/windows/windows2unix/windows2unix.html)
+
+---
+
+## ➡️ Prossimi passi
+
+- **Continua con**: [Sessione Introduttiva 2 — Teoria](../fase-2-reti-servizi/intro-02-teoria-reti-servizi-vm.md)
+- **Approfondisci**: [Lab Modalità di Rete VirtualBox](../fase-0-prerequisiti/00-prerequisiti-rete-virtualbox.md)
+- **Hai dubbi?** Consulta [CHEATSHEET.md](../CHEATSHEET.md)
+
+↩ [Torna all'indice principale](../README.md)

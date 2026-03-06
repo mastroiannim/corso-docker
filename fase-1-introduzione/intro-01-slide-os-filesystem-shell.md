@@ -1,3 +1,26 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+## 📍 Navigazione
+
+**Fase**: Preliminare  |  **Modulo**: 1  |  **Tipo**: Slide
+
+### ✅ Prerequisiti
+
+Queste slide sono il supporto visivo alla teoria:
+- [ ] [Sessione Introduttiva 1 — Teoria](intro-01-teoria-os-filesystem-shell.md) *(da consultare in parallelo)*
+
+### 🎯 Obiettivi di questo modulo
+
+Al termine saprai:
+- Visualizzare i concetti chiave di OS, filesystem e shell
+- Avere un riferimento rapido per le metafore e i diagrammi della Sessione 1
+
+---
+
 # SLIDE: SESSIONE INTRODUTTIVA 1
 ## SISTEMI OPERATIVI, FILESYSTEM E SHELL
 
@@ -467,3 +490,13 @@
 - La gestione avanzata dei file si applica alla configurazione di Docker Compose
 - I concetti di processi sono correlati all'orchestrazione dei container
 - Le tecniche di ricerca e filtro sono utili per il debugging di applicazioni containerizzate
+
+---
+
+## ➡️ Prossimi passi
+
+- **Metti in pratica**: [Lab Sessione 1](intro-01-lab-os-filesystem-shell.md)
+- **Rivedi la teoria**: [Sessione Introduttiva 1 — Teoria](intro-01-teoria-os-filesystem-shell.md)
+- **Hai dubbi?** Consulta [CHEATSHEET.md](../CHEATSHEET.md)
+
+↩ [Torna all'indice principale](../README.md)

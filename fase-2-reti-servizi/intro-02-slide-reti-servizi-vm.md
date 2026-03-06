@@ -1,3 +1,26 @@
+---
+marp: true
+theme: default
+paginate: true
+---
+
+## 📍 Navigazione
+
+**Fase**: Preliminare  |  **Modulo**: 2  |  **Tipo**: Slide
+
+### ✅ Prerequisiti
+
+Queste slide sono il supporto visivo alla teoria:
+- [ ] [Sessione Introduttiva 2 — Teoria](intro-02-teoria-reti-servizi-vm.md) *(da consultare in parallelo)*
+
+### 🎯 Obiettivi di questo modulo
+
+Al termine saprai:
+- Visualizzare i concetti chiave di reti, servizi e virtualizzazione
+- Avere un riferimento rapido per diagrammi e schemi della Sessione 2
+
+---
+
 # SLIDE: SESSIONE INTRODUTTIVA 2
 ## RETI, APPLICAZIONI E SERVIZI
 
@@ -733,3 +756,14 @@
 - La virtualizzazione è il concetto fondamentale su cui si basa Docker
 - Il networking avanzato in Docker si basa sui concetti di rete appresi
 - L'orchestrazione di container estende i concetti di gestione dei servizi
+
+---
+
+## ➡️ Prossimi passi
+
+- **Configura la rete**: [Lab Modalità di Rete VirtualBox](../fase-0-prerequisiti/00-prerequisiti-rete-virtualbox.md)
+- **Metti in pratica**: [Lab Sessione 2](intro-02-lab-reti-servizi-vm.md)
+- **Rivedi la teoria**: [Sessione Introduttiva 2 — Teoria](intro-02-teoria-reti-servizi-vm.md)
+- **Hai dubbi?** Consulta [CHEATSHEET.md](../CHEATSHEET.md)
+
+↩ [Torna all'indice principale](../README.md)

@@ -1,3 +1,22 @@
+## 📍 Navigazione
+
+**Fase**: Preliminare  |  **Modulo**: 0  |  **Tipo**: Lab
+
+### ✅ Prerequisiti
+
+Prima di iniziare questo modulo devi aver completato:
+- [ ] [Sessione Introduttiva 1 — Teoria](../fase-1-introduzione/intro-01-teoria-os-filesystem-shell.md)
+- [ ] [Sessione Introduttiva 2 — Teoria](../fase-2-reti-servizi/intro-02-teoria-reti-servizi-vm.md)
+
+### 🎯 Obiettivi di questo modulo
+
+Al termine saprai:
+- Configurare le diverse modalità di rete in VirtualBox (NAT, Bridge, Host-Only, NAT Network)
+- Testare la connettività tra VM, host e Internet
+- Scegliere la modalità di rete appropriata per ogni scenario
+
+---
+
 # Esercitazione di Laboratorio: Modalità di Rete in VirtualBox con Alpine Linux
 
 ## Introduzione
@@ -1282,3 +1301,13 @@ La scelta della modalità di rete dipende dalle esigenze specifiche:
 - [Wiki di Alpine Linux](https://wiki.alpinelinux.org/wiki/Main_Page)
 - [Guida alla rete in Linux](https://wiki.archlinux.org/title/Network_configuration)
 - [Guida al troubleshooting di rete in Linux](https://www.linuxjournal.com/content/linux-network-troubleshooting)
+
+---
+
+## ➡️ Prossimi passi
+
+- **Continua con**: [Lab Sessione Introduttiva 2](../fase-2-reti-servizi/intro-02-lab-reti-servizi-vm.md)
+- **Oppure vai a**: [Esercitazione Docker 1](../fase-3-docker/docker-01-intro-concetti-base.md)
+- **Hai dubbi?** Consulta [CHEATSHEET.md](../CHEATSHEET.md)
+
+↩ [Torna all'indice principale](../README.md)

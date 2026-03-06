@@ -1,7 +1,41 @@
+## 📍 Navigazione
+
+**Fase**: Preliminare  |  **Modulo**: 1  |  **Tipo**: Teoria
+
+### ✅ Prerequisiti
+
+Nessun prerequisito — questo è il primo modulo del corso.
+
+### 🎯 Obiettivi di questo modulo
+
+Al termine saprai:
+- Spiegare cos'è un sistema operativo e il suo ruolo
+- Navigare nella struttura del filesystem Linux
+- Utilizzare i comandi fondamentali della shell (ls, cd, mkdir, cat, grep, find)
+- Usare pipe e redirezione dell'output
+
+---
+
 # Sessione Introduttiva 1: Sistemi Operativi, Filesystem e Shell
 
 ## Panoramica della Sessione
 Questa prima sessione introduttiva di 5 ore è progettata per fornire agli studenti le conoscenze di base sui sistemi operativi, il filesystem e l'interfaccia a riga di comando (shell). Questi concetti sono fondamentali per comprendere il funzionamento di Docker e della containerizzazione.
+
+## Indice dei Moduli
+
+Questa sessione è suddivisa in 5 moduli autonomi. Segui l'ordine consigliato:
+
+| # | Modulo | Durata | Contenuto |
+|---|--------|--------|-----------|
+| 1a | [Sistemi Operativi](intro-01a-sistemi-operativi.md) | 45 min | OS, kernel, ruolo del sistema operativo, focus su Linux |
+| 1b | [Filesystem](intro-01b-filesystem.md) | 45 min | Struttura directory, percorsi, permessi |
+| 1c | [Shell Base](intro-01c-shell-base.md) | 60 min | Cos'è la shell, comandi fondamentali (ls, cd, mkdir, cat) |
+| 1d | [Shell Avanzata](intro-01d-shell-avanzata.md) | 45 min | Pipe, redirect, grep, find |
+| 1e | [Recap e Connessioni](intro-01e-recap-connessioni.md) | 30 min | Riepilogo + bridge verso Docker |
+
+## Contenuto Completo della Sessione
+
+> Qui sotto trovi il contenuto integrale della sessione. Per una fruizione più graduale, segui i sotto-moduli elencati sopra.
 
 ## Parte 1: Introduzione ai Sistemi Operativi (1 ora)
 
@@ -313,3 +347,13 @@ Facciamo un riepilogo dei concetti chiave appresi:
 In questa sessione abbiamo esplorato i concetti fondamentali dei sistemi operativi, del filesystem e della shell. Queste conoscenze sono essenziali per comprendere come funzionano i container Docker, che vedremo nelle prossime esercitazioni.
 
 Nella prossima sessione introduttiva, approfondiremo i concetti di reti, applicazioni e servizi, completando così la preparazione necessaria per il corso su Docker e containerizzazione.
+
+---
+
+## ➡️ Prossimi passi
+
+- **Slide di supporto**: [Slide Sessione 1](intro-01-slide-os-filesystem-shell.md)
+- **Metti in pratica**: [Lab Sessione 1](intro-01-lab-os-filesystem-shell.md)
+- **Hai dubbi?** Consulta [CHEATSHEET.md](../CHEATSHEET.md)
+
+↩ [Torna all'indice principale](../README.md)
