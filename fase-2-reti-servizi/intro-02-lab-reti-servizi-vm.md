@@ -33,7 +33,8 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 - Conoscenze acquisite nella Sessione Introduttiva 1 e relativa esercitazione
 
 ### Durata
-3 ore di laboratorio
+- **Percorso core (consigliato)**: 2h-2h30
+- **Percorso esteso (versione completa)**: 3h45
 
 ### Obiettivi di Apprendimento
 - Comprendere i concetti fondamentali di reti informatiche
@@ -41,6 +42,23 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 - Esplorare il modello client-server attraverso esempi pratici
 - Analizzare applicazioni e servizi in esecuzione
 - Sperimentare con la virtualizzazione come ponte verso i container
+
+## 🚀 Percorso core (rete essenziale per Docker)
+
+Per coerenza con la teoria essenziale della Sessione 2, in classe usa questo percorso minimo:
+
+1. `1.2 Analisi della Configurazione di Rete in Alpine Linux`
+2. `2.2 Strumenti di Diagnostica in Alpine Linux`
+3. `3.1 Implementazione di un Server Web Semplice`
+4. `4.2 Analisi dei Processi in Alpine Linux`
+5. `5.2 Da VM a Container: Un'Anteprima`
+6. `5.3 Esercizio Finale: Preparazione per Docker`
+
+Ogni blocco va chiuso con comando di verifica e output atteso.
+
+## Percorso esteso (opzionale)
+
+Le sezioni Windows (`1.1`, `2.1`, `3.2`, `4.1`) restano disponibili come confronto piattaforme o recupero individuale.
 
 ## Parte 1: Concetti Fondamentali di Reti (45 minuti)
 
@@ -89,6 +107,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 
 **Attività**:
 1. Accedere alla VM Alpine Linux come utente "studente"
+   - Mantieni questo utente per le attività del laboratorio: usa `sudo` solo quando il comando richiede privilegi amministrativi.
 
 2. Visualizzare la configurazione di rete:
    ```bash
@@ -115,8 +134,8 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
    echo "Configurazione di Rete Linux" > ~/LabDocker/network_linux.txt
    echo "===========================" >> ~/LabDocker/network_linux.txt
    echo "" >> ~/LabDocker/network_linux.txt
-   echo "Indirizzo IP: $(ip -4 addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '127.0.0.1')" >> ~/LabDocker/network_linux.txt
-   echo "Subnet Mask: $(ip -4 addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}/\d+' | grep -v '127.0.0.1' | cut -d'/' -f2)" >> ~/LabDocker/network_linux.txt
+   echo "Indirizzo IP: $(ip -4 addr show scope global | awk '/inet / {print $2}' | head -1 | cut -d'/' -f1)" >> ~/LabDocker/network_linux.txt
+   echo "Subnet Mask: $(ip -4 addr show scope global | awk '/inet / {print $2}' | head -1 | cut -d'/' -f2)" >> ~/LabDocker/network_linux.txt
    echo "Gateway: $(ip route | grep default | awk '{print $3}')" >> ~/LabDocker/network_linux.txt
    echo "Server DNS: $(grep nameserver /etc/resolv.conf | awk '{print $2}')" >> ~/LabDocker/network_linux.txt
    ```
@@ -192,41 +211,50 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 **Obiettivo**: Utilizzare gli strumenti di diagnostica di rete disponibili in Linux.
 
 **Attività**:
-1. Installare gli strumenti necessari:
+1. Verificare che i repository Alpine usino HTTPS (obbligatorio in laboratorio):
+   ```bash
+   cat /etc/apk/repositories
+   sudo cp /etc/apk/repositories /etc/apk/repositories.bak
+   sudo sed -i 's|^http://|https://|g' /etc/apk/repositories
+   grep -nE '^http://|^https://' /etc/apk/repositories
+   ```
+   Output atteso: tutte le righe dei repository iniziano con `https://`
+
+2. Installare gli strumenti necessari:
    ```bash
    sudo apk update
    sudo apk add iputils bind-tools traceroute
    ```
 
-2. Testare la connettività con ping:
+3. Testare la connettività con ping:
    ```bash
    ping -c 4 www.google.com
    ping -c 4 8.8.8.8
    ```
 
-3. Tracciare il percorso di rete:
+4. Tracciare il percorso di rete:
    ```bash
    traceroute www.google.com
    ```
 
-4. Risolvere nomi DNS:
+5. Risolvere nomi DNS:
    ```bash
    dig www.google.com
    nslookup www.google.com
    ```
 
-5. Verificare le porte aperte:
+6. Verificare le porte aperte:
    ```bash
    nc -zv www.google.com 80
    nc -zv www.google.com 443
    ```
 
-6. Analizzare le statistiche di rete:
+7. Analizzare le statistiche di rete:
    ```bash
-   netstat -tuln
+   ss -tuln
    ```
 
-7. Creare un file di report con i risultati:
+8. Creare un file di report con i risultati:
    ```bash
    echo "Report Diagnostica di Rete Linux" > ~/LabDocker/network_diagnostics_linux.txt
    echo "===============================" >> ~/LabDocker/network_diagnostics_linux.txt
@@ -253,7 +281,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
    | Traceroute | `tracert` | `traceroute` |
    | Risoluzione DNS | `nslookup`, `Resolve-DnsName` | `nslookup`, `dig` |
    | Test porte | `Test-NetConnection` | `nc` (netcat) |
-   | Statistiche di rete | `netstat` | `netstat`, `ss` |
+   | Statistiche di rete | `netstat` | `ss` |
 
 2. Discutere le differenze e le similitudini:
    - Molti comandi hanno nomi simili o identici
@@ -303,7 +331,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 
 5. Prendere nota dell'indirizzo IP della VM Alpine:
    ```bash
-   ip addr show | grep -oP '(?<=inet\s)\d+(\.\d+){3}' | grep -v '127.0.0.1'
+   ip -4 addr show scope global | awk '/inet / {print $2}' | cut -d'/' -f1
    ```
 
 ### 3.2 Accesso al Server Web da Windows
@@ -424,7 +452,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 
 5. Visualizzare le applicazioni in ascolto sulle porte:
    ```bash
-   sudo netstat -tulpn
+   ss -tulpn
    ```
 
 6. Creare un report sui processi e servizi:
@@ -439,7 +467,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
    rc-status >> ~/LabDocker/process_report_linux.txt
    echo "" >> ~/LabDocker/process_report_linux.txt
    echo "Applicazioni in Ascolto:" >> ~/LabDocker/process_report_linux.txt
-   sudo netstat -tulpn >> ~/LabDocker/process_report_linux.txt
+   ss -tulpn >> ~/LabDocker/process_report_linux.txt
    ```
 
 ### 4.3 Confronto tra Gestione dei Processi
@@ -451,10 +479,10 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
    | Funzione | Windows | Linux |
    |----------|---------|-------|
    | Visualizzare processi | `Get-Process` | `ps`, `top`, `htop` |
-   | Visualizzare servizi | `Get-Service` | `rc-status`, `systemctl` |
+   | Visualizzare servizi | `Get-Service` | `rc-status` |
    | Terminare un processo | `Stop-Process` | `kill`, `pkill` |
-   | Avviare un servizio | `Start-Service` | `rc-service`, `systemctl` |
-   | Porte in ascolto | `Get-NetTCPConnection` | `netstat`, `ss` |
+   | Avviare un servizio | `Start-Service` | `rc-service` |
+   | Porte in ascolto | `Get-NetTCPConnection` | `ss` |
 
 2. Discutere le differenze e le similitudini:
    - Windows utilizza un modello di servizi centralizzato (SCM)

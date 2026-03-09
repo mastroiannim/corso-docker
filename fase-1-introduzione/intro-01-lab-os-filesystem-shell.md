@@ -32,7 +32,8 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 - Conoscenze di base sull'uso del computer
 
 ### Durata
-3 ore di laboratorio
+- **Percorso core (consigliato)**: 1h45-2h15
+- **Percorso esteso (versione completa)**: 3h45
 
 ### Obiettivi di Apprendimento
 - Confrontare i terminali Windows e Linux
@@ -40,6 +41,26 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 - Eseguire comandi di base per la gestione di file e directory
 - Comprendere le differenze tra i due sistemi operativi
 - Preparare l'ambiente per le future esercitazioni su Docker
+
+## 🚀 Percorso core (pre-Docker, consigliato)
+
+Per mantenere il laboratorio snello e centrato sul percorso Docker:
+
+1. Esegui il setup iniziale dal modulo dedicato [Setup Ambiente di Lavoro](../fase-0-prerequisiti/00-lab-setup-ambiente.md)
+2. In questo modulo, lavora **prima su Alpine Linux** (terminale, filesystem, file/directory)
+3. Usa i blocchi Windows come confronto rapido o recupero
+4. Chiudi sempre con un checkpoint pratico (comandi eseguiti + output verificato)
+
+### Sequenza minima consigliata
+
+- `2.2 Terminale Linux (Alpine)`
+- `3.2 Filesystem Linux`
+- `4.2 Gestione File in Linux`
+- `5.1 Progetto "Preparazione Ambiente Docker"` (solo parte Linux)
+
+## Percorso esteso (opzionale)
+
+La versione completa include anche tutti i confronti dettagliati Windows (CMD/PowerShell) utili come approfondimento.
 
 ## Parte 1: Configurazione dell'Ambiente di Lavoro (45 minuti)
 
@@ -110,26 +131,35 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
    reboot
    ```
 
-7. Dopo il riavvio, accedere come root e installare alcuni pacchetti utili:
+7. Dopo il riavvio, verificare che i repository Alpine usino HTTPS (obbligatorio in laboratorio):
+   ```
+   cat /etc/apk/repositories
+   cp /etc/apk/repositories /etc/apk/repositories.bak
+   sed -i 's|^http://|https://|g' /etc/apk/repositories
+   grep -nE '^http://|^https://' /etc/apk/repositories
+   ```
+   Output atteso: tutte le righe dei repository iniziano con `https://`
+
+8. Accedere come root e installare alcuni pacchetti utili:
    ```
    apk update
    apk add bash vim nano less grep
    ```
 
-8. Creare un utente non privilegiato per le esercitazioni:
+9. Creare un utente non privilegiato per le esercitazioni:
    ```
    adduser studente
    ```
    (Seguire le istruzioni per impostare la password)
 
-9. Aggiungere l'utente al gruppo wheel per consentire l'uso di sudo:
+10. Aggiungere l'utente al gruppo wheel per consentire l'uso di sudo:
    ```
    apk add sudo
    echo '%wheel ALL=(ALL) ALL' > /etc/sudoers.d/wheel
    addgroup studente wheel
    ```
 
-10. Verificare che tutto funzioni correttamente:
+11. Verificare che tutto funzioni correttamente:
     - Disconnettersi: `exit`
     - Accedere come "studente"
     - Provare un comando sudo: `sudo ls /root`
@@ -186,6 +216,7 @@ Questa esercitazione pratica di laboratorio è progettata per accompagnare la Se
 
 **Attività**:
 1. Accedere alla VM Alpine Linux come utente "studente"
+   - Mantieni questo utente per le attività del laboratorio: usa `sudo` solo quando il comando richiede privilegi amministrativi.
 
 2. Esplorare la shell Bash:
    - Eseguire i seguenti comandi e annotare l'output:

@@ -584,10 +584,12 @@ alpine-docker:~#
 
 ### Perché SSH?
 
-Lavorare direttamente nella finestra della console di VirtualBox è scomodo:
-- Non puoi fare copia-incolla facilmente
+Lavorare direttamente nella finestra della console di VirtualBox è meno pratico:
+- Nella configurazione base non c'è copia/incolla host↔guest (serve installare Guest Additions)
 - Lo schermo è piccolo
 - Non puoi aprire più finestre/tab
+
+Nel corso useremo SSH anche per un motivo pratico: permette di copiare/incollare rapidamente i comandi delle esercitazioni dal terminale Windows.
 
 Con SSH ti colleghi alla VM da un terminale Windows (es. Windows Terminal, PowerShell, o il nuovo prompt di Windows) e lavori comodamente.
 
@@ -691,6 +693,44 @@ Per seguire il corso hai bisogno di:
 - **docker** e **docker-compose**: il cuore del corso
 - **bash**: una shell più avanzata rispetto a `ash` (quella predefinita di Alpine)
 - **sudo**: per eseguire comandi come amministratore (utile per il futuro)
+
+### Step 6.0 — Verifica repository Alpine su HTTPS (obbligatorio in laboratorio)
+
+In alcuni laboratori scolastici il traffico `http` è bloccato per sicurezza. Prima di aggiornare i pacchetti, verifica che Alpine usi solo repository `https`.
+
+1. Controlla il contenuto attuale del file repository:
+
+```bash
+cat /etc/apk/repositories
+```
+
+2. Se vedi righe che iniziano con `http://`, fai prima una copia di sicurezza:
+
+```bash
+cp /etc/apk/repositories /etc/apk/repositories.bak
+```
+
+3. Sostituisci automaticamente `http://` con `https://`:
+
+```bash
+sed -i 's|^http://|https://|g' /etc/apk/repositories
+```
+
+4. Verifica che non ci siano più URL in `http`:
+
+```bash
+grep -nE '^http://|^https://' /etc/apk/repositories
+```
+
+**Output atteso** (esempio):
+```
+1:https://dl-cdn.alpinelinux.org/alpine/v3.XX/main
+2:https://dl-cdn.alpinelinux.org/alpine/v3.XX/community
+```
+
+✅ **Checkpoint 6.0**: Se tutte le righe repository iniziano con `https://`, puoi proseguire.
+
+---
 
 ### Step 6.1 — Aggiornamento lista pacchetti
 
@@ -807,13 +847,13 @@ OK: XXX MiB in XX packages
 
 **Avvia il servizio Docker**:
 ```bash
-rc-update add docker boot
-service docker start
+rc-update add docker default
+rc-service docker start
 ```
 
 **Output atteso**:
 ```
- * service docker added to runlevel boot
+ * service docker added to runlevel default
  * Caching service dependencies ...
  * Starting docker ...
 ```
@@ -892,6 +932,7 @@ content-type: text/html; charset=ISO-8859-1
 ### Step 6.8 — Installazione sudo (opzionale ma consigliato)
 
 `sudo` permette di eseguire comandi singoli come root senza dover fare login come root.
+In questo modulo stai già operando come `root`, quindi i comandi restano senza `sudo`.
 
 ```bash
 apk add sudo
@@ -975,7 +1016,61 @@ user.name=Il Tuo Nome
 user.email=tua.email@esempio.com
 ```
 
-### Step 7.5 — Snapshot della VM (raccomandato)
+### Step 7.5 — Cartella condivisa Windows ↔ Alpine (VirtualBox)
+
+Questa sezione configura una cartella condivisa tra Windows (host) e Alpine (guest).
+
+> Usa lo **stesso nome** della cartella condivisa in tutti i comandi. In questo corso useremo `html`.
+
+1. In VirtualBox, con VM spenta:
+   - Apri **Impostazioni** della VM → **Cartelle condivise**
+   - Aggiungi la cartella di Windows da condividere
+   - Imposta **Nome cartella**: `html`
+
+2. Avvia la VM Alpine e installa il supporto guest additions:
+
+```bash
+apk add virtualbox-guest-additions
+mkdir -p /mnt/html
+```
+
+3. Montaggio manuale (immediato):
+
+```bash
+modprobe vboxsf
+mount -t vboxsf html /mnt/html
+```
+
+4. Verifica mount manuale:
+
+```bash
+mount | grep /mnt/html
+ls -la /mnt/html
+```
+
+**Output atteso**:
+- una riga con `type vboxsf` e `/mnt/html`
+- il contenuto della cartella condivisa (oppure directory vuota se non ci sono file)
+
+5. Montaggio automatico all'avvio:
+
+```bash
+echo "html /mnt/html vboxsf defaults 0 0" | tee -a /etc/fstab > /dev/null
+mount -a
+```
+
+6. Verifica configurazione automatica:
+
+```bash
+grep -n "^html /mnt/html vboxsf" /etc/fstab
+mount | grep /mnt/html
+```
+
+**Output atteso**:
+- una riga in `/etc/fstab` con `html /mnt/html vboxsf defaults 0 0`
+- mount attivo su `/mnt/html`
+
+### Step 7.6 — Snapshot della VM (raccomandato)
 
 Ora che hai tutto configurato, è il momento perfetto per creare uno **snapshot** (istantanea) della VM. Se qualcosa va storto in futuro, potrai ripristinare la VM a questo punto.
 
@@ -1099,6 +1194,33 @@ setup-alpine
 - Verifica che "Connessa a" sia impostato su "NAT"
 - Riavvia la VM e riprova
 
+### Problema 2-bis: `apk update` fallisce perché i repository usano HTTP
+
+**Sintomo**: `apk update` mostra errori di fetch oppure timeout quando prova URL `http://...`
+
+**Causa tipica in laboratorio**: il firewall consente solo traffico `https`.
+
+**Soluzione passo passo**:
+
+```bash
+# 1) Controlla repository attuali
+cat /etc/apk/repositories
+
+# 2) Backup file
+cp /etc/apk/repositories /etc/apk/repositories.bak
+
+# 3) Converti http -> https
+sed -i 's|^http://|https://|g' /etc/apk/repositories
+
+# 4) Verifica e aggiorna indice
+grep -nE '^http://|^https://' /etc/apk/repositories
+apk update
+```
+
+**Output atteso**: righe `fetch https://...` e messaggio finale `OK: ... distinct packages available`.
+
+Se anche con `https` non funziona, segnala al tecnico di laboratorio un possibile blocco verso `dl-cdn.alpinelinux.org`.
+
 ### Problema 3: SSH da Windows alla VM fallisce (NAT)
 
 **Sintomo**: `ssh -p 2222 root@127.0.0.1` non si connette.
@@ -1139,13 +1261,13 @@ rc-service networking restart
 1. Verifica che SSH sia in esecuzione nella VM:
 ```bash
 # Nella console VM (non SSH)
-service sshd status
+rc-service sshd status
 ```
 
 Se non è attivo:
 ```bash
-service sshd start
-rc-update add sshd
+rc-service sshd start
+rc-update add sshd default
 ```
 
 2. Verifica che SSH ascolti sulla porta 22:
@@ -1155,7 +1277,7 @@ netstat -tlnp | grep :22
 
 ### Problema 5: Docker non si avvia
 
-**Sintomo**: `service docker start` fallisce.
+**Sintomo**: `rc-service docker start` fallisce.
 
 **Soluzione**:
 
@@ -1172,7 +1294,7 @@ modprobe br_netfilter
 
 3. Riavvia il servizio:
 ```bash
-service docker restart
+rc-service docker restart
 ```
 
 ### Problema 6: "docker run hello-world" dà errore di permessi
@@ -1182,8 +1304,8 @@ service docker restart
 **Soluzione**:
 Assicurati che il servizio Docker sia in esecuzione:
 ```bash
-service docker status
-service docker start  # se non è attivo
+rc-service docker status
+rc-service docker start  # se non è attivo
 ```
 
 Se il problema persiste:
@@ -1271,8 +1393,8 @@ reboot -f
 | `ssh -p <porta> <user>@<host>` | Connessione SSH con NAT | `ssh -p 2222 root@127.0.0.1` |
 | `docker --version` | Mostra versione Docker | `docker --version` |
 | `docker run <immagine>` | Esegue un container | `docker run hello-world` |
-| `service <servizio> start` | Avvia un servizio | `service docker start` |
-| `rc-update add <srv> boot` | Abilita avvio automatico | `rc-update add docker boot` |
+| `rc-service <servizio> start` | Avvia un servizio | `rc-service docker start` |
+| `rc-update add <srv> default` | Abilita avvio automatico | `rc-update add docker default` |
 | `poweroff` | Spegne il sistema | `poweroff` |
 | `reboot` | Riavvia il sistema | `reboot` |
 

@@ -53,7 +53,12 @@ Al termine di questa esercitazione, gli studenti saranno in grado di:
 
 ### Tempistiche
 
-L'esercitazione è progettata per essere completata in circa 3 ore, suddivise come segue:
+L'esercitazione può essere svolta in due modalità:
+
+- **Percorso core (consigliato in classe)**: 75-90 minuti
+- **Percorso esteso (approfondimento completo)**: circa 3 ore
+
+Percorso esteso suddiviso come segue:
 
 - Preparazione dell'ambiente: 30 minuti
 - Scenario 1 (Modalità NAT): 30 minuti
@@ -62,78 +67,43 @@ L'esercitazione è progettata per essere completata in circa 3 ore, suddivise co
 - Scenario 4 (Modalità Internal Network): 45 minuti
 - Troubleshooting e riflessioni finali: 15 minuti
 
-## Preparazione dell'Ambiente
+## 🚀 Percorso core (consigliato in classe)
 
-### Download e Installazione di VirtualBox
+Per mantenere il focus sul percorso Docker, in laboratorio standard esegui solo:
 
-1. Scaricare VirtualBox dal sito ufficiale: [https://www.virtualbox.org/wiki/Downloads](https://www.virtualbox.org/wiki/Downloads)
-2. Installare VirtualBox seguendo le istruzioni per il proprio sistema operativo
-3. Installare anche il "VirtualBox Extension Pack" per funzionalità aggiuntive
+1. **Preparazione ambiente (sintesi)**
+2. **Scenario 1: NAT**
+3. **Scenario 2: Bridge**
+4. **Troubleshooting** (solo se necessario)
 
-### Download di Alpine Linux
+Gli scenari **Host-Only** e **Internal Network** restano utili come approfondimento opzionale.
 
-1. Scaricare l'immagine ISO di Alpine Linux ottimizzata per la virtualizzazione:
-   [https://alpinelinux.org/downloads/](https://alpinelinux.org/downloads/)
-2. Scegliere la versione "Virtual" per l'architettura appropriata (x86_64 per sistemi a 64 bit)
-3. Salvare l'immagine ISO in una posizione facilmente accessibile
+## Preparazione dell'Ambiente (Sintesi)
 
-### Creazione della Prima Macchina Virtuale
+La preparazione completa (download, installazione, `setup-alpine`, SSH e test finali) è già nel modulo obbligatorio:
+- [Setup Ambiente di Lavoro](00-lab-setup-ambiente.md)
 
-1. Avviare VirtualBox e fare clic su "Nuova"
-2. Configurare la VM con i seguenti parametri:
-   - Nome: `Alpine-Base`
-   - Tipo: Linux
-   - Versione: Other Linux (64-bit)
-   - Memoria: 512MB
-   - Disco rigido: Creare un nuovo disco virtuale
-   - Tipo di file: VDI (VirtualBox Disk Image)
-   - Archiviazione: Dinamicamente allocato
-   - Dimensione: 2GB
+Per questa esercitazione di approfondimento servono solo questi controlli rapidi:
 
-3. Selezionare la VM appena creata e fare clic su "Impostazioni"
-4. Nella sezione "Archiviazione", selezionare il controller IDE vuoto e aggiungere l'immagine ISO di Alpine Linux
-5. Fare clic su "OK" per salvare le impostazioni
+1. VirtualBox installato e funzionante
+2. VM Alpine base già pronta
+3. Template `Alpine-Template` disponibile per la clonazione
+4. Accesso alla VM confermato (console o SSH)
 
-### Installazione di Base di Alpine Linux
+### Checkpoint rapido
 
-1. Avviare la VM facendo clic su "Avvia"
-2. Al prompt di avvio, accedere come `root` (senza password)
-3. Eseguire il comando di installazione:
-   ```
-   setup-alpine
-   ```
-4. Seguire la procedura guidata di installazione:
-   - Selezionare la tastiera (es. `it` per italiano)
-   - Impostare il nome host (es. `alpine-base`)
-   - Configurare la rete:
-     - Selezionare l'interfaccia `eth0`
-     - Scegliere la configurazione DHCP
-     - Non configurare IPv6 per semplicità
-   - Impostare il fuso orario (es. `Europe/Rome`)
-   - Configurare i repository (usare i mirror predefiniti)
-   - Impostare una password per l'utente root
-   - Scegliere il disco di installazione (solitamente `sda`)
-   - Scegliere `sys` come modalità di installazione
-   - Confermare la formattazione del disco
+Avvia la VM base e verifica:
 
-5. Al termine dell'installazione, riavviare la VM:
-   ```
-   reboot
-   ```
+```bash
+ip addr show
+ip route show
+ping -c 2 8.8.8.8
+```
 
-6. Rimuovere l'immagine ISO dal controller IDE nelle impostazioni della VM prima di riavviare
-
-### Creazione di un Template
-
-Per risparmiare tempo durante l'esercitazione, è consigliabile creare un template della VM di base:
-
-1. Spegnere la VM `Alpine-Base`
-2. In VirtualBox, fare clic con il tasto destro sulla VM e selezionare "Clona"
-3. Assegnare un nome significativo (es. `Alpine-Template`)
-4. Selezionare "Clonazione completa"
-5. Fare clic su "Clona"
-
-Questo template servirà come base per tutte le VM che creeremo durante l'esercitazione.
+**Output atteso**:
+- Interfaccia di rete attiva (`eth0` o equivalente)
+- Gateway predefinito presente
+- Ping con risposta (0% packet loss o perdita minima)
 
 ## Scenario 1: Modalità NAT
 
@@ -187,13 +157,22 @@ La modalità NAT (Network Address Translation) è la configurazione di rete pred
 ### Esercizio 1: Analisi del funzionamento NAT
 
 #### Attività
-1. Installare gli strumenti di rete in Alpine Linux:
+1. Verificare che i repository Alpine usino HTTPS (obbligatorio in laboratorio):
+   ```
+   cat /etc/apk/repositories
+   cp /etc/apk/repositories /etc/apk/repositories.bak
+   sed -i 's|^http://|https://|g' /etc/apk/repositories
+   grep -nE '^http://|^https://' /etc/apk/repositories
+   ```
+   Output atteso: tutte le righe dei repository iniziano con `https://`
+
+2. Installare gli strumenti di rete in Alpine Linux:
    ```
    apk update
    apk add tcpdump iptables curl
    ```
 
-2. Analizzare il traffico di rete durante una richiesta HTTP:
+3. Analizzare il traffico di rete durante una richiesta HTTP:
    ```
    tcpdump -i eth0 -n host 8.8.8.8 &
    ping -c 4 8.8.8.8
@@ -201,7 +180,7 @@ La modalità NAT (Network Address Translation) è la configurazione di rete pred
    # Premere Ctrl+C per terminare tcpdump
    ```
 
-3. Verificare l'indirizzo IP pubblico della VM:
+4. Verificare l'indirizzo IP pubblico della VM:
    ```
    curl ifconfig.me
    ```
@@ -441,7 +420,7 @@ In questo esercizio, configureremo un server web sulla VM e lo renderemo accessi
 
 2. Creare una semplice pagina web:
    ```
-   echo "<html><body><h1>Alpine Linux Bridge Test</h1><p>Questa pagina è servita da una VM Alpine Linux in modalità Bridge</p><p>Indirizzo IP: $(hostname -I)</p></body></html>" > /var/www/localhost/htdocs/index.html
+   echo "<html><body><h1>Alpine Linux Bridge Test</h1><p>Questa pagina è servita da una VM Alpine Linux in modalità Bridge</p><p>Indirizzo IP: $(ip -4 addr show eth0 | awk '/inet / {print $2}' | cut -d'/' -f1)</p></body></html>" > /var/www/localhost/htdocs/index.html
    ```
 
 3. Verificare che il server web funzioni localmente:
@@ -537,6 +516,10 @@ In questo esercizio, creeremo una seconda VM in modalità Bridge e testeremo la 
 - Maggiore esposizione della VM a potenziali minacce di rete
 - Può causare conflitti di indirizzi IP se non configurata correttamente
 - Non funziona in alcune reti wireless con isolamento client
+
+## Percorso esteso (opzionale)
+
+Le sezioni seguenti ampliano il laboratorio ma non sono necessarie per avviare la fase Docker.
 
 ## Scenario 3: Modalità Host-Only
 
@@ -669,7 +652,7 @@ In questo esercizio, configureremo un server web sulla VM e lo renderemo accessi
 
 2. Creare una semplice pagina web:
    ```
-   echo "<html><body><h1>Alpine Linux Host-Only Test</h1><p>Questa pagina è servita da una VM Alpine Linux in modalità Host-Only</p><p>Indirizzo IP: $(hostname -I)</p></body></html>" > /var/www/localhost/htdocs/index.html
+   echo "<html><body><h1>Alpine Linux Host-Only Test</h1><p>Questa pagina è servita da una VM Alpine Linux in modalità Host-Only</p><p>Indirizzo IP: $(ip -4 addr show eth0 | awk '/inet / {print $2}' | cut -d'/' -f1)</p></body></html>" > /var/www/localhost/htdocs/index.html
    ```
 
 3. Verificare che il server web funzioni localmente:
@@ -1130,11 +1113,11 @@ Prima di affrontare problemi specifici, è importante conoscere gli strumenti di
    traceroute 8.8.8.8
    ```
 
-4. **netstat** - Visualizza le connessioni di rete, le tabelle di routing e le statistiche delle interfacce
+4. **ss** - Visualizza le connessioni di rete e le porte in ascolto
    ```
    apk add net-tools
-   netstat -tuln  # Mostra le porte in ascolto
-   netstat -r     # Mostra la tabella di routing
+   ss -tuln       # Mostra le porte in ascolto
+   ip route show  # Mostra la tabella di routing
    ```
 
 #### Strumenti Avanzati
@@ -1237,6 +1220,37 @@ Prima di affrontare problemi specifici, è importante conoscere gli strumenti di
    ```
    ping -c 4 8.8.8.8
    ```
+
+#### Problemi con `apk update` in laboratorio (HTTP bloccato)
+
+##### Sintomi:
+- Errori durante `apk update` con URL `http://...`
+- Timeout o fetch falliti verso i repository Alpine
+
+##### Diagnosi:
+1. Verificare i repository configurati:
+   ```
+   cat /etc/apk/repositories
+   ```
+
+##### Soluzioni:
+1. Creare backup del file:
+   ```
+   cp /etc/apk/repositories /etc/apk/repositories.bak
+   ```
+
+2. Convertire i repository da HTTP a HTTPS:
+   ```
+   sed -i 's|^http://|https://|g' /etc/apk/repositories
+   ```
+
+3. Verificare e riprovare l'aggiornamento:
+   ```
+   grep -nE '^http://|^https://' /etc/apk/repositories
+   apk update
+   ```
+
+Output atteso: righe `fetch https://...` e messaggio `OK: ... distinct packages available`.
 
 #### Problemi Specifici per Modalità di Rete
 

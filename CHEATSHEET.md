@@ -29,15 +29,28 @@
 | `uname -a` | Mostra informazioni sul sistema |
 | `df -h` | Mostra lo spazio su disco |
 
+### 🔐 Laboratorio sicuro: repository APK solo HTTPS
+
+Se `apk update` fallisce perché in laboratorio è bloccato `http`, eseguire:
+
+```bash
+cp /etc/apk/repositories /etc/apk/repositories.bak
+sed -i 's|^http://|https://|g' /etc/apk/repositories
+grep -nE '^http://|^https://' /etc/apk/repositories
+apk update
+```
+
+Output atteso: solo repository `https://...` e messaggio finale `OK: ... distinct packages available`.
+
 ### Servizi essenziali
 
 | Comando | Descrizione |
 |---------|-------------|
-| `service sshd start` | Avvia il servizio SSH |
-| `service sshd status` | Verifica lo stato del servizio SSH |
-| `rc-update add sshd` | Abilita SSH all'avvio automatico |
-| `service docker start` | Avvia il servizio Docker |
-| `rc-update add docker boot` | Abilita Docker all'avvio automatico |
+| `rc-service sshd start` | Avvia il servizio SSH |
+| `rc-service sshd status` | Verifica lo stato del servizio SSH |
+| `rc-update add sshd default` | Abilita SSH all'avvio automatico |
+| `rc-service docker start` | Avvia il servizio Docker |
+| `rc-update add docker default` | Abilita Docker all'avvio automatico |
 
 ### Strumenti di sviluppo
 
@@ -98,8 +111,8 @@
 | `ip addr show` | Mostra gli indirizzi IP delle interfacce di rete |
 | `ip route show` | Mostra la tabella di routing |
 | `ping -c 4 host` | Verifica la raggiungibilità di un host (4 pacchetti) |
-| `curl http://host:porta` | Invia una richiesta HTTP e mostra la risposta |
-| `wget http://url` | Scarica un file da un URL |
+| `curl https://host` | Invia una richiesta HTTPS e mostra la risposta |
+| `wget https://url` | Scarica un file da un URL HTTPS |
 | `ss -tlnp` | Mostra le porte TCP in ascolto |
 | `nslookup dominio` | Risolve un nome di dominio in indirizzo IP |
 | `traceroute host` | Mostra il percorso dei pacchetti verso un host |
@@ -113,7 +126,7 @@
 | `apk add virtualbox-guest-additions` | Installa le guest additions su Alpine |
 | `mkdir /mnt/html` | Crea il punto di mount per la cartella condivisa |
 | `modprobe vboxsf` | Carica il modulo kernel per le cartelle condivise |
-| `mount -t vboxsf shared /mnt/html` | Monta la cartella condivisa manualmente |
+| `mount -t vboxsf html /mnt/html` | Monta la cartella condivisa manualmente |
 | `echo "html /mnt/html vboxsf defaults 0 0" \| tee -a /etc/fstab > /dev/null` | Monta la cartella condivisa automaticamente all'avvio |
 
 ### Modalità di Rete VirtualBox
