@@ -225,15 +225,25 @@ Prima di avviare la VM, dobbiamo configurare la rete per poterci collegare in SS
 
 **Scheda 1 (Adattatore 1):**
 - **Abilita scheda di rete**: ✅ (checkbox attivo)
-- **Connessa a**: seleziona **"Scheda con bridge"**
-- **Nome**: lascia quello proposto (es. "Realtek PCIe GbE Family Controller" o simile)
+- **Connessa a**: seleziona **"NAT"**
 
-[Screenshot: Configurazione rete con "Scheda con bridge" selezionata]
+[Screenshot: Configurazione rete con "NAT" selezionato]
 
-**Perché "Scheda con bridge"?**
-- La VM avrà un indirizzo IP sulla stessa rete del tuo PC
-- Potrai collegarti via SSH dal PC alla VM
-- La VM potrà accedere a Internet
+**Perché NAT in laboratorio scolastico?**
+- Evita conflitti di indirizzi IP sulla LAN scolastica
+- Riduce i problemi dovuti a regole DHCP/firewall della rete d'istituto
+- Garantisce accesso Internet stabile alla VM
+
+Per collegarti in SSH da Windows con NAT, aggiungi una regola di inoltro porta:
+
+1. In VirtualBox vai su **Impostazioni → Rete → Avanzate → Inoltro porte**
+2. Clicca sull'icona **+** e inserisci:
+   - **Nome**: `ssh`
+   - **Protocollo**: `TCP`
+   - **IP host**: `127.0.0.1`
+   - **Porta host**: `2222`
+   - **IP guest**: (lascia vuoto)
+   - **Porta guest**: `22`
 
 4. Clicca **"OK"**
 
@@ -279,6 +289,77 @@ localhost:~#
 ✅ **Checkpoint 4**: Sei loggato come root in Alpine Linux. Il cursore lampeggia dopo il simbolo `#`.
 
 ### Step 4.3 — Avvio del setup di Alpine
+
+Prima di avviare `setup-alpine`, esegui questi passaggi obbligatori.
+
+### Step 4.3a — `setup-interfaces` (obbligatorio)
+
+```bash
+setup-interfaces
+```
+
+Quando richiesto, usa:
+- Interfaccia: `eth0`
+- IP: `dhcp`
+- Configurazione manuale: `n`
+
+**Perché questo passaggio è obbligatorio?**
+- Inizializza in modo esplicito la rete prima dell'installazione
+- Evita che `setup-alpine` fallisca quando prova a contattare i mirror
+
+### Step 4.3b — `rc-service networking restart` (obbligatorio)
+
+```bash
+rc-service networking restart
+```
+
+Verifica rapida della connettivita:
+
+```bash
+ping -c 3 8.8.8.8
+```
+
+**Perché questo passaggio è obbligatorio?**
+- Applica subito la configurazione scritta da `setup-interfaces`
+- Conferma che il livello IP funziona prima di avviare il setup guidato
+
+### Step 4.3c — `setup-apkrepos` (obbligatorio)
+
+Usa lo strumento ufficiale Alpine e allinea i repository alla policy di laboratorio (community + http) con modifica interattiva:
+
+```bash
+setup-apkrepos
+```
+
+Nel menu di `setup-apkrepos`, scegli `e` (edit repositories): si apre `vi` su `/etc/apk/repositories`.
+
+In `vi`, applica queste modifiche:
+- Decommenta la riga `community` (rimuovi `#` iniziale)
+- Sostituisci `https://` con `http://` nelle righe dei mirror
+
+Comandi base `vi` (promemoria rapido):
+- `ESC`: torna alla modalita comando
+- `i`: entra in modalita inserimento/modifica
+- `:wq` + `Invio`: salva ed esci
+- `:q!` + `Invio`: esci senza salvare
+
+Dopo il salvataggio, aggiorna l'indice pacchetti:
+
+```bash
+apk update
+```
+
+**Motivazioni teoriche**:
+- `main` include i pacchetti base del sistema, `community` contiene molti pacchetti applicativi del corso (incluso Docker nelle release correnti)
+- In ambienti scolastici filtrati, usare mirror `http` nel bootstrap riduce errori legati a certificati/intercettazione TLS non ancora configurati nella VM
+
+Verifica se Docker e disponibile nei repository attivi:
+
+```bash
+apk policy docker
+```
+
+Se compare una versione candidata, Docker e installabile con la configurazione attuale.
 
 Alpine include un programma interattivo che guida nell'installazione. Si chiama `setup-alpine`.
 
@@ -510,79 +591,31 @@ Lavorare direttamente nella finestra della console di VirtualBox è scomodo:
 
 Con SSH ti colleghi alla VM da un terminale Windows (es. Windows Terminal, PowerShell, o il nuovo prompt di Windows) e lavori comodamente.
 
-### Step 5.1 — Scoprire l'indirizzo IP della VM
-
-1. Nella console di Alpine (dove sei loggato come root), digita:
-
-```bash
-ip addr show eth0
-```
-
-2. Vedrai un output simile a:
-
-```
-2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    link/ether 08:00:27:xx:xx:xx brd ff:ff:ff:ff:ff:ff
-    inet 192.168.1.150/24 brd 192.168.1.255 scope global eth0
-       valid_lft forever preferred_lft forever
-```
-
-3. Cerca la riga che inizia con `inet` (NON `inet6`)
-4. L'indirizzo IP è il numero prima di `/24`, ad esempio: `192.168.1.150`
-
-**Annotati questo indirizzo IP**, lo userai per connetterti in SSH.
-
-[Screenshot: Output di ip addr con indirizzo IP evidenziato]
-
-✅ **Checkpoint 7**: Hai identificato l'indirizzo IP della VM, qualcosa come `192.168.X.X` o `10.0.X.X`.
-
-### Step 5.2 — Test connettività da Windows
+### Step 5.1 — Prima connessione SSH da Windows (NAT)
 
 1. Sul **tuo computer Windows** (non nella VM), apri il PowerShell:
    - Premi `Win + X` → clicca "Windows PowerShell" o "Terminale Windows"
    - Oppure: premi `Win + R` → digita `powershell` → Invio
 
-2. Nel terminale Windows, digita (sostituisci `192.168.1.150` con il TUO indirizzo IP):
+2. Nel terminale Windows, digita:
 
 ```powershell
-ping 192.168.1.150
+ssh -p 2222 root@127.0.0.1
 ```
 
-3. Dovresti vedere:
+3. La prima volta vedrai un messaggio simile:
 
 ```
-Pinging 192.168.1.150 with 32 bytes of data:
-Reply from 192.168.1.150: bytes=32 time<1ms TTL=64
-Reply from 192.168.1.150: bytes=32 time<1ms TTL=64
-...
-```
-
-✅ Se vedi "Reply from...", la connessione funziona!  
-❌ Se vedi "Request timed out", vai alla sezione Troubleshooting.
-
-4. Premi **Ctrl+C** per interrompere il ping
-
-### Step 5.3 — Prima connessione SSH
-
-1. Nel PowerShell di Windows, digita (sostituisci con il tuo IP):
-
-```powershell
-ssh root@192.168.1.150
-```
-
-2. La prima volta vedrai un messaggio:
-
-```
-The authenticity of host '192.168.1.150 (192.168.1.150)' can't be established.
+The authenticity of host '[127.0.0.1]:2222 ([127.0.0.1]:2222)' can't be established.
 ECDSA key fingerprint is SHA256:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 Are you sure you want to continue connecting (yes/no/[fingerprint])?
 ```
 
-3. Digita: `yes` e premi **Invio**
+4. Digita: `yes` e premi **Invio**
 
-4. Inserisci la password di root (quella che hai scelto durante l'installazione)
+5. Inserisci la password di root (quella che hai scelto durante l'installazione)
 
-5. Dovresti vedere:
+6. Dovresti vedere:
 
 ```
 Welcome to Alpine!
@@ -669,10 +702,10 @@ apk update
 
 **Output atteso**:
 ```
-fetch https://dl-cdn.alpinelinux.org/alpine/v3.XX/main/x86_64/APKINDEX.tar.gz
-fetch https://dl-cdn.alpinelinux.org/alpine/v3.XX/community/x86_64/APKINDEX.tar.gz
-v3.XX.X-XX-xxxxx [https://dl-cdn.alpinelinux.org/alpine/v3.XX/main]
-v3.XX.X-XX-xxxxx [https://dl-cdn.alpinelinux.org/alpine/v3.XX/community]
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.XX/main/x86_64/APKINDEX.tar.gz
+fetch http://dl-cdn.alpinelinux.org/alpine/v3.XX/community/x86_64/APKINDEX.tar.gz
+v3.XX.X-XX-xxxxx [http://dl-cdn.alpinelinux.org/alpine/v3.XX/main]
+v3.XX.X-XX-xxxxx [http://dl-cdn.alpinelinux.org/alpine/v3.XX/community]
 OK: XXXXX distinct packages available
 ```
 
@@ -1024,7 +1057,7 @@ Se tutti i test sopra funzionano, hai un ambiente completo e pronto per il corso
 |------------|----------|-------|
 | VirtualBox | 7.0.X | ✅ Installato |
 | Alpine Linux | 3.XX | ✅ Installato e configurato |
-| Rete | Bridge | ✅ Funzionante con IP statico |
+| Rete | NAT + Port Forwarding (2222→22) | ✅ Funzionante per SSH da Windows |
 | SSH | OpenSSH | ✅ Accessibile da Windows |
 | Editor | nano | ✅ Installato |
 | Git | 2.XX | ✅ Configurato |
@@ -1055,7 +1088,7 @@ Se tutti i test sopra funzionano, hai un ambiente completo e pronto per il corso
 # Configura manualmente la rete
 setup-interfaces
 # Riavvia la rete
-service networking restart
+rc-service networking restart
 # Riprova setup
 setup-alpine
 ```
@@ -1063,17 +1096,17 @@ setup-alpine
 **Soluzione 2** (se Soluzione 1 non funziona):
 - Spegni la VM
 - In VirtualBox, Impostazioni → Rete
-- Prova a cambiare da "Scheda con bridge" a "NAT Network"
+- Verifica che "Connessa a" sia impostato su "NAT"
 - Riavvia la VM e riprova
 
-### Problema 3: Ping da Windows alla VM fallisce
+### Problema 3: SSH da Windows alla VM fallisce (NAT)
 
-**Sintomo**: `ping 192.168.1.150` risponde "Request timed out".
+**Sintomo**: `ssh -p 2222 root@127.0.0.1` non si connette.
 
 **Diagnosi**:
 1. Verifica che la VM sia accesa
-2. Nella VM, esegui: `ip addr show eth0` - ha un indirizzo IP?
-3. Verifica che la modalità di rete sia "Scheda con bridge"
+2. Verifica che il port forwarding di VirtualBox sia `2222` (host) → `22` (guest)
+3. Nella VM, verifica che SSH sia attivo
 
 **Soluzioni**:
 
@@ -1085,20 +1118,21 @@ dhclient eth0
 udhcpc -i eth0
 ```
 
-**B. Firewall Windows blocca ping**:
-- In Windows: Impostazioni → Privacy e sicurezza → Sicurezza di Windows → Firewall
-- Clicca "Consenti app tramite firewall"
-- Assicurati che "Condivisione file e stampanti" sia abilitata per "Rete privata"
+**B. Verifica il servizio SSH nella VM**:
+```bash
+service sshd status
+netstat -tlnp | grep :22
+```
 
 **C. Ripristina configurazione di rete**:
 ```bash
 # Nella VM
-service networking restart
+rc-service networking restart
 ```
 
 ### Problema 4: SSH connection refused
 
-**Sintomo**: `ssh root@192.168.1.150` risponde "Connection refused".
+**Sintomo**: `ssh -p 2222 root@127.0.0.1` risponde "Connection refused".
 
 **Soluzione**:
 
@@ -1159,7 +1193,7 @@ addgroup root docker
 # Riloggati
 exit
 # Riconnettiti in SSH
-ssh root@192.168.1.150
+ssh -p 2222 root@127.0.0.1
 ```
 
 ### Problema 7: Tastiera non funziona correttamente
@@ -1234,7 +1268,7 @@ reboot -f
 | `apk add <pacchetto>` | Installa un pacchetto | `apk add nano` |
 | `ip addr show` | Mostra indirizzi IP | `ip addr show eth0` |
 | `ping <host>` | Testa connettività | `ping google.com` |
-| `ssh <user>@<host>` | Connessione SSH | `ssh root@192.168.1.150` |
+| `ssh -p <porta> <user>@<host>` | Connessione SSH con NAT | `ssh -p 2222 root@127.0.0.1` |
 | `docker --version` | Mostra versione Docker | `docker --version` |
 | `docker run <immagine>` | Esegue un container | `docker run hello-world` |
 | `service <servizio> start` | Avvia un servizio | `service docker start` |
