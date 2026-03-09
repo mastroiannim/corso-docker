@@ -333,6 +333,11 @@ setup-apkrepos
 
 Nel menu di `setup-apkrepos`, scegli `e` (edit repositories): si apre `vi` su `/etc/apk/repositories`.
 
+Flusso rapido:
+- `setup-apkrepos`
+- `e` (edit repositories)
+- modifica il file in `vi`
+
 In `vi`, applica queste modifiche:
 - Decommenta la riga `community` (rimuovi `#` iniziale)
 - Sostituisci `https://` con `http://` nelle righe dei mirror
@@ -340,6 +345,8 @@ In `vi`, applica queste modifiche:
 Comandi base `vi` (promemoria rapido):
 - `ESC`: torna alla modalita comando
 - `i`: entra in modalita inserimento/modifica
+- `:w` + `Invio`: salva
+- `:q` + `Invio`: esci (solo se non ci sono modifiche)
 - `:wq` + `Invio`: salva ed esci
 - `:q!` + `Invio`: esci senza salvare
 
