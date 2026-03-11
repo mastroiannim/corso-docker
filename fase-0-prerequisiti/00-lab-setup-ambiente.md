@@ -481,13 +481,15 @@ HTTP/FTP proxy URL? (e.g. 'http://proxy:8080', or 'none') [none]
 
 ### Step 4.10 — Configurazione mirror APK
 
+
 ```
 Enter mirror number (1-XX) or URL to add (or r/f/e/done) [1]
 ```
 
-1. Premi **Invio** (accetta il mirror predefinito)
+> **Suggerimento:**
+> In questa fase puoi semplicemente digitare `skip` e premere Invio per saltare la configurazione dei mirror: hai già configurato i repository ai passi precedenti (Step 4.3c) e così eviti che setup-alpine sovrascriva la configurazione http/community con mirror https che potrebbero dare problemi in laboratorio.
 
-   *I mirror sono server da cui Alpine scarica i pacchetti software*
+*I mirror sono server da cui Alpine scarica i pacchetti software*
 
 ```
 Which SSH server? ('openssh', 'dropbear', or 'none') [openssh]
