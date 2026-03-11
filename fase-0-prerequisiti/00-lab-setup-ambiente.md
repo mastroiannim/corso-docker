@@ -439,17 +439,8 @@ Do you want to do any manual network configuration? (y/n) [n]
 
 3. Premi **Invio** (nessuna configurazione manuale)
 
-### Step 4.7 — Test connettività
 
-Il setup verifica automaticamente la connessione a Internet. Vedrai qualcosa come:
-
-```
-Pinging 8.8.8.8 to test Internet connectivity...
-```
-
-Se tutto va bene, procede automaticamente. Se ci sono errori, vedi la sezione Troubleshooting più avanti.
-
-### Step 4.8 — Configurazione password di root
+### Step 4.7 — Configurazione password di root
 
 ```
 Changing password for root
@@ -468,7 +459,7 @@ Retype password:
 
 3. Digita di nuovo la stessa password e premi **Invio**
 
-### Step 4.9 — Configurazione fuso orario
+### Step 4.8 — Configurazione fuso orario
 
 ```
 Which timezone are you in? ('?' for list) [UTC]
@@ -478,7 +469,7 @@ Which timezone are you in? ('?' for list) [UTC]
 
    *Così l'orologio della VM sarà sincronizzato con quello italiano*
 
-### Step 4.10 — Configurazione proxy
+### Step 4.9 — Configurazione proxy
 
 ```
 HTTP/FTP proxy URL? (e.g. 'http://proxy:8080', or 'none') [none]
@@ -488,7 +479,7 @@ HTTP/FTP proxy URL? (e.g. 'http://proxy:8080', or 'none') [none]
 
    *A scuola/casa normalmente non serve un proxy. Se sei in una rete aziendale con proxy, chiedi all'amministratore di rete*
 
-### Step 4.11 — Configurazione mirror APK
+### Step 4.10 — Configurazione mirror APK
 
 ```
 Enter mirror number (1-XX) or URL to add (or r/f/e/done) [1]
@@ -502,7 +493,7 @@ Enter mirror number (1-XX) or URL to add (or r/f/e/done) [1]
 Which SSH server? ('openssh', 'dropbear', or 'none') [openssh]
 ```
 
-### Step 4.12 — Configurazione SSH
+### Step 4.11 — Configurazione SSH
 
 2. Premi **Invio** (installa OpenSSH)
 
@@ -516,7 +507,7 @@ Allow root SSH login? ('?' for help) [prohibit-password]
 
    **Attenzione**: In produzione non si dovrebbe mai permettere il login SSH di root. Lo facciamo qui solo per semplicità didattica.
 
-### Step 4.13 — Configurazione disco
+### Step 4.12 — Configurazione disco
 
 ```
 Which disk(s) would you like to use? (or '?' for help or 'none') [none]
@@ -542,7 +533,7 @@ WARNING: Erase the above disk(s) and continue? (y/n) [n]
 
    *Confermi di formattare il disco virtuale e installarci Alpine*
 
-### Step 4.14 — Attesa installazione
+### Step 4.13 — Attesa installazione
 
 Ora il setup copia tutti i file sul disco. Vedrai un output simile a:
 
@@ -558,7 +549,7 @@ Installation is complete. Please reboot.
 
 ✅ **Checkpoint 5**: L'installazione è completa quando vedi "Installation is complete. Please reboot."
 
-### Step 4.15 — Riavvio e rimozione ISO
+### Step 4.14 — Riavvio e rimozione ISO
 
 1. Digita: `reboot` e premi **Invio**
 
@@ -585,7 +576,7 @@ Please remove the installation medium, then press ENTER:
 alpine-docker login:
 ```
 
-### Step 4.16 — Test login locale
+### Step 4.15 — Test login locale
 
 1. Digita: `root` e premi **Invio**
 2. Digita la password che hai scelto prima
