@@ -292,6 +292,18 @@ localhost:~#
 
 Prima di avviare `setup-alpine`, esegui questi passaggi obbligatori.
 
+> **Consigliato: imposta subito la tastiera italiana**
+>
+> Appena hai fatto login come `root`, esegui:
+>
+> ```bash
+> setup-keymap
+> ```
+>
+> Scegli `it` come layout. Il default è US: se hai tastiera italiana, farlo subito evita errori nei caratteri speciali (es. @, è, ò) durante i prossimi comandi.
+>
+> Dopo aver impostato la keymap, prosegui con la configurazione di rete.
+
 ### Step 4.3a — `setup-interfaces` (obbligatorio)
 
 ```bash
@@ -333,10 +345,10 @@ setup-apkrepos
 
 Nel menu di `setup-apkrepos`, scegli `e` (edit repositories): si apre `vi` su `/etc/apk/repositories`.
 
+> **Nota importante:**
+> Se il file `/etc/apk/repositories` è vuoto, prima scegli `r` (random) per aggiungere un mirror casuale. Poi torna su `e` per modificare il file come indicato sotto.
+
 Flusso rapido:
-- `setup-apkrepos`
-- `e` (edit repositories)
-- modifica il file in `vi`
 
 In `vi`, applica queste modifiche:
 - Decommenta la riga `community` (rimuovi `#` iniziale)
