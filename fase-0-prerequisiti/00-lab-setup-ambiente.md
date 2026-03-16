@@ -833,6 +833,10 @@ bash --version
 ```
 GNU bash, version 5.X.XX(X)-release (x86_64-alpine-linux-musl)
 ```
+**You can install it using the command apk add shadow to enable the use of "chsh" for changing the default shell**
+```bash
+apk add shadow
+```
 
 **Cambia shell predefinita**:
 ```bash
