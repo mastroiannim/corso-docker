@@ -53,6 +53,11 @@ cat /etc/resolv.conf
 - una route `default` verso il gateway
 - almeno un `nameserver` nel file DNS
 
+**Installa iproute2 (servirà tra poco per usare ss)**
+```bash
+apk add iproute2
+```
+
 ---
 
 ## Parte 2: Modello client-server (operativo)
