@@ -46,7 +46,7 @@ ps aux | head
 **Output atteso**:
 - `uname -s` restituisce `Linux`
 - `uname -r` mostra la versione del kernel
-- `ps aux | head` mostra processi attivi (inclusi processi di sistema)
+- `ps aux | head` mostra i primi 10 processi attivi (inclusi processi di sistema)
 
 ## Rinvio operativo
 
