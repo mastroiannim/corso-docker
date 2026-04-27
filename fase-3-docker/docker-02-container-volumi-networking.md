@@ -134,7 +134,7 @@ ENTRYPOINT ["eseguibile", "param1", "param2"]
 
 #### Esempio di Dockerfile Ottimizzato:
 ```dockerfile
-FROM node:14-alpine
+FROM node:20-alpine
 
 # Impostare la directory di lavoro
 WORKDIR /app
@@ -173,7 +173,7 @@ CMD ["node", "app.js"]
 #### Multi-stage Builds:
 ```dockerfile
 # Stage di build
-FROM node:14 AS build
+FROM node:20 AS build
 WORKDIR /app
 COPY . .
 RUN npm ci && npm run build
@@ -213,7 +213,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 3. Creare un Dockerfile:
    ```dockerfile
-   FROM node:14-alpine
+   FROM node:20-alpine
    WORKDIR /app
    COPY package*.json ./
    RUN npm install
@@ -325,7 +325,7 @@ docker volume prune
 #### Utilizzo con Container:
 ```bash
 # Montare un volume in un container
-docker run -d --name db -v my-volume:/var/lib/mysql mysql:5.7
+docker run -d --name db -v my-volume:/var/lib/mysql mysql:8.0
 
 # Creare e montare un volume in un unico comando
 docker run -d --name web -v web-data:/app/data nginx
@@ -358,10 +358,10 @@ docker run --mount type=bind,source=/path/on/host,target=/path/in/container ...
 docker run -v $(pwd)/config:/etc/app/config:ro my-app
 
 # Montare per lo sviluppo
-docker run -v $(pwd):/app node:14 npm start
+docker run -v $(pwd):/app node:20 npm start
 
 # Con la sintassi --mount
-docker run --mount type=bind,source="$(pwd)",target=/app node:14 npm start
+docker run --mount type=bind,source="$(pwd)",target=/app node:20 npm start
 ```
 
 #### Casi d'Uso:

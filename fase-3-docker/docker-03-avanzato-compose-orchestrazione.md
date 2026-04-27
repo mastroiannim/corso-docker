@@ -313,9 +313,9 @@ docker inspect container_name
    - Immagini "scratch" per binari statici
    - Esempio:
      ```dockerfile
-     FROM node:14-alpine
-     # invece di
-     # FROM node:14
+      FROM node:20-alpine
+      # invece di
+      # FROM node:20
      ```
 
 2. **Multi-stage Builds:**
@@ -324,13 +324,13 @@ docker inspect container_name
    - Esempio:
      ```dockerfile
      # Stage di build
-     FROM golang:1.16 AS builder
+      FROM golang:1.22 AS builder
      WORKDIR /app
      COPY . .
      RUN go build -o myapp
      
      # Stage finale
-     FROM alpine:3.14
+      FROM alpine:3.20
      COPY --from=builder /app/myapp /usr/local/bin/
      CMD ["myapp"]
      ```
@@ -362,10 +362,10 @@ docker inspect container_name
    - Esempio:
      ```dockerfile
      # Raramente cambia
-     FROM node:14-alpine
-     WORKDIR /app
-     
-     # Cambia solo quando cambiano le dipendenze
+      FROM node:20-alpine
+      WORKDIR /app
+      
+      # Cambia solo quando cambiano le dipendenze
      COPY package*.json ./
      RUN npm ci
      

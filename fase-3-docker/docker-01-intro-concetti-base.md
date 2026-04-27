@@ -391,7 +391,7 @@ Questo comando:
 
 4. Creare un `Dockerfile`:
    ```dockerfile
-   FROM node:14-alpine
+    FROM node:20-alpine
    WORKDIR /app
    COPY package.json .
    RUN npm install
@@ -540,11 +540,11 @@ Questo comando:
    ```
 2. Scaricare l'immagine ufficiale di PostgreSQL:
    ```bash
-   docker pull postgres:13-alpine
+   docker pull postgres:16-alpine
    ```
 3. Visualizzare i dettagli dell'immagine:
    ```bash
-   docker inspect postgres:13-alpine
+   docker inspect postgres:16-alpine
    ```
 
 ---

@@ -13,9 +13,9 @@ Prima di iniziare questo modulo devi aver completato:
 ### 🎯 Obiettivi di questo modulo
 
 Al termine saprai:
-- Configurare l'ambiente di lavoro (Windows + Alpine Linux su VirtualBox)
-- Eseguire comandi base nel terminale Linux
+- Eseguire comandi base nel terminale Linux (Alpine)
 - Navigare nel filesystem e gestire file e directory
+- Preparare l'ambiente per le future esercitazioni su Docker
 
 ---
 
@@ -23,76 +23,26 @@ Al termine saprai:
 ## Sistemi Operativi, Filesystem e Shell
 
 ### Panoramica dell'Esercitazione
-Questa esercitazione pratica di laboratorio è progettata per accompagnare la Sessione Introduttiva 1 sui Sistemi Operativi, Filesystem e Shell. Gli studenti lavoreranno sia in ambiente Windows 11 (con account senza privilegi di amministratore) sia in ambiente Linux Alpine tramite VirtualBox, per mettere in pratica i concetti teorici appresi durante la sessione.
+Questa esercitazione pratica di laboratorio è progettata per accompagnare la Sessione Introduttiva 1 sui Sistemi Operativi, Filesystem e Shell. Gli studenti lavoreranno in ambiente **Linux Alpine tramite VirtualBox** (configurato nel modulo di setup), mettendo in pratica i concetti teorici appresi durante la sessione. **Il focus è esclusivamente su Linux/Alpine** — l'ambiente su cui opereremo anche con Docker.
 
 ### Prerequisiti
-- Computer con Windows 11 (account senza privilegi di amministratore)
-- VirtualBox installato
-- Immagine ISO di Alpine Linux
+- VirtualBox installato (dal setup ambiente)
+- VM Alpine Linux funzionante
 - Conoscenze di base sull'uso del computer
 
 ### Durata
-- **Percorso core (consigliato)**: 1h45-2h15
-- **Percorso esteso (versione completa)**: 3h45
+- **Durata consigliata**: 1h30-2h00
+- **Approfondimenti opzionali**: +30min
 
 ### Obiettivi di Apprendimento
-- Confrontare i terminali Windows e Linux
-- Navigare nel filesystem in entrambi gli ambienti
+- Navigare nel filesystem Linux
 - Eseguire comandi di base per la gestione di file e directory
-- Comprendere le differenze tra i due sistemi operativi
+- Comprendere la struttura del sistema operativo Linux
 - Preparare l'ambiente per le future esercitazioni su Docker
 
-## 🚀 Percorso core (pre-Docker, consigliato)
+## Parte 1: Configurazione dell'Ambiente di Lavoro (30 minuti)
 
-Per mantenere il laboratorio snello e centrato sul percorso Docker:
-
-1. Esegui il setup iniziale dal modulo dedicato [Setup Ambiente di Lavoro](../fase-0-prerequisiti/00-lab-setup-ambiente.md)
-2. In questo modulo, lavora **prima su Alpine Linux** (terminale, filesystem, file/directory)
-3. Usa i blocchi Windows come confronto rapido o recupero
-4. Chiudi sempre con un checkpoint pratico (comandi eseguiti + output verificato)
-
-### Sequenza minima consigliata
-
-- `2.2 Terminale Linux (Alpine)`
-- `3.2 Filesystem Linux`
-- `4.2 Gestione File in Linux`
-- `5.1 Progetto "Preparazione Ambiente Docker"` (solo parte Linux)
-
-## Percorso esteso (opzionale)
-
-La versione completa include anche tutti i confronti dettagliati Windows (CMD/PowerShell) utili come approfondimento.
-
-## Parte 1: Configurazione dell'Ambiente di Lavoro (45 minuti)
-
-### 1.1 Esplorazione dell'Ambiente Windows
-**Obiettivo**: Familiarizzare con gli strumenti disponibili in Windows 11 senza privilegi di amministratore.
-
-**Attività**:
-1. Aprire il Prompt dei Comandi di Windows:
-   - Premere `Win + R`
-   - Digitare `cmd` e premere Invio
-
-2. Aprire Windows PowerShell:
-   - Premere `Win + X`
-   - Selezionare "Windows PowerShell"
-
-3. Verificare le informazioni di sistema:
-   ```
-   systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
-   ```
-
-4. Verificare l'account utente e i gruppi:
-   ```
-   whoami
-   net user %username%
-   ```
-
-5. Annotare le limitazioni dell'account senza privilegi di amministratore:
-   - Tentare di installare un software
-   - Tentare di modificare impostazioni di sistema
-   - Osservare i messaggi di errore relativi ai privilegi
-
-### 1.2 Configurazione di VirtualBox e Alpine Linux
+### 1.1 Configurazione di VirtualBox e Alpine Linux
 **Obiettivo**: Configurare una macchina virtuale con Alpine Linux.
 
 **Attività**:
@@ -164,55 +114,9 @@ La versione completa include anche tutti i confronti dettagliati Windows (CMD/Po
     - Accedere come "studente"
     - Provare un comando sudo: `sudo ls /root`
 
-## Parte 2: Confronto tra Terminali Windows e Linux (45 minuti)
+## Parte 2: Terminale Linux (Alpine) (30 minuti)
 
-### 2.1 Terminali Windows: CMD e PowerShell
-**Obiettivo**: Comprendere le differenze tra i terminali disponibili in Windows.
-
-**Attività**:
-1. Esplorare il Prompt dei Comandi (CMD):
-   - Aprire CMD
-   - Eseguire i seguenti comandi e annotare l'output:
-     ```
-     ver
-     help
-     dir
-     cd
-     echo Hello World
-     ipconfig
-     ```
-
-2. Esplorare PowerShell:
-   - Aprire PowerShell
-   - Eseguire i seguenti comandi e annotare l'output:
-     ```
-     $PSVersionTable
-     Get-Command
-     Get-ChildItem
-     Set-Location
-     Write-Host "Hello World"
-     Get-NetIPConfiguration
-     ```
-
-3. Compilare una tabella di confronto:
-
-   | Funzione | CMD | PowerShell |
-   |----------|-----|------------|
-   | Versione | `ver` | `$PSVersionTable` |
-   | Aiuto | `help` | `Get-Help` |
-   | Elenco file | `dir` | `Get-ChildItem` o `dir` |
-   | Cambio directory | `cd` | `Set-Location` o `cd` |
-   | Output testo | `echo` | `Write-Host` |
-   | Info rete | `ipconfig` | `Get-NetIPConfiguration` |
-
-4. Osservare le differenze principali:
-   - CMD è più semplice ma meno potente
-   - PowerShell è orientato agli oggetti, non solo al testo
-   - PowerShell ha alias per i comandi CMD per compatibilità
-   - PowerShell supporta script più avanzati
-
-### 2.2 Terminale Linux (Alpine)
-**Obiettivo**: Familiarizzare con il terminale Linux e confrontarlo con quelli di Windows.
+**Obiettivo**: Familiarizzare con il terminale Linux (Bash).
 
 **Attività**:
 1. Accedere alla VM Alpine Linux come utente "studente"
@@ -229,71 +133,14 @@ La versione completa include anche tutti i confronti dettagliati Windows (CMD/Po
      ip addr
      ```
 
-3. Estendere la tabella di confronto:
-
-   | Funzione | CMD | PowerShell | Bash (Linux) |
-   |----------|-----|------------|--------------|
-   | Versione | `ver` | `$PSVersionTable` | `uname -a` |
-   | Aiuto | `help` | `Get-Help` | `man` |
-   | Elenco file | `dir` | `Get-ChildItem` | `ls` |
-   | Cambio directory | `cd` | `Set-Location` | `cd` |
-   | Output testo | `echo` | `Write-Host` | `echo` |
-   | Info rete | `ipconfig` | `Get-NetIPConfiguration` | `ip addr` |
-
-4. Osservare le differenze principali:
-   - Bash è case-sensitive, CMD e PowerShell no
-   - Bash usa forward slash (/) per percorsi, Windows usa backslash (\)
-   - Bash ha pipe (|) e redirection (>, >>) simili a CMD
+3. Osservare le caratteristiche principali di Bash:
+   - Bash è case-sensitive
+   - Bash usa forward slash (/) per i percorsi
+   - Bash ha pipe (|) e redirection (>, >>)
    - Bash è lo standard de facto in ambienti Linux/Unix
 
-5. Testare la compatibilità dei comandi:
-   - Provare comandi Windows in Linux e viceversa
-   - Notare quali comandi sono simili e quali sono completamente diversi
+## Parte 3: Navigazione nel Filesystem Linux (30 minuti)
 
-## Parte 3: Navigazione nel Filesystem (45 minuti)
-
-### 3.1 Filesystem Windows
-**Obiettivo**: Esplorare la struttura del filesystem Windows.
-
-**Attività**:
-1. In PowerShell, esplorare la struttura delle directory:
-   ```
-   Get-PSDrive -PSProvider FileSystem
-   cd C:\
-   dir
-   cd Users
-   dir
-   cd $env:USERNAME
-   dir
-   ```
-
-2. Comprendere i percorsi in Windows:
-   - Percorsi assoluti:
-     ```
-     cd C:\Users\$env:USERNAME\Documents
-     ```
-   - Percorsi relativi:
-     ```
-     cd ..
-     cd Documents
-     ```
-
-3. Visualizzare le variabili d'ambiente dei percorsi:
-   ```
-   echo $env:PATH
-   echo $env:USERPROFILE
-   echo $env:TEMP
-   ```
-
-4. Creare una struttura di directory per il laboratorio:
-   ```
-   mkdir C:\Users\$env:USERNAME\LabDocker
-   cd C:\Users\$env:USERNAME\LabDocker
-   mkdir Progetti Documenti Configurazioni
-   dir
-   ```
-
-### 3.2 Filesystem Linux
 **Obiettivo**: Esplorare la struttura del filesystem Linux.
 
 **Attività**:
@@ -334,62 +181,8 @@ La versione completa include anche tutti i confronti dettagliati Windows (CMD/Po
    ls -la
    ```
 
-### 3.3 Confronto tra Filesystem
-**Obiettivo**: Comprendere le differenze tra i filesystem Windows e Linux.
+## Parte 4: Gestione di File e Directory in Linux (30 minuti)
 
-**Attività**:
-1. Compilare una tabella di confronto:
-
-   | Caratteristica | Windows | Linux |
-   |----------------|---------|-------|
-   | Separatore percorsi | `\` | `/` |
-   | Root | `C:\` | `/` |
-   | Home utente | `C:\Users\username` | `/home/username` |
-   | Case sensitivity | No | Sì |
-   | File nascosti | Attributo "nascosto" | Iniziano con `.` |
-   | Estensioni file | Importanti | Opzionali |
-
-2. Discutere le implicazioni di queste differenze per lo sviluppo e la containerizzazione
-
-## Parte 4: Gestione di File e Directory (45 minuti)
-
-### 4.1 Gestione File in Windows
-**Obiettivo**: Praticare i comandi di gestione file in Windows.
-
-**Attività**:
-1. Navigare nella directory del laboratorio:
-   ```
-   cd C:\Users\$env:USERNAME\LabDocker
-   ```
-
-2. Creare e manipolare file:
-   ```
-   echo "Questo è un file di test" > test.txt
-   type test.txt
-   copy test.txt Documenti\test_copia.txt
-   move test.txt Progetti\test_spostato.txt
-   dir Progetti
-   dir Documenti
-   ```
-
-3. Creare e manipolare directory:
-   ```
-   mkdir Progetti\Progetto1
-   mkdir Progetti\Progetto2
-   dir Progetti
-   move Progetti\Progetto1 Progetti\Progetto_Rinominato
-   dir Progetti
-   ```
-
-4. Eliminare file e directory:
-   ```
-   del Documenti\test_copia.txt
-   dir Documenti
-   rmdir Progetti\Progetto2
-   dir Progetti
-   ```
-
-### 4.2 Gestione File in Linux
 **Obiettivo**: Praticare i comandi di gestione file in Linux.
 
 **Attività**:
@@ -435,44 +228,13 @@ La versione completa include anche tutti i confronti dettagliati Windows (CMD/Po
    ls -la file_permessi.txt
    ```
 
-### 4.3 Confronto dei Comandi di Gestione File
-**Obiettivo**: Confrontare i comandi di gestione file tra Windows e Linux.
-
-**Attività**:
-1. Compilare una tabella di confronto:
-
-   | Operazione | Windows CMD | Windows PowerShell | Linux Bash |
-   |------------|-------------|-------------------|------------|
-   | Creare file | `echo > file.txt` | `New-Item file.txt` | `touch file.txt` |
-   | Visualizzare file | `type file.txt` | `Get-Content file.txt` | `cat file.txt` |
-   | Copiare file | `copy file.txt dest` | `Copy-Item file.txt dest` | `cp file.txt dest` |
-   | Spostare file | `move file.txt dest` | `Move-Item file.txt dest` | `mv file.txt dest` |
-   | Eliminare file | `del file.txt` | `Remove-Item file.txt` | `rm file.txt` |
-   | Creare directory | `mkdir dir` | `New-Item -Type Directory dir` | `mkdir dir` |
-   | Eliminare directory | `rmdir dir` | `Remove-Item dir` | `rmdir dir` |
-
-2. Discutere le implicazioni di queste differenze per lo sviluppo e la containerizzazione
-
-## Parte 5: Esercizio Finale Integrato (45 minuti)
+## Parte 5: Esercizio Finale (30 minuti)
 
 ### 5.1 Progetto "Preparazione Ambiente Docker"
 **Obiettivo**: Creare una struttura di directory e file che sarà utilizzata nelle future esercitazioni su Docker.
 
-**Attività**:
-1. In Windows, creare la seguente struttura:
-   ```
-   cd C:\Users\$env:USERNAME\LabDocker
-   mkdir DockerLab
-   cd DockerLab
-   mkdir Immagini Volumi Reti Compose
-   echo "# Appunti su Docker" > README.md
-   echo "Immagini Docker" > Immagini\README.md
-   echo "Volumi Docker" > Volumi\README.md
-   echo "Reti Docker" > Reti\README.md
-   echo "Docker Compose" > Compose\README.md
-   ```
-
-2. In Alpine Linux, creare la stessa struttura:
+**Attività** (tutto su Alpine Linux):
+1. Creare la struttura di directory:
    ```
    cd ~/LabDocker
    mkdir DockerLab
@@ -485,74 +247,33 @@ La versione completa include anche tutti i confronti dettagliati Windows (CMD/Po
    echo "Docker Compose" > Compose/README.md
    ```
 
-3. Creare un file di configurazione per un'applicazione di esempio:
-   - In Windows:
-     ```
-     mkdir DockerLab\Compose\app-esempio
-     echo "{`n  `"name`": `"app-esempio`",`n  `"version`": `"1.0.0`",`n  `"description`": `"Applicazione di esempio per Docker`"`n}" > DockerLab\Compose\app-esempio\config.json
-     ```
-   - In Linux:
-     ```
-     mkdir -p DockerLab/Compose/app-esempio
-     echo '{
-       "name": "app-esempio",
-       "version": "1.0.0",
-       "description": "Applicazione di esempio per Docker"
-     }' > DockerLab/Compose/app-esempio/config.json
-     ```
+2. Creare un file di configurazione per un'applicazione di esempio:
+   ```
+   mkdir -p DockerLab/Compose/app-esempio
+   echo '{
+     "name": "app-esempio",
+     "version": "1.0.0",
+     "description": "Applicazione di esempio per Docker"
+   }' > DockerLab/Compose/app-esempio/config.json
+   ```
 
-4. Verificare la struttura creata:
-   - In Windows:
-     ```
-     dir /s DockerLab
-     ```
-   - In Linux:
-     ```
-     find DockerLab -type f | sort
-     ```
+3. Verificare la struttura creata:
+   ```
+   find DockerLab -type f | sort
+   ```
 
 ### 5.2 Script di Automazione
-**Obiettivo**: Creare semplici script per automatizzare operazioni in entrambi gli ambienti.
+**Obiettivo**: Creare un semplice script Bash per automatizzare operazioni in ambiente Linux.
 
 **Attività**:
-1. In Windows, creare uno script PowerShell:
-   ```
-   notepad C:\Users\$env:USERNAME\LabDocker\setup_env.ps1
-   ```
-   Contenuto:
-   ```powershell
-   # Script di setup ambiente Windows
-   $labDir = "$env:USERPROFILE\LabDocker"
-   
-   # Crea directory se non esistono
-   if (-not (Test-Path $labDir)) {
-       New-Item -ItemType Directory -Path $labDir
-   }
-   
-   # Crea struttura per Docker
-   $dockerDir = "$labDir\DockerLab"
-   if (-not (Test-Path $dockerDir)) {
-       New-Item -ItemType Directory -Path $dockerDir
-       New-Item -ItemType Directory -Path "$dockerDir\Immagini"
-       New-Item -ItemType Directory -Path "$dockerDir\Volumi"
-       New-Item -ItemType Directory -Path "$dockerDir\Reti"
-       New-Item -ItemType Directory -Path "$dockerDir\Compose"
-   }
-   
-   # Crea file README
-   Set-Content -Path "$dockerDir\README.md" -Value "# Laboratorio Docker`n`nCreato il $(Get-Date)"
-   
-   Write-Host "Ambiente di laboratorio configurato in $dockerDir"
-   ```
-
-2. In Linux, creare uno script Bash:
+1. Creare uno script Bash:
    ```
    nano ~/LabDocker/setup_env.sh
    ```
    Contenuto:
    ```bash
    #!/bin/bash
-   # Script di setup ambiente Linux
+   # Script di setup ambiente Linux per Docker
    
    LAB_DIR="$HOME/LabDocker"
    
@@ -579,48 +300,35 @@ La versione completa include anche tutti i confronti dettagliati Windows (CMD/Po
    echo "Ambiente di laboratorio configurato in $DOCKER_DIR"
    ```
 
-3. Rendere lo script Linux eseguibile:
+2. Rendere lo script eseguibile:
    ```
    chmod +x ~/LabDocker/setup_env.sh
    ```
 
-4. Eseguire gli script:
-   - In Windows:
-     ```
-     powershell -ExecutionPolicy Bypass -File C:\Users\$env:USERNAME\LabDocker\setup_env.ps1
-     ```
-   - In Linux:
-     ```
-     ~/LabDocker/setup_env.sh
-     ```
+3. Eseguire lo script:
+   ```
+   ~/LabDocker/setup_env.sh
+   ```
 
-5. Verificare i risultati:
-   - In Windows:
-     ```
-     dir C:\Users\$env:USERNAME\LabDocker\DockerLab
-     type C:\Users\$env:USERNAME\LabDocker\DockerLab\README.md
-     ```
-   - In Linux:
-     ```
-     ls -la ~/LabDocker/DockerLab
-     cat ~/LabDocker/DockerLab/README.md
-     ```
+4. Verificare i risultati:
+   ```
+   ls -la ~/LabDocker/DockerLab
+   cat ~/LabDocker/DockerLab/README.md
+   ```
 
 ## Conclusione e Verifica dell'Apprendimento
 
 ### Riepilogo
-- Abbiamo configurato un ambiente di lavoro con Windows 11 e Alpine Linux
-- Abbiamo confrontato i terminali Windows (CMD e PowerShell) con il terminale Linux (Bash)
-- Abbiamo esplorato e confrontato i filesystem Windows e Linux
-- Abbiamo praticato i comandi di gestione file e directory in entrambi gli ambienti
+- Abbiamo configurato e testato l'ambiente Alpine Linux su VirtualBox
+- Abbiamo esplorato il filesystem Linux e la shell Bash
+- Abbiamo praticato i comandi di gestione file e directory
 - Abbiamo creato una struttura di directory e script per le future esercitazioni su Docker
 
 ### Verifica dell'Apprendimento
-1. Quali sono le principali differenze tra i terminali Windows e Linux?
-2. Come si naviga nel filesystem in Windows e Linux? Quali sono le differenze principali?
-3. Come si gestiscono file e directory in entrambi gli ambienti?
-4. Perché è importante comprendere entrambi gli ambienti per lavorare con Docker?
-5. Come possono gli script di automazione semplificare il lavoro in entrambi gli ambienti?
+1. Come si naviga nel filesystem Linux? Quali comandi si usano?
+2. Come si gestiscono file e directory in Linux?
+3. Quali sono i comandi equivalenti a quelli che useremo in Docker?
+4. Perché è importante conoscere il filesystem Linux per lavorare con Docker?
 
 ### Preparazione per la Prossima Sessione
 - Mantenere attiva la VM Alpine Linux
@@ -628,10 +336,8 @@ La versione completa include anche tutti i confronti dettagliati Windows (CMD/Po
 - Rivedere i concetti di rete che saranno approfonditi nella prossima sessione
 
 ## Risorse Aggiuntive
-- [Documentazione PowerShell](https://docs.microsoft.com/en-us/powershell/)
 - [Guida Bash](https://www.gnu.org/software/bash/manual/bash.html)
 - [Alpine Linux Wiki](https://wiki.alpinelinux.org/)
-- [Confronto tra comandi Windows e Linux](https://www.lemoda.net/windows/windows2unix/windows2unix.html)
 
 ---
 
